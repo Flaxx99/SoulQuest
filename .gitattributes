@@ -1,0 +1,2 @@
+*.changes filter=lfs diff=lfs merge=lfs -text
+*.wktree filter=lfs diff=lfs merge=lfs -text
