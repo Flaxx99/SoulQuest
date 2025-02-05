@@ -44,6 +44,9 @@ TagManager:
   - name: Piso
     uniqueID: 1233950671
     locked: 0
+  - name: ZonaObscura
+    uniqueID: 3568616699
+    locked: 0
   - name: Paredes
     uniqueID: 3830344107
     locked: 0
@@ -53,8 +56,8 @@ TagManager:
   - name: ObjetosSobreMesa
     uniqueID: 428482127
     locked: 0
-  - name: ZonaObscura
-    uniqueID: 3568616699
+  - name: interactivos
+    uniqueID: 1456759301
     locked: 0
   - name: Jugador
     uniqueID: 1302215525
