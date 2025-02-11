@@ -6,9 +6,6 @@ public class PersonajeMovimiento : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private float velocidad;
-
-    public Vector2 DireccionMovimiento => _direccionMovimiento;
-
     private Rigidbody2D _rigidbody2D;
     private Vector2 _direccionMovimiento;
     private Vector2 _input;
