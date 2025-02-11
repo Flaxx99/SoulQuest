@@ -6,6 +6,9 @@ public class PersonajeMovimiento : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private float velocidad;
+
+    public Vector2 DireccionMovimiento => _direccionMovimiento;
+
     private Rigidbody2D _rigidbody2D;
     private Vector2 _direccionMovimiento;
     private Vector2 _input;
@@ -23,8 +26,8 @@ public class PersonajeMovimiento : MonoBehaviour
     {
         _input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-            //X
-         if (_input.x > 0.1f)
+        //X
+        if (_input.x > 0.1f)
         {
             _direccionMovimiento.x = 1f;
         }
@@ -58,3 +61,4 @@ public class PersonajeMovimiento : MonoBehaviour
         _rigidbody2D.MovePosition(_rigidbody2D.position + _direccionMovimiento * velocidad * Time.fixedDeltaTime);
     }
 }
+
