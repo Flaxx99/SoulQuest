@@ -617,7 +617,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8389148075237773643, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
       propertyPath: m_SortingLayer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8389148075237773643, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
       propertyPath: m_SortingLayerID
@@ -626,7 +626,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3356329300628382069, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2132128235}
   m_SourcePrefab: {fileID: 100100000, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
 --- !u!1 &899211231
 GameObject:
@@ -691,7 +694,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9.482251
+  orthographic size: 9.692139
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -716,7 +719,7 @@ Transform:
   m_GameObject: {fileID: 899211231}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.9943447, y: -1.8167286, z: -9.987201}
+  m_LocalPosition: {x: -2.7092512, y: 0.52863437, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2475,6 +2478,23 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 746457861}
   m_SourcePrefab: {fileID: 100100000, guid: d7374378c1988bf428e751b78702a367, type: 3}
+--- !u!1 &2132128229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3356329300628382069, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
+  m_PrefabInstance: {fileID: 782174917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2132128235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132128229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cbf17fedb2f78849879cefb83778f77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
