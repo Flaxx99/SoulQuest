@@ -7,6 +7,8 @@ public class PersonajeMovimiento : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private float velocidad;
 
+
+    public bool EnMovimiento => _direccionMovimiento.magnitude > 0f;
     public Vector2 DireccionMovimiento => _direccionMovimiento;
 
     private Rigidbody2D _rigidbody2D;
@@ -24,6 +26,7 @@ public class PersonajeMovimiento : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         _input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         //X

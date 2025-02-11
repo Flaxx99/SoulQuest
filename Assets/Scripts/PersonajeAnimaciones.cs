@@ -1,10 +1,16 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PersonajeAnimaciones : MonoBehaviour
 {
+    [SerializeField] private string layerIdle;
+    [SerializeField] private string layerCaminar;
 
     private Animator _animator;
     private PersonajeMovimiento _personajeMovimiento;
+
+    private readonly int direccionX = Animator.StringToHash("X");
+    private readonly int direccionY = Animator.StringToHash("Y");
 
     private void Awake()
     {
@@ -20,8 +26,33 @@ public class PersonajeAnimaciones : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        _animator.SetFloat("X", _personajeMovimiento.DireccionMovimiento.x);
-        _animator.SetFloat("Y", _personajeMovimiento.DireccionMovimiento.y);
+        ActualizarLayers();
+        if (_personajeMovimiento.EnMovimiento == false)
+        {
+            return;
+        }
+        _animator.SetFloat(direccionX, _personajeMovimiento.DireccionMovimiento.x);
+        _animator.SetFloat(direccionY, _personajeMovimiento.DireccionMovimiento.y);
+    }
+    private void ActivarLayer(string nombreLayer)
+    {
+        for (int i=0; i< _animator.layerCount; i++)
+        {
+            _animator.SetLayerWeight(i, 0);
+        }
+        _animator.SetLayerWeight(_animator.GetLayerIndex(nombreLayer), 1);
+    }
+
+    private void ActualizarLayers()
+    {
+        if (_personajeMovimiento.EnMovimiento)
+        {
+            ActivarLayer(layerCaminar);
+        }
+        else
+        {
+            ActivarLayer(layerIdle);
+        }
     }
 }
 
