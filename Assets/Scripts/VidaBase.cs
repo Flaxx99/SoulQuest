@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class VidaBase : MonoBehaviour
 {
-    [SerializeField] private float saludInicial;
-    [SerializeField] private float saludMax;
+    [SerializeField] protected float saludInicial;
+    [SerializeField] protected float saludMax;
     public float Salud { get; protected set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-
+        Salud = saludInicial;
     }
 
     public void RecibirDaño(float cantidad)
