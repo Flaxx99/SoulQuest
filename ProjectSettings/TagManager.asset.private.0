@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Piso
+    uniqueID: 1233950671
+    locked: 0
+  - name: ZonaObscura
+    uniqueID: 3568616699
+    locked: 0
+  - name: Paredes
+    uniqueID: 3830344107
+    locked: 0
+  - name: Objetos
+    uniqueID: 1363362471
+    locked: 0
+  - name: ObjetosSobreMesa
+    uniqueID: 428482127
+    locked: 0
+  - name: interactivos
+    uniqueID: 1456759301
+    locked: 0
+  - name: Jugador
+    uniqueID: 1302215525
+    locked: 0
+  m_RenderingLayers:
+  - Default
