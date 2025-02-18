@@ -7,12 +7,12 @@ public class VidaBase : MonoBehaviour
     public float Salud { get; protected set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    protected virtual void Start()
     {
         Salud = saludInicial;
     }
 
-    public void RecibirDaño(float cantidad)
+    public void RecibirDano(float cantidad)
     {
         if (cantidad <= 0)
         {
