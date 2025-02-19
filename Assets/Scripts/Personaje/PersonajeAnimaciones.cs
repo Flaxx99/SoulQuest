@@ -55,6 +55,12 @@ public class PersonajeAnimaciones : MonoBehaviour
             ActivarLayer(layerIdle);
         }
     }
+    public void RevivirPersonaje()
+    {
+        ActivarLayer(layerIdle);
+        _animator.SetBool(derrotado, false);
+    }
+
     private void PersonajeDerrotadoRespuesta()
     {
         float saludActual = GetComponent<PersonajeVida>().Salud;
