@@ -10,4 +10,7 @@ public class Arma : ScriptableObject
     public float Daño;
 
     [Header("Stats")]
+    public float ChanceCritico;
+    public float ChanceBloqueo;
+
 }
