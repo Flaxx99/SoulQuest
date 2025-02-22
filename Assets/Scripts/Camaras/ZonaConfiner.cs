@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ZonaConfiner : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera camara;
+    [SerializeField] private CinemachineCamera camara; // Cambiar CinemachineVirtualCamera a CinemachineCamera
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
