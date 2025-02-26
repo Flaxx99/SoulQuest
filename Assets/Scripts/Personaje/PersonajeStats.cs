@@ -4,12 +4,24 @@ using UnityEngine;
 public class PersonajeStats : ScriptableObject
 {
 
-    public float Dano;
-    public float Defensa;
-    public float Velocidad;
+    public float Dano =5f;
+    public float Defensa =2f;
+    public float Velocidad= 5f;
     public float ExpActual;
     public float Nivel;
     public float ExpRequeridaSiguienteNivel;
     [Range(0f, 100f)] public float PorcentajeCritico;
     [Range(0f, 100f)] public float PorcentajeBloqueo ;
+
+    public void ResetearValores()
+    {
+        Dano = 5f;
+        Defensa = 2f;
+        Velocidad = 5f;
+        Nivel = 1;
+        ExpActual = 0f;
+        ExpRequeridaSiguienteNivel = 0f;
+        PorcentajeBloqueo = 0f;
+        PorcentajeCritico = 0f;
+    }
 }
