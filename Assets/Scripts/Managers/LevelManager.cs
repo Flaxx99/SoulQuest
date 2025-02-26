@@ -15,7 +15,6 @@ public class LevelManager : MonoBehaviour
                 personaje.transform.localPosition = puntoReaparicion.position;
                 personaje.RestaurarPersonaje();
             }
-        }
-        
+        } 
     }
 }
