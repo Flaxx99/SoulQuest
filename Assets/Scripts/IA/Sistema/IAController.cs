@@ -1,0 +1,36 @@
+using UnityEngine;
+
+public class IAController : MonoBehaviour
+{
+    [Header("Estados")]
+    [SerializeField] private IAEstado EstadoInicial;
+    [SerializeField] private IAEstado EstadoDefault;
+
+    [Header("Config")]
+    [SerializeField] private float rangoDeteccion;
+    [SerializeField] private float velocidadMovimiento;
+    [SerializeField] private LayerMask personajeLayerMask;
+    public Transform PersonajeReferencia { get; set; }
+    public IAEstado EstadoActal { get; set; }
+    public float RangoDeteccion => rangoDeteccion;
+    public float VelocidadMovimiento => velocidadMovimiento;
+    public LayerMask PersonajeLayerMask => personajeLayerMask;
+
+    private void Start()
+    {
+        EstadoActal = EstadoInicial;
+    }
+
+    private void Update()
+    {
+        EstadoActal.EjecutarEstado(this);
+    }
+
+    public void CambiarEstado(IAEstado NuevoEstado)
+    {
+        if (NuevoEstado != EstadoDefault)
+        {
+            EstadoActal = NuevoEstado;
+        }
+    }
+}
