@@ -9,7 +9,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<T>();
+                _instance = FindFirstObjectByType<T>();
                 if (_instance == null)
                 {
                     GameObject nuevoGO = new GameObject();
@@ -21,6 +21,13 @@ public class Singleton<T> : MonoBehaviour where T : Component
     }
     protected virtual void Awake()
     {
-        _instance = this as T;
+        if (_instance == null)
+        {
+            _instance = this as T;
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
     }
 }

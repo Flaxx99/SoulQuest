@@ -44,7 +44,6 @@ public class PersonajeVida : VidaBase
         {
             return;
         }
-
         if (PuedeSerCurado)
         {
             Salud += cantidad;
