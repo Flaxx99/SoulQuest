@@ -78,3 +78,4 @@
 .plastic/d3428bd8-2aef-4283-9f6c-06f1f7ac57da filter=lfs diff=lfs merge=lfs -text
 .plastic/87b9ed40-a395-4cbc-b4ac-7421d9b5e456 filter=lfs diff=lfs merge=lfs -text
 .plastic/f794ad44-489d-453b-9c73-752e484ef091 filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text
