@@ -18,5 +18,4 @@ public class AtributoButton : MonoBehaviour
     {
         EventoAgregarAtributo?.Invoke(tipo);
     }
-   
 }
