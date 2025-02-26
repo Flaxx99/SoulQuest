@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01fe8e5d0816f949ae705ed67a0ab6b, type: 3}
   m_Name: EstadoSeguirCamino
   m_EditorClassIdentifier: 
-  Acciones: []
-  Transiciones: []
+  Acciones:
+  - {fileID: 11400000, guid: 202d914f68f7b94469fb09deef4b8c27, type: 2}
+  Transiciones:
+  - Desicion: {fileID: 11400000, guid: dbb64c43a9b059343995cb459f864203, type: 2}
+    EstadoVerdadero: {fileID: 11400000, guid: fd88390266ebab1439c8ba45c07b01cd, type: 2}
+    EstadoFalso: {fileID: 11400000, guid: 39a742cb7508a9949953c7c880bd5c21, type: 2}
