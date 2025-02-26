@@ -10,8 +10,12 @@ public class IAController : MonoBehaviour
     [SerializeField] private float rangoDeteccion;
     [SerializeField] private float velocidadMovimiento;
     [SerializeField] private LayerMask personajeLayerMask;
+
+    [Header("Debug")]
+    [SerializeField] private bool mostrarDeteccion;
     public Transform PersonajeReferencia { get; set; }
     public IAEstado EstadoActal { get; set; }
+    public EnemigoMovimiento EnemigoMovimiento { get; set; }
     public float RangoDeteccion => rangoDeteccion;
     public float VelocidadMovimiento => velocidadMovimiento;
     public LayerMask PersonajeLayerMask => personajeLayerMask;
@@ -19,6 +23,7 @@ public class IAController : MonoBehaviour
     private void Start()
     {
         EstadoActal = EstadoInicial;
+        EnemigoMovimiento = GetComponent<EnemigoMovimiento>();
     }
 
     private void Update()
@@ -31,6 +36,15 @@ public class IAController : MonoBehaviour
         if (NuevoEstado != EstadoDefault)
         {
             EstadoActal = NuevoEstado;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (mostrarDeteccion)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, rangoDeteccion);
         }
     }
 }
