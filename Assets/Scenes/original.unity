@@ -1145,7 +1145,7 @@ Transform:
   m_GameObject: {fileID: 301582227}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.7092512, y: 0.52863437, z: -10}
+  m_LocalPosition: {x: -4.08, y: 0.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1804,6 +1804,9 @@ MonoBehaviour:
   personajeLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  damage: 0
+  tiempoEntreAtaques: 0
+  tipoAtaque: 0
   mostrarDeteccion: 1
 --- !u!114 &677595119
 MonoBehaviour:
@@ -2664,13 +2667,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alumno
       objectReference: {fileID: 0}
+    - target: {fileID: 3356329300628382069, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3356329300628382069, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 4959626346250342651, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.7092512
+      value: -4.08
       objectReference: {fileID: 0}
     - target: {fileID: 4959626346250342651, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.52863437
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4959626346250342651, guid: ad23732fc445b3841ad734c676c9d95f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5188,6 +5199,9 @@ MonoBehaviour:
   personajeLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  damage: 0
+  tiempoEntreAtaques: 0
+  tipoAtaque: 0
   mostrarDeteccion: 1
 --- !u!114 &1642312062
 MonoBehaviour:
@@ -5431,6 +5445,10 @@ MonoBehaviour:
   statNivelTMP: {fileID: 398379627}
   statExpTMP: {fileID: 1057390502}
   statExpRequeridaTMP: {fileID: 1329207568}
+  atributoFuerzaTMP: {fileID: 0}
+  atributoInteligenciaTMP: {fileID: 0}
+  atributoDestrezaTMP: {fileID: 0}
+  atributosDisponiblesTMP: {fileID: 0}
 --- !u!4 &1651040580
 Transform:
   m_ObjectHideFlags: 0
@@ -5699,6 +5717,9 @@ MonoBehaviour:
   personajeLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  damage: 0
+  tiempoEntreAtaques: 0
+  tipoAtaque: 0
   mostrarDeteccion: 1
 --- !u!114 &1801762557
 MonoBehaviour:
@@ -6074,6 +6095,9 @@ MonoBehaviour:
   personajeLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  damage: 0
+  tiempoEntreAtaques: 0
+  tipoAtaque: 0
   mostrarDeteccion: 1
 --- !u!114 &1837632046
 MonoBehaviour:
