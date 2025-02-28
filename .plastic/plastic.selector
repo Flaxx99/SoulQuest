@@ -1,4 +1,0 @@
-repository "SoulQuest/SoulQuest@4674028051537@cloud"
-  path "/"
-    br "/main"
-    co "/main"
