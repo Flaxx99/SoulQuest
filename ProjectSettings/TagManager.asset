@@ -41,8 +41,23 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Personaje
+  - name: Fondo
     uniqueID: 3190599269
+    locked: 0
+  - name: PisoGym
+    uniqueID: 3859238161
+    locked: 0
+  - name: Paredes
+    uniqueID: 1984799835
+    locked: 0
+  - name: Objetos
+    uniqueID: 3754140737
+    locked: 0
+  - name: Jugador
+    uniqueID: 2528040659
+    locked: 0
+  - name: EncimaJugador
+    uniqueID: 857303447
     locked: 0
   m_RenderingLayers:
   - Default
