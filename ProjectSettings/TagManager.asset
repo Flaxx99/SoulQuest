@@ -44,5 +44,8 @@ TagManager:
   - name: Personaje
     uniqueID: 3190599269
     locked: 0
+  - name: LibroInteractivo
+    uniqueID: 3176251045
+    locked: 0
   m_RenderingLayers:
   - Default
