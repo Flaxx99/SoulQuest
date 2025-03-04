@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class MiniJuegoSpanish : MonoBehaviour
 {
@@ -9,7 +11,13 @@ public class MiniJuegoSpanish : MonoBehaviour
     public TMP_Text resultadoTexto;
     public string[] respuestasCorrectas = { "pantera", "gato", "leopardo", "iguana", "raton" };
     public ActivarMinijuegoSpanish triggerSpanish; // Nueva referencia pública
+    public Button botonAceptar;
 
+    void Start()
+    {
+        botonAceptar.gameObject.SetActive(false); // Oculta el botón al inicio
+        botonAceptar.onClick.AddListener(CerrarMiniJuego); // Asigna la función al botón
+    }
 
     public void ComprobarRespuestas()
     {
@@ -28,10 +36,9 @@ public class MiniJuegoSpanish : MonoBehaviour
             Debug.Log("Todas las respuestas son correctas.");
             resultadoTexto.text = "¡Felicidades! Todas las respuestas son correctas.";
             resultadoTexto.color = Color.green;
-
-            CerrarMiniJuego();
+            botonAceptar.gameObject.SetActive(true); // Asegurar que el botón se active
+            Debug.Log("Botón Aceptar ACTIVADO.");
         }
-
         else
         {
             Debug.Log("Algunas respuestas son incorrectas.");
@@ -39,7 +46,6 @@ public class MiniJuegoSpanish : MonoBehaviour
             resultadoTexto.color = Color.red;
         }
     }
-   
 
     public void CerrarMiniJuego()
     {
