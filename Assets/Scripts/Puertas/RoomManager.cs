@@ -42,7 +42,7 @@ public class RoomManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No se encontró una CinemachineCamera en " + habitacionActiva.name);
+            //Debug.LogWarning("No se encontró una CinemachineCamera en " + habitacionActiva.name);
         }
     }
 }
