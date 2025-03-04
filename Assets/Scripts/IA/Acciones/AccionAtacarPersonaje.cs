@@ -20,10 +20,18 @@ public class AccionAtacarPersonaje : IAAccion
             return;
         }
 
-        if (controller.PersonajeEnRangoDeAtaque(controller.RangoDeAtaque))
+        if (controller.PersonajeEnRangoDeAtaque(controller.RangoDeAtaqueDeterminado))
         {
             //Atacarlo
-            controller.AtaqueMelee(controller.Damage);
+            if (controller.TipoAtaque == TiposDeAtaque.Embestida)
+            {
+                controller.AtaqueEmbestida(controller.Damage);
+            }
+            else
+            {
+                controller.AtaqueMelee(controller.Damage);
+            }
+            
             controller.ActualizarTiempoEntreAtaques();
         }
     }
