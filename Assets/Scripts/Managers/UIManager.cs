@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -9,6 +10,8 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Paneles")]
     [SerializeField] private GameObject panelStats;
+    [SerializeField] private GameObject panelGameOver;
+    [SerializeField] private GameObject PlayerUI; // Para ocultar el HUD cuando el jugador muera
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [Header("Barra")]
@@ -43,24 +46,49 @@ public class UIManager : Singleton<UIManager>
     private float expActual;
     private float expRequeridaNuevoNivel;
 
+    // Propiedades para acceder a la vida del jugador
+    public float VidaActual => vidaActual;
+    public float VidaMax => vidaMax;
+
+
     // Update is called once per frame
-    private void Update()
+    private void LateUpdate()
     {
+        if (panelGameOver.activeSelf) return; // Si el panel Game Over está activo, no actualizar UI
         ActualizarUIPersonaje();
         ActualizarPanelStats();
     }
+
+    protected override void Awake()
+    {
+        base.Awake(); // Llama al Awake() de la clase base Singleton
+        //DontDestroyOnLoad(gameObject);
+    }
     private void ActualizarUIPersonaje()
     {
-        vidaPlayer.fillAmount = Mathf.Lerp(vidaPlayer.fillAmount, vidaActual / vidaMax, 10f * Time.deltaTime);
-        manaPlayer.fillAmount = Mathf.Lerp(manaPlayer.fillAmount, manaActual / manaMax, 10f * Time.deltaTime);
-        expPlayer.fillAmount = Mathf.Lerp(expPlayer.fillAmount, expActual / expRequeridaNuevoNivel, 10f * Time.deltaTime);
-        
-        
+        if (vidaPlayer == null || manaPlayer == null || expPlayer == null)
+        {
+            Debug.LogWarning("Una de las barras de UI fue destruida o no está asignada. Evitando actualización.");
+            return; // Salir del método si falta alguna barra
+        }
+
+        // Verificar que el objeto no haya sido destruido
+        if (!vidaPlayer.gameObject.activeInHierarchy || !manaPlayer.gameObject.activeInHierarchy || !expPlayer.gameObject.activeInHierarchy)
+        {
+            Debug.LogWarning("Una de las barras de UI fue destruida. No se actualizará.");
+            return;
+        }
+
+        vidaPlayer.fillAmount = Mathf.Lerp(vidaPlayer.fillAmount, vidaActual / vidaMax, 10f * Time.unscaledDeltaTime);
+        manaPlayer.fillAmount = Mathf.Lerp(manaPlayer.fillAmount, manaActual / manaMax, 10f * Time.unscaledDeltaTime);
+        expPlayer.fillAmount = Mathf.Lerp(expPlayer.fillAmount, expActual / expRequeridaNuevoNivel, 10f * Time.unscaledDeltaTime);
+
         vidaTMP.text = $"{vidaActual}/{vidaMax}";
         manaTMP.text = $"{manaActual}/{manaMax}";
-        expTMP.text = $"{((expActual/expRequeridaNuevoNivel)*100):F2}%";
+        expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
         nivelTMP.text = $"Nivel {stats.Nivel}";
     }
+
     private void ActualizarPanelStats()
     {
         if (panelStats.activeSelf == false)
@@ -96,5 +124,50 @@ public class UIManager : Singleton<UIManager>
     {
         expActual = pExpActual;
         expRequeridaNuevoNivel = pExpRequerida;
+
+        expPlayer.fillAmount = expActual / expRequeridaNuevoNivel;
+        expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
+       // nivelTMP.text = $"Nivel {Resources.Load<PersonajeStats>("Stats").Nivel}"; // Asegurar que se muestre correctamente
+        PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
+        if (personajeExp != null)
+        {
+            nivelTMP.text = $"Nivel {personajeExp.ObtenerNivel()}";
+        }
     }
+
+    public void MostrarPantallaGameOver()
+    {
+        Debug.Log("Mostrando pantalla de Game Over");
+
+        if (panelGameOver != null)
+        {
+            panelGameOver.SetActive(true);
+        }
+        // Opcional: Desactivar HUD del jugador
+        if (PlayerUI != null)
+        {
+            PlayerUI.SetActive(true); // Mantiene visible el HUD en Game Over
+        }
+
+    }
+
+    public void ReiniciarJuego()
+    {
+        Debug.Log("Reiniciando el juego...");
+
+        // Restaurar personaje antes de recargar la escena
+        PersonajeVida personajeVida = FindFirstObjectByType<PersonajeVida>();
+        if (personajeVida != null)
+        {
+            personajeVida.RestaurarPersonaje(); // Llamamos a la función que ya está en `PersonajeVida.cs`
+        }
+        // Recargar la escena actual
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void SalirAlMenu()
+    {
+        SceneManager.LoadScene("MenuPrincipal"); // Carga la escena del menú principal
+    }
+
 }

@@ -24,10 +24,10 @@ public class PersonajeMana : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
+       /* if (Input.GetKeyDown(KeyCode.G))
         {
             UsarMana(10f);
-        }
+        }*/
     }
 
     public void UsarMana(float cantidad)
@@ -53,14 +53,16 @@ public class PersonajeMana : MonoBehaviour
         UIManager.Instance.ActualizarManaPersonaje(ManaActual, manaMax);
        
     }
-    private void RegenerarMana()
+   private void RegenerarMana()
     {
-        if (_personajeVida.Salud >0f && ManaActual < manaMax)
+        if (_personajeVida.Salud > 0f && ManaActual < manaMax)
         {
             ManaActual += regeneracionPorSegundo;
-            ActualizarBarraMana() ;
+            if (ManaActual > manaMax) ManaActual = manaMax; // Evitar que se pase del límite
+            ActualizarBarraMana();
         }
     }
+
 
     public void RestablecerMana()
     {
