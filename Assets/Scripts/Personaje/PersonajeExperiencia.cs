@@ -29,47 +29,45 @@ public class PersonajeExperiencia : MonoBehaviour
             AnadirExperiencia(2f);
         }
     }
-
     public void AnadirExperiencia(float expObtenida)
     {
-        if (expObtenida > 0f)//10exp
+        if (expObtenida > 0f)
         {
-            float expRestanteNuevoNivel = expRequeridaSiguienteNivel - expActualTemp; //8-4 = 4
-            if (expObtenida >= expRestanteNuevoNivel)
+            expActual += expObtenida;
+            expActualTemp += expObtenida;
+
+            while (expActualTemp >= expRequeridaSiguienteNivel && stats.Nivel < nivelMax)
             {
-                expObtenida -= expRestanteNuevoNivel; // 6exp
-                expActual += expObtenida;
                 ActualizarNivel();
-                AnadirExperiencia(expObtenida);
             }
-            else
-            {
-                expActual += expObtenida;
-                expActualTemp += expObtenida;
-                if (expActualTemp == expRequeridaSiguienteNivel)
-                {
-                    ActualizarNivel();
-                }
-            }
+
+            stats.ExpActual = expActual;
+            ActualizarBarraExp();
         }
-        stats.ExpActual = expActual;
-        ActualizarBarraExp();
     }
+
     private void ActualizarNivel()
     {
         if (stats.Nivel < nivelMax)
         {
             stats.Nivel++;
-            expActualTemp = 0f;
+            expActualTemp = 0f; // Reiniciar experiencia para el nuevo nivel
             expRequeridaSiguienteNivel *= valorIncremental;
             stats.ExpRequeridaSiguienteNivel = expRequeridaSiguienteNivel;
             stats.PuntosDisponibles += 3;
-        }
 
+            Debug.Log($"¡Subiste al nivel {stats.Nivel}!");
+        }
     }
+
     private void ActualizarBarraExp()
     {
         UIManager.Instance.ActualizarExpPersonaje(expActualTemp, expRequeridaSiguienteNivel);
     }
+    public int ObtenerNivel()
+    {
+        return Mathf.FloorToInt(stats.Nivel); // Convierte el nivel a entero
+    }
+
 
 }

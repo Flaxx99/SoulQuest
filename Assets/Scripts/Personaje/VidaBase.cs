@@ -14,21 +14,16 @@ public class VidaBase : MonoBehaviour
 
     public void RecibirDano(float cantidad)
     {
-        if (cantidad <= 0)
-        {
-            return;
-        }
-        if (Salud > 0f)
-        {
-            Salud -= cantidad;
-            ActualizarBarraVida(Salud, saludMax);
+        if (cantidad <= 0 || Salud <= 0) return; // No recibir daño si ya está en 0
 
-            if (Salud <= 0f)
-            {
-                Salud = 0f;
-                ActualizarBarraVida(Salud, saludMax);
-                PersonajeDerrotado();
-            }
+        Salud -= cantidad;
+        if (Salud < 0) Salud = 0; // Evita valores negativos
+
+        ActualizarBarraVida(Salud, saludMax);
+
+        if (Salud == 0)
+        {
+            PersonajeDerrotado(); // Se llama solo si la vida llega a 0
         }
     }
 

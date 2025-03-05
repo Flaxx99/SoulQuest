@@ -1,27 +1,34 @@
-using System.Collections;
+锘縰sing System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 
 public class MiniJuegoSpanish : MonoBehaviour
 {
+    [SerializeField] private float tiempoLimite = 20f; // Tiempo en segundos
+    [SerializeField] private TMP_Text textoTemporizador; // Para mostrar el tiempo restante
+    private float tiempoRestante;
+    private bool minijuegoActivo = false;
+
     public GameObject miniJuegoCanvas;
     public TMP_InputField[] inputFields;
     public TMP_Text resultadoTexto;
     public string[] respuestasCorrectas = { "pantera", "gato", "leopardo", "iguana", "raton" };
-    public ActivarMinijuegoSpanish triggerSpanish; // Nueva referencia p鷅lica
+    public ActivarMinijuegoSpanish triggerSpanish; // Nueva referencia p煤blica
     public Button botonAceptar;
+
 
     void Start()
     {
-        botonAceptar.gameObject.SetActive(false); // Oculta el bot髇 al inicio
-        botonAceptar.onClick.AddListener(CerrarMiniJuego); // Asigna la funci髇 al bot髇
+        botonAceptar.gameObject.SetActive(false); // Oculta el bot贸n al inicio
+        botonAceptar.onClick.AddListener(CerrarMiniJuego); // Asigna la funci贸n al bot贸n
     }
 
     public void ComprobarRespuestas()
     {
-        Debug.Log("Bot髇 comprobar presionado. Revisando respuestas...");
+        Debug.Log("Bot贸n comprobar presionado. Revisando respuestas");
         bool todasCorrectas = true;
 
         for (int i = 0; i < inputFields.Length; i++)
@@ -31,18 +38,35 @@ public class MiniJuegoSpanish : MonoBehaviour
                 todasCorrectas = false;
             }
         }
+
         if (todasCorrectas)
         {
             Debug.Log("Todas las respuestas son correctas.");
-            resultadoTexto.text = "elicidades! Todas las respuestas son correctas.";
+            resultadoTexto.text = "隆Felicidades! Todas las respuestas son correctas.";
             resultadoTexto.color = Color.green;
-            botonAceptar.gameObject.SetActive(true); // Asegurar que el bot髇 se active
-            Debug.Log("Bot髇 Aceptar ACTIVADO.");
+
+            // 馃殌 **Detener el temporizador**
+            minijuegoActivo = false;
+            tiempoRestante = 0f;
+            textoTemporizador.text = "";
+
+            botonAceptar.gameObject.SetActive(true);
+            Debug.Log("Bot贸n Aceptar ACTIVADO.");
+            PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
+
+            if (personajeExp != null)
+            {
+                personajeExp.AnadirExperiencia(50); // Ajusta el valor seg煤n lo que quieras otorgar
+            }
+            else
+            {
+                Debug.LogWarning("PersonajeExperiencia no encontrado. No se pudo otorgar experiencia.");
+            }
         }
         else
         {
             Debug.Log("Algunas respuestas son incorrectas.");
-            resultadoTexto.text = "Algunas respuestas son incorrectas, ntenta de nuevo!";
+            resultadoTexto.text = "Algunas respuestas son incorrectas, 隆intenta de nuevo!";
             resultadoTexto.color = Color.red;
         }
     }
@@ -51,8 +75,8 @@ public class MiniJuegoSpanish : MonoBehaviour
     {
         Debug.Log("CerrarMiniJuego() se ha ejecutado correctamente.");
         miniJuegoCanvas.SetActive(false); // Oculta el minijuego
-        Debug.Log("miniJuegoCanvas ha sido desactivado.");
-        Time.timeScale = 1; // Reanuda el juego
+        minijuegoActivo = false; // Detiene el temporizador
+        Time.timeScale = 1; // Reanuda el juego principal
     }
 
 
@@ -61,7 +85,72 @@ public class MiniJuegoSpanish : MonoBehaviour
         Debug.Log("ActivarMiniJuego() ha sido llamado.");
         miniJuegoCanvas.SetActive(true);
         resultadoTexto.text = "";
-        Time.timeScale = 0;
+
+        tiempoRestante = tiempoLimite; // Reiniciar temporizador cada vez que se abre el minijuego
+        minijuegoActivo = true; // Permite que Update() comience a descontar tiempo
+
+        textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualizar UI al inicio
+
+        Time.timeScale = 0; // Pausar el juego principal mientras el minijuego est谩 activo
     }
 
+    private void Update()
+    {
+        if (minijuegoActivo)
+        {
+            tiempoRestante -= Time.unscaledDeltaTime;
+
+            // Asegurar que el tiempo nunca sea menor a 0
+            if (tiempoRestante < 0)
+            {
+                tiempoRestante = 0;
+                TiempoTerminado(); // Llamar a la funci贸n de p茅rdida
+            }
+
+            // Actualizar el texto del temporizador
+            textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s";
+        }
+    }
+    private void TiempoTerminado()
+    {
+        if (!minijuegoActivo) return; // 馃殌 Evita que se ejecute si el jugador ya gan贸
+
+        minijuegoActivo = false; // Detiene el temporizador
+        resultadoTexto.text = "隆Tiempo agotado! Has perdido.";
+        resultadoTexto.color = Color.red;
+
+        // Reducir la vida en 10 puntos solo si el jugador no gan贸
+        float nuevaVida = UIManager.Instance.VidaActual - 10;
+        UIManager.Instance.ActualizarVidaPersonaje(nuevaVida, UIManager.Instance.VidaMax);
+
+        // Configurar el bot贸n correctamente
+        botonAceptar.gameObject.SetActive(true);
+        botonAceptar.onClick.RemoveAllListeners();
+
+        if (nuevaVida <= 0)
+        {
+            resultadoTexto.text = "隆Has perdido toda tu vida! GAME OVER.";
+            botonAceptar.GetComponentInChildren<TMP_Text>().text = "Salir";
+            botonAceptar.onClick.AddListener(GameOver);
+        }
+        else
+        {
+            botonAceptar.GetComponentInChildren<TMP_Text>().text = "Reintentar";
+            botonAceptar.onClick.AddListener(ReintentarMinijuego);
+        }
+    }
+
+
+    private void ReintentarMinijuego()
+    {
+        resultadoTexto.text = "";
+        botonAceptar.gameObject.SetActive(false);
+        ActivarMiniJuego(); // Reinicia el minijuego sin resetear la vida
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("GAME OVER. El jugador ha perdido toda su vida.");
+        UIManager.Instance.MostrarPantallaGameOver();
+    }
 }
