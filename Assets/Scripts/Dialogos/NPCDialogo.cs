@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -26,6 +27,7 @@ public class NPCDialogo : ScriptableObject
     [TextArea] public string Despedida;
 }
 
+[Serializable]
 public class DialogoTexto
 {
     [TextArea] public string Oracion;
