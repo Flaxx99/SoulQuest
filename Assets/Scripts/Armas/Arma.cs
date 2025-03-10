@@ -7,7 +7,7 @@ public class Arma : ScriptableObject
     [Header("Config")]
     public Sprite ArmaIcono; 
     public Sprite IconoSkill;
-    public float Daño;
+    public float Dano;
 
     [Header("Stats")]
     public float ChanceCritico;

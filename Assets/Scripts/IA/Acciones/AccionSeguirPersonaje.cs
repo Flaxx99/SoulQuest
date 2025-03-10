@@ -1,10 +1,11 @@
 using UnityEngine;
 
+[CreateAssetMenu(menuName ="IA/Acciones/Seguir Personaje")]
 public class AccionSeguirPersonaje : IAAccion
 {
     public override void Ejecutar(IAController controller)
     {
-        
+        SeguirPersonaje(controller);
     }
 
     private void SeguirPersonaje(IAController controller) 
@@ -14,13 +15,14 @@ public class AccionSeguirPersonaje : IAAccion
             return;
         }
 
-        Vector3 dirHaciaPersonaje = 
-            (controller.PersonajeReferencia.position - controller.transform.position).normalized;
+        Vector3 dirHaciaPersonaje = controller.PersonajeReferencia.position - controller.transform.position;
+        Vector3 direccion = dirHaciaPersonaje.normalized;
         float distancia = dirHaciaPersonaje.magnitude;
 
-        if (distancia >= 1.15f)
+        if (distancia >= 1.30f)
         {
-            controller.transform.Translate(dirHaciaPersonaje * controller.VelocidadMovimiento * Time.deltaTime);
+            controller.transform.Translate(
+                direccion * controller.VelocidadMovimiento * Time.deltaTime);
         }
     }
 }

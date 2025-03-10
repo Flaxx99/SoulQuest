@@ -3,9 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags:
-  - TangramPiece
-  - ZonaValidacion
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -13,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 
@@ -42,6 +40,33 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Fondo
+    uniqueID: 3205667075
+    locked: 0
+  - name: PisoCancha
+    uniqueID: 3003123025
+    locked: 0
+  - name: Paredes
+    uniqueID: 2239347721
+    locked: 0
+  - name: Puertas
+    uniqueID: 2380834649
+    locked: 0
+  - name: Objetos
+    uniqueID: 3758394569
+    locked: 0
+  - name: Personaje
+    uniqueID: 3190599269
+    locked: 0
+  - name: EncimaJugador
+    uniqueID: 3178692067
+    locked: 0
+  - name: LibroInteractivo
+    uniqueID: 3176251045
+    locked: 0
+  - name: UI
+    uniqueID: 1891203475
     locked: 0
   m_RenderingLayers:
   - Default

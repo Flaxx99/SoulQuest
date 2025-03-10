@@ -1,43 +1,181 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
-    public static UIManager Instance;
+    [Header("Stats")]
+    [SerializeField] private PersonajeStats stats;
+
+    [Header("Paneles")]
+    [SerializeField] private GameObject panelStats;
+    [SerializeField] private GameObject panelGameOver;
+    [SerializeField] private GameObject PlayerUI; // Para ocultar el HUD cuando el jugador muera
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [Header("Config")]
+    [Header("Barra")]
     [SerializeField] private Image vidaPlayer;
+    [SerializeField] private Image manaPlayer;
+    [SerializeField] private Image expPlayer;
+
+    [Header("Texto")]
     [SerializeField] private TextMeshProUGUI vidaTMP;
+    [SerializeField] private TextMeshProUGUI manaTMP;
+    [SerializeField] private TextMeshProUGUI expTMP;
+    [SerializeField] private TextMeshProUGUI nivelTMP;
+
+    [Header("Stats")]
+    [SerializeField] private TextMeshProUGUI statDanoTMP;
+    [SerializeField] private TextMeshProUGUI statDefensaTMP;
+    [SerializeField] private TextMeshProUGUI statCriticoTMP;
+    [SerializeField] private TextMeshProUGUI statBloqueoTMP;
+    [SerializeField] private TextMeshProUGUI statVelocidadTMP;
+    [SerializeField] private TextMeshProUGUI statNivelTMP;
+    [SerializeField] private TextMeshProUGUI statExpTMP;
+    [SerializeField] private TextMeshProUGUI statExpRequeridaTMP;
+    [SerializeField] private TextMeshProUGUI atributoFuerzaTMP;
+    [SerializeField] private TextMeshProUGUI atributoInteligenciaTMP;
+    [SerializeField] private TextMeshProUGUI atributoDestrezaTMP;
+    [SerializeField] private TextMeshProUGUI atributosDisponiblesTMP;
 
     private float vidaActual;
     private float vidaMax;
+    private float manaActual;
+    private float manaMax;
+    private float expActual;
+    private float expRequeridaNuevoNivel;
+    private PersonajeVida personajeVida;
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-    private void Start()
-    {
-        
-    }
+
+    // Propiedades para acceder a la vida del jugador
+    public float VidaActual => vidaActual;
+    public float VidaMax => vidaMax;
+
 
     // Update is called once per frame
-    private void Update()
+    private void LateUpdate()
     {
+        if (panelGameOver.activeSelf) return; // Si el panel Game Over está activo, no actualizar UI
         ActualizarUIPersonaje();
+        ActualizarPanelStats();
+    }
+
+    private void Start()
+    {
+        personajeVida = Object.FindFirstObjectByType<PersonajeVida>(); // Nueva forma recomendada
+    }
+
+
+    protected override void Awake()
+    {
+        base.Awake(); // Llama al Awake() de la clase base Singleton
+        //DontDestroyOnLoad(gameObject);
     }
     private void ActualizarUIPersonaje()
     {
-        vidaPlayer.fillAmount = Mathf.Lerp(vidaPlayer.fillAmount, vidaActual / vidaMax, 10f * Time.deltaTime);
+        if (vidaPlayer == null || manaPlayer == null || expPlayer == null)
+        {
+            Debug.LogWarning("Una de las barras de UI fue destruida o no está asignada. Evitando actualización.");
+            return; // Salir del método si falta alguna barra
+        }
+
+        // Verificar que el objeto no haya sido destruido
+        if (!vidaPlayer.gameObject.activeInHierarchy || !manaPlayer.gameObject.activeInHierarchy || !expPlayer.gameObject.activeInHierarchy)
+        {
+            Debug.LogWarning("Una de las barras de UI fue destruida. No se actualizará.");
+            return;
+        }
+
+        vidaPlayer.fillAmount = Mathf.Lerp(vidaPlayer.fillAmount, vidaActual / vidaMax, 10f * Time.unscaledDeltaTime);
+        manaPlayer.fillAmount = Mathf.Lerp(manaPlayer.fillAmount, manaActual / manaMax, 10f * Time.unscaledDeltaTime);
+        expPlayer.fillAmount = Mathf.Lerp(expPlayer.fillAmount, expActual / expRequeridaNuevoNivel, 10f * Time.unscaledDeltaTime);
+
         vidaTMP.text = $"{vidaActual}/{vidaMax}";
+        manaTMP.text = $"{manaActual}/{manaMax}";
+        expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
+        nivelTMP.text = $"Nivel {stats.Nivel}";
+    }
+
+    private void ActualizarPanelStats()
+    {
+        if (panelStats.activeSelf == false)
+        {
+            return;
+        }
+        statDanoTMP.text = stats.Dano.ToString();
+        statDefensaTMP.text = stats.Defensa.ToString();
+        statCriticoTMP.text = $"{stats.PorcentajeCritico}%";
+        statBloqueoTMP.text = $"{stats.PorcentajeBloqueo}%";
+        statVelocidadTMP.text = stats.Velocidad.ToString();
+        statNivelTMP.text = stats.Nivel.ToString();
+        statExpTMP.text = stats.ExpActual.ToString();
+        statExpRequeridaTMP.text = stats.ExpRequeridaSiguienteNivel.ToString();
+
+        atributoFuerzaTMP.text = stats.Fuerza.ToString();
+        atributoInteligenciaTMP.text = stats.Inteligencia.ToString();
+        atributoDestrezaTMP.text = stats.Destreza.ToString();
+        atributosDisponiblesTMP.text = $"Puntos: {stats.PuntosDisponibles}";
     }
 
     public void ActualizarVidaPersonaje(float pVidaActual, float pVidaMax)
     {
         vidaActual = pVidaActual;
         vidaMax = pVidaMax;
+    }
+    public void ActualizarManaPersonaje(float pManaActual, float pManaMax)
+    {
+        manaActual = pManaActual;
+        manaMax = pManaMax;
+    }
+    public void ActualizarExpPersonaje(float pExpActual, float pExpRequerida)
+    {
+        expActual = pExpActual;
+        expRequeridaNuevoNivel = pExpRequerida;
+
+        expPlayer.fillAmount = expActual / expRequeridaNuevoNivel;
+        expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
+       // nivelTMP.text = $"Nivel {Resources.Load<PersonajeStats>("Stats").Nivel}"; // Asegurar que se muestre correctamente
+        PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
+        if (personajeExp != null)
+        {
+            nivelTMP.text = $"Nivel {personajeExp.ObtenerNivel()}";
+        }
+    }
+
+    public void MostrarPantallaGameOver()
+    {
+        Debug.Log("Mostrando pantalla de Game Over");
+
+        if (panelGameOver != null)
+        {
+            panelGameOver.SetActive(true); // Activar pantalla de Game Over
+        }
+
+        // Ocultar UI del jugador SOLO si su salud es 0
+        if (PlayerUI != null && personajeVida.Salud <= 0)
+        {
+            PlayerUI.SetActive(false);
+        }
+    }
+
+
+
+    public void ReiniciarJuego()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recargar la escena
+
+        // Reactivar la UI del jugador después del reinicio
+        if (UIManager.Instance != null && UIManager.Instance.PlayerUI != null)
+        {
+            UIManager.Instance.PlayerUI.SetActive(true);
+        }
+    }
+
+
+    public void SalirAlMenu()
+    {
+        SceneManager.LoadScene("MenuPrincipal"); // Carga la escena del menú principal
     }
 
 }
