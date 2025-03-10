@@ -14,3 +14,4 @@
 .plastic/e7cfe4cb-36b4-4f58-b5ee-d5a6dace3af6 filter=lfs diff=lfs merge=lfs -text
 .plastic/2ea5be35-8b43-4782-82c9-e7dbb527c7a7 filter=lfs diff=lfs merge=lfs -text
 *.PNG filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
