@@ -10,6 +10,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Paneles")]
     [SerializeField] private GameObject panelStats;
+    [SerializeField] private GameObject panelInventario;
     [SerializeField] private GameObject panelGameOver;
     [SerializeField] private GameObject PlayerUI; // Para ocultar el HUD cuando el jugador muera
 
@@ -142,6 +143,20 @@ public class UIManager : Singleton<UIManager>
             nivelTMP.text = $"Nivel {personajeExp.ObtenerNivel()}";
         }
     }
+
+    #region Paneles
+
+    public void AbrirCerrarPanelStats()
+    {
+        panelStats.SetActive(!panelStats.activeSelf);
+    }
+
+    public void AbrirCerrarPanelInventario()
+    {
+        panelInventario.SetActive(!panelInventario.activeSelf);
+    }
+
+    #endregion
 
     public void MostrarPantallaGameOver()
     {

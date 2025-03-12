@@ -234,14 +234,17 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: dfb98c85e6a847c44b1806c8686b001b, type: 2}
   EstadoInicial: {fileID: 11400000, guid: bbe5b17bceec5b649a1bf218e374aa88, type: 2}
   EstadoDefault: {fileID: 11400000, guid: 39a742cb7508a9949953c7c880bd5c21, type: 2}
-  rangoDeteccion: 4
-  rangoDeAtaque: 3
+  rangoDeteccion: 5
+  rangoDeAtaque: 0
+  rangoDeEmbestida: 3
   velocidadMovimiento: 3
+  velocidadDeEmbestida: 1.5
   personajeLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  damage: 5
+  damage: 8
   tiempoEntreAtaques: 1.5
-  tipoAtaque: 0
+  tipoAtaque: 1
   mostrarDeteccion: 1
-  mostrarRangoAtaque: 1
+  mostrarRangoAtaque: 0
+  mostrarRangoEmbestida: 1

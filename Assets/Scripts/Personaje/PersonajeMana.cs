@@ -7,7 +7,7 @@ public class PersonajeMana : MonoBehaviour
     [SerializeField] private float regeneracionPorSegundo;
 
     public float ManaActual { get; private set; }
-    //public bool SePuedeRestaurar => ManaActual < manaMax;
+    public bool SePuedeRestaurar => ManaActual < manaMax;
     private PersonajeVida _personajeVida;
 
     private void Awake()
