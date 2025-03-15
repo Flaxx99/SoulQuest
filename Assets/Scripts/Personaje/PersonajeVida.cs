@@ -51,35 +51,31 @@ public class PersonajeVida : VidaBase
             ActualizarBarraVida(Salud, saludMax);
         }
     }
-    protected override void PersonajeDerrotado()
+   protected override void PersonajeDerrotado()
     {
-        if (Derrotado) return; // Evita llamar este método más de una vez
+        if (Derrotado) return; // Evita que se ejecute más de una vez
 
         _boxCollider2D.enabled = false; // Desactiva colisiones
         Derrotado = true;
+
+        // Asegurar que la UI refleja la muerte antes de ocultarla
+        UIManager.Instance.ActualizarVidaPersonaje(0, saludMax);
+
         EventoPersonajeDerrotado?.Invoke();
 
-        // Activar animación de muerte
-        // Obtener el Animator
-        Animator anim = GetComponent<Animator>();
-
-        // Verificar si "Derrotado" existe antes de usarlo
-        if (anim != null && TieneParametro(anim, "Derrotado"))
-        {
-            anim.SetTrigger("Derrotado");
-        }
-
-        // Detener movimiento del personaje
+        // Detener el movimiento del personaje
         PersonajeMovimiento movimiento = GetComponent<PersonajeMovimiento>();
         if (movimiento != null)
         {
-            movimiento.enabled = false; // Deshabilita el control de movimiento
+            movimiento.enabled = false;
         }
-        // Mostrar pantalla de Game Over
+
+        // Mostrar la pantalla de Game Over
         UIManager.Instance.MostrarPantallaGameOver();
     }
 
-     public void RestaurarPersonaje()
+
+    public void RestaurarPersonaje()
     {
         _boxCollider2D.enabled = true;
         Derrotado = false;

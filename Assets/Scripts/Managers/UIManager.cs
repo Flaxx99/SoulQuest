@@ -10,6 +10,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Paneles")]
     [SerializeField] private GameObject panelStats;
+    [SerializeField] private GameObject panelInventario;
     [SerializeField] private GameObject panelGameOver;
     [SerializeField] private GameObject PlayerUI; // Para ocultar el HUD cuando el jugador muera
 
@@ -45,6 +46,8 @@ public class UIManager : Singleton<UIManager>
     private float manaMax;
     private float expActual;
     private float expRequeridaNuevoNivel;
+    private PersonajeVida personajeVida;
+
 
     // Propiedades para acceder a la vida del jugador
     public float VidaActual => vidaActual;
@@ -58,6 +61,12 @@ public class UIManager : Singleton<UIManager>
         ActualizarUIPersonaje();
         ActualizarPanelStats();
     }
+
+    private void Start()
+    {
+        personajeVida = Object.FindFirstObjectByType<PersonajeVida>(); // Nueva forma recomendada
+    }
+
 
     protected override void Awake()
     {
@@ -135,35 +144,49 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    #region Paneles
+
+    public void AbrirCerrarPanelStats()
+    {
+        panelStats.SetActive(!panelStats.activeSelf);
+    }
+
+    public void AbrirCerrarPanelInventario()
+    {
+        panelInventario.SetActive(!panelInventario.activeSelf);
+    }
+
+    #endregion
+
     public void MostrarPantallaGameOver()
     {
         Debug.Log("Mostrando pantalla de Game Over");
 
         if (panelGameOver != null)
         {
-            panelGameOver.SetActive(true);
-        }
-        // Opcional: Desactivar HUD del jugador
-        if (PlayerUI != null)
-        {
-            PlayerUI.SetActive(true); // Mantiene visible el HUD en Game Over
+            panelGameOver.SetActive(true); // Activar pantalla de Game Over
         }
 
+        // Ocultar UI del jugador SOLO si su salud es 0
+        if (PlayerUI != null && personajeVida.Salud <= 0)
+        {
+            PlayerUI.SetActive(false);
+        }
     }
+
+
 
     public void ReiniciarJuego()
     {
-        Debug.Log("Reiniciando el juego...");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recargar la escena
 
-        // Restaurar personaje antes de recargar la escena
-        PersonajeVida personajeVida = FindFirstObjectByType<PersonajeVida>();
-        if (personajeVida != null)
+        // Reactivar la UI del jugador después del reinicio
+        if (UIManager.Instance != null && UIManager.Instance.PlayerUI != null)
         {
-            personajeVida.RestaurarPersonaje(); // Llamamos a la función que ya está en `PersonajeVida.cs`
+            UIManager.Instance.PlayerUI.SetActive(true);
         }
-        // Recargar la escena actual
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
 
     public void SalirAlMenu()
     {
