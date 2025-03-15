@@ -50,8 +50,14 @@ public class MiniJuegoSpanish : MonoBehaviour
             tiempoRestante = 0f;
             textoTemporizador.text = "";
 
+            // Cambiar botón a "Salir"
+            botonAceptar.GetComponentInChildren<TMP_Text>().text = "Salir";
+            botonAceptar.onClick.RemoveAllListeners();
+            botonAceptar.onClick.AddListener(CerrarMiniJuego);
+
             botonAceptar.gameObject.SetActive(true);
-            Debug.Log("Botón Aceptar ACTIVADO.");
+            Debug.Log("Botón Aceptar ACTIVADO como 'Salir'.");
+
             PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
 
             if (personajeExp != null)
@@ -63,12 +69,7 @@ public class MiniJuegoSpanish : MonoBehaviour
                 Debug.LogWarning("PersonajeExperiencia no encontrado. No se pudo otorgar experiencia.");
             }
         }
-        else
-        {
-            Debug.Log("Algunas respuestas son incorrectas.");
-            resultadoTexto.text = "Algunas respuestas son incorrectas, ¡intenta de nuevo!";
-            resultadoTexto.color = Color.red;
-        }
+
     }
 
     public void CerrarMiniJuego()
@@ -78,7 +79,6 @@ public class MiniJuegoSpanish : MonoBehaviour
         minijuegoActivo = false; // Detiene el temporizador
         Time.timeScale = 1; // Reanuda el juego principal
     }
-
 
     public void ActivarMiniJuego()
     {
