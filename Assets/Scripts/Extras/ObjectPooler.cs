@@ -16,11 +16,11 @@ public class ObjectPooler : MonoBehaviour
 
         for (int i = 0; i < cantidadPorCrear; i++)
         {
-            lista.Add(AñadirInstancia(objetoPorCrear));
+            lista.Add(AnadirInstancia(objetoPorCrear));
         }
     }
 
-    private GameObject AñadirInstancia(GameObject objetoPorCrear)
+    private GameObject AnadirInstancia(GameObject objetoPorCrear)
     {
         GameObject nuevoObjeto = Instantiate(objetoPorCrear, ListaContenedor.transform);
         nuevoObjeto.SetActive(false);

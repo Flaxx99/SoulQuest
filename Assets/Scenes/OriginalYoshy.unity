@@ -36007,7 +36007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af9d69a06b8022d40bebc1e1fcb7ae16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiempoLimite: 3
+  tiempoLimite: 120
   textoTemporizador: {fileID: 998140677}
   miniJuegoCanvas: {fileID: 139206256}
   inputFields:
