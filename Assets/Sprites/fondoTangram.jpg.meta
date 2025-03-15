@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c74700bba4e430b4ab20c49707550881
+guid: ece82be9cb539d048b23a12bae94d0d6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5378730977525350202
-    second: trianguloGrande1T_0
+      213: 6494701106507127800
+    second: fondoTangram_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: trianguloGrande1T_0
+      name: fondoTangram_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 193
-        height: 193
+        width: 2048
+        height: 2560
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6c046367ca8ea55b0800000000000000
-      internalID: -5378730977525350202
+      spriteID: 8fb91b7fe30d12a50800000000000000
+      internalID: 6494701106507127800
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      trianguloGrande1T_0: -5378730977525350202
+      fondoTangram_0: 6494701106507127800
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
