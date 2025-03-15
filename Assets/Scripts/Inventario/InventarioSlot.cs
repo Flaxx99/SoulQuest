@@ -52,4 +52,20 @@ public class InventarioSlot : MonoBehaviour
             EventoSlotInteraccion?.Invoke(TipoDeInteraccion.Usar, Index);
         }
     }
+
+    public void SlotEquiparItem()
+    {
+        if (Inventario.Instance.ItemsInventario[Index] != null)
+        {
+            EventoSlotInteraccion?.Invoke(TipoDeInteraccion.Equipar, Index);
+        }
+    }
+
+    public void SlotRemoverItem()
+    {
+        if (Inventario.Instance.ItemsInventario[Index] != null)
+        {
+            EventoSlotInteraccion?.Invoke(TipoDeInteraccion.Remover, Index);
+        }
+    }
 }
