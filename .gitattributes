@@ -83,3 +83,4 @@
 .plastic/38c8655e-a0a1-4bb1-8a48-2a965058c100 filter=lfs diff=lfs merge=lfs -text
 .plastic/3bee51cb-9ea9-4e59-9150-0dd4399eb5cd filter=lfs diff=lfs merge=lfs -text
 .plastic/16b79e7d-df68-428c-8f0c-51b432642327 filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
