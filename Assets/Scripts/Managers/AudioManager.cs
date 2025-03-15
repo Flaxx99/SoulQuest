@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioClip musicaPasillos;
     [SerializeField] private AudioClip musicaMinijuegos;
+    [SerializeField] private AudioClip musicaMainMenu;
 
     void Awake()
     {
@@ -22,13 +23,13 @@ public class AudioManager : MonoBehaviour
         }
 
         audioSource = GetComponent<AudioSource>();
-        audioSource.loop = true; // Asegura que la música no se detenga
+        audioSource.loop = true; // Asegura que la mÃºsica no se detenga
         audioSource.playOnAwake = false; // Evita que suene sin control
     }
 
     void Start()
     {
-        CambiarMusica("Pasillos"); // Iniciar con la música de los pasillos
+        CambiarMusica("Pasillos"); // Iniciar con la mÃºsica de los pasillos
     }
 
     public void CambiarMusica(string tipo)
@@ -45,11 +46,16 @@ public class AudioManager : MonoBehaviour
         {
             nuevaMusica = musicaMinijuegos;
         }
+        else if (tipo == "MainMenu") // ðŸŽµ Agregamos la opciÃ³n para el menÃº principal
+        {
+            nuevaMusica = musicaMainMenu;
+        }
 
-        // Si ya está sonando la música correcta, no hacer nada
+        // Si ya estÃ¡ sonando la mÃºsica correcta, no hacer nada
         if (audioSource.clip == nuevaMusica && audioSource.isPlaying) return;
 
-        // Cambia la música y la reproduce
+        // Cambia la mÃºsica y la reproduce
+        audioSource.Stop();
         audioSource.clip = nuevaMusica;
         audioSource.Play();
     }

@@ -5,6 +5,14 @@ public class MainMenuController : MonoBehaviour
 {
     public void PlayGame()
     {
+        Debug.Log("🎮 Iniciando juego desde el Menú...");
+
+        // 🔥 Asegurar que la música de los pasillos suene al entrar al juego
+        if (AudioManager.instancia != null)
+        {
+            AudioManager.instancia.CambiarMusica("Pasillos");
+        }
+
         SceneManager.LoadScene("OriginalYoshy"); // Reemplaza con el nombre real de tu escena de juego.
     }
 

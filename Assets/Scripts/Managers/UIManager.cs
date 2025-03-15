@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -174,13 +174,19 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-
-
-    public void ReiniciarJuego()
+   public void ReiniciarJuego()
     {
+        Debug.Log("🔄 Reiniciando el juego...");
+
+        // 🔥 Asegurar que la música de los pasillos suene al reiniciar la escena
+        if (AudioManager.instancia != null)
+        {
+            AudioManager.instancia.CambiarMusica("Pasillos");
+        }
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recargar la escena
 
-        // Reactivar la UI del jugador despu?s del reinicio
+        // Reactivar la UI del jugador después del reinicio
         if (UIManager.Instance != null && UIManager.Instance.PlayerUI != null)
         {
             UIManager.Instance.PlayerUI.SetActive(true);
@@ -190,7 +196,16 @@ public class UIManager : Singleton<UIManager>
 
     public void SalirAlMenu()
     {
-        SceneManager.LoadScene("MainMenu"); // Carga la escena del men? principal
+        Debug.Log("🔄 Saliendo al Menú Principal...");
+
+        // 🔥 Asegurar que la música del menú suene al regresar
+        if (AudioManager.instancia != null)
+        {
+            AudioManager.instancia.CambiarMusica("MainMenu");
+        }
+
+        SceneManager.LoadScene("MainMenu"); // Carga la escena del Menú Principal
     }
+
 
 }
