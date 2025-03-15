@@ -78,18 +78,28 @@ public class WaypointMovimineto : MonoBehaviour
 
     private void RotarPersonaje()
     {
-        if (direccion != DireccionMovimineto.Horizontal)
+        if (direccion == DireccionMovimineto.Horizontal)
         {
-            return;
+            if (PuntoPorMoverse.x > ultimaPosicion.x)
+            {
+                transform.localScale = new Vector3(1, 1, 1); // Normal (mirando a la derecha)
+            }
+            else if (PuntoPorMoverse.x < ultimaPosicion.x)
+            {
+                transform.localScale = new Vector3(-1, 1, 1); // Invertido horizontalmente (mirando a la izquierda)
+            }
         }
-
-        if (PuntoPorMoverse.x > ultimaPosicion.x)
+        else if (direccion == DireccionMovimineto.Vertical)
         {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
-        else
-        {
-            transform.localScale = new Vector3(-1, -1, -1);
+            if (PuntoPorMoverse.y > ultimaPosicion.y)
+            {
+                transform.localScale = new Vector3(1, 1, 1); // Normal (mirando arriba)
+            }
+            else if (PuntoPorMoverse.y < ultimaPosicion.y)
+            {
+                transform.localScale = new Vector3(1, -1, 1); // Invertido verticalmente (mirando abajo)
+            }
         }
     }
+
 }

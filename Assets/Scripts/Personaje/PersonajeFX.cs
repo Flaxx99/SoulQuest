@@ -3,15 +3,12 @@ using UnityEngine;
 
 public class PersonajeFX : MonoBehaviour
 {
+    [Header("Pooler")]
+    [SerializeField] private ObjectPooler pooler;
+
+    [Header("Config")]
     [SerializeField] private GameObject canvasTextoAnimacionPrefab;
     [SerializeField] private Transform canvasTextoPosicion;
-
-    private ObjectPooler pooler;
-
-    private void Awake()
-    {
-        pooler = GetComponent<ObjectPooler>();
-    }
 
     private void Start()
     {

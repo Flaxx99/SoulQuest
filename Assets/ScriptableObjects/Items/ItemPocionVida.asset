@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13de1841fcb19f54696c5256219ab825, type: 3}
   m_Name: ItemPocionVida
   m_EditorClassIdentifier: 
-  ID: 
-  Nombre: 
-  Icono: {fileID: 0}
-  Descripcion: 
-  Tipo: 0
-  EsConsumible: 0
-  EsAcumulable: 0
-  AcumulacionMax: 0
-  Cantidad: 0
-  HPRestauracion: 0
+  ID: PocionVida
+  Nombre: Pocion de Vida
+  Icono: {fileID: 21300000, guid: b8ff3b3600987eb4d8d8fd4b0e8f6db1, type: 3}
+  Descripcion: Pocion que restaura 10pts de Salud.
+  Tipo: 1
+  EsConsumible: 1
+  EsAcumulable: 1
+  AcumulacionMax: 10
+  Cantidad: 5
+  HPRestauracion: 10
