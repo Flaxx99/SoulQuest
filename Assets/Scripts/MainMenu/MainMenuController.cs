@@ -10,6 +10,14 @@ public class MainMenuController : MonoBehaviour
 
     public void ExitGame()
     {
+        Debug.Log("Saliendo del juego...");
+
+        // Cierra el juego en compilación
         Application.Quit();
+
+        // Solo para el editor de Unity
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode();
+#endif
     }
 }
