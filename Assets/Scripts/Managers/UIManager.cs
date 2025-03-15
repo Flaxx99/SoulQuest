@@ -57,7 +57,7 @@ public class UIManager : Singleton<UIManager>
     // Update is called once per frame
     private void LateUpdate()
     {
-        if (panelGameOver.activeSelf) return; // Si el panel Game Over está activo, no actualizar UI
+        if (panelGameOver.activeSelf) return; // Si el panel Game Over est? activo, no actualizar UI
         ActualizarUIPersonaje();
         ActualizarPanelStats();
     }
@@ -77,14 +77,14 @@ public class UIManager : Singleton<UIManager>
     {
         if (vidaPlayer == null || manaPlayer == null || expPlayer == null)
         {
-            Debug.LogWarning("Una de las barras de UI fue destruida o no está asignada. Evitando actualización.");
-            return; // Salir del método si falta alguna barra
+            Debug.LogWarning("Una de las barras de UI fue destruida o no est? asignada. Evitando actualizaci?n.");
+            return; // Salir del m?todo si falta alguna barra
         }
 
         // Verificar que el objeto no haya sido destruido
         if (!vidaPlayer.gameObject.activeInHierarchy || !manaPlayer.gameObject.activeInHierarchy || !expPlayer.gameObject.activeInHierarchy)
         {
-            Debug.LogWarning("Una de las barras de UI fue destruida. No se actualizará.");
+            Debug.LogWarning("Una de las barras de UI fue destruida. No se actualizar?.");
             return;
         }
 
@@ -180,7 +180,7 @@ public class UIManager : Singleton<UIManager>
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recargar la escena
 
-        // Reactivar la UI del jugador después del reinicio
+        // Reactivar la UI del jugador despu?s del reinicio
         if (UIManager.Instance != null && UIManager.Instance.PlayerUI != null)
         {
             UIManager.Instance.PlayerUI.SetActive(true);
@@ -190,7 +190,7 @@ public class UIManager : Singleton<UIManager>
 
     public void SalirAlMenu()
     {
-        SceneManager.LoadScene("MenuPrincipal"); // Carga la escena del menú principal
+        SceneManager.LoadScene("MainMenu"); // Carga la escena del men? principal
     }
 
 }
