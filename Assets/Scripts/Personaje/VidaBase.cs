@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class VidaBase : MonoBehaviour
@@ -6,10 +7,13 @@ public class VidaBase : MonoBehaviour
     [SerializeField] protected float saludMax;
     public float Salud { get; protected set; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private SpriteRenderer spriteRenderer; // Para cambiar el color del personaje
+
+    // Start is called once before la primera ejecución de Update
     protected virtual void Start()
     {
         Salud = saludInicial;
+        spriteRenderer = GetComponent<SpriteRenderer>(); // Obtiene el sprite del personaje
     }
 
     public void RecibirDano(float cantidad)
@@ -21,6 +25,12 @@ public class VidaBase : MonoBehaviour
 
         ActualizarBarraVida(Salud, saludMax);
 
+        //Activa el efecto de parpadeo rojo
+        if (spriteRenderer != null)
+        {
+            StartCoroutine(FlashRed());
+        }
+
         if (Salud == 0)
         {
             PersonajeDerrotado(); // Se llama solo si la vida llega a 0
@@ -31,9 +41,22 @@ public class VidaBase : MonoBehaviour
     {
 
     }
+
     protected virtual void PersonajeDerrotado()
     {
 
+    }
+
+    //Efecto de Parpadeo Rojo
+    IEnumerator FlashRed()
+    {
+        for (int i = 0; i < 3; i++) // Parpadea 3 veces
+        {
+            spriteRenderer.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            spriteRenderer.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
 }

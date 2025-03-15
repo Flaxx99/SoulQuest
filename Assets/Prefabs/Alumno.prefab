@@ -207,7 +207,6 @@ GameObject:
   - component: {fileID: 396097380053191694}
   - component: {fileID: 1017795080545913725}
   - component: {fileID: 5392041617824312544}
-  - component: {fileID: 944967011841527552}
   - component: {fileID: 8138324767459753171}
   m_Layer: 6
   m_Name: Alumno
@@ -475,21 +474,6 @@ MonoBehaviour:
   manaInicial: 50
   manaMax: 50
   regeneracionPorSegundo: 1
---- !u!114 &944967011841527552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3373264935392876220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 641197b6617443d4aaf990c345732c71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pooler: {fileID: 7219857695969423885}
-  canvasTextoAnimacionPrefab: {fileID: 6508663888039932677, guid: 09e0a2f611fe34245a2fd32bdcf98c1d, type: 3}
-  canvasTextoPosicion: {fileID: 7915876536959183753}
 --- !u!114 &8138324767459753171
 MonoBehaviour:
   m_ObjectHideFlags: 0
