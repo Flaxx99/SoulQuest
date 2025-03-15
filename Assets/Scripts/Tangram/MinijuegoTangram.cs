@@ -51,8 +51,6 @@ public class MinijuegoTangram : MonoBehaviour
         Time.timeScale = 0;
     }
 
-
-
     private void Update()
     {
         if (minijuegoActivo)
