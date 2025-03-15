@@ -79,10 +79,14 @@ public class MiniJuegoSpanish : MonoBehaviour
     public void CerrarMiniJuego()
     {
         Debug.Log("CerrarMiniJuego() se ha ejecutado correctamente.");
-        miniJuegoCanvas.SetActive(false); // Oculta el minijuego
-        minijuegoActivo = false; // Detiene el temporizador
+        miniJuegoCanvas.SetActive(false);
+        minijuegoActivo = false;
         Time.timeScale = 1; // Reanuda el juego principal
+
+        // 🔊 Volver a la música de pasillos
+        AudioManager.instancia.CambiarMusica("Pasillos");
     }
+
 
 
     public void ActivarMiniJuego()
@@ -97,6 +101,8 @@ public class MiniJuegoSpanish : MonoBehaviour
         textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualizar UI al inicio
 
         Time.timeScale = 0; // Pausar el juego principal mientras el minijuego está activo
+        // 🔊 Asegurar que la música del minijuego se reproduzca
+        AudioManager.instancia.CambiarMusica("Minijuego");
     }
 
     private void Update()
@@ -128,6 +134,9 @@ public class MiniJuegoSpanish : MonoBehaviour
         float nuevaVida = UIManager.Instance.VidaActual - 10;
         UIManager.Instance.ActualizarVidaPersonaje(nuevaVida, UIManager.Instance.VidaMax);
 
+        // Reproducir la música nuevamente
+        AudioManager.instancia.CambiarMusica("Minijuego");
+
         // Configurar el botón correctamente
         botonAceptar.gameObject.SetActive(true);
         botonAceptar.onClick.RemoveAllListeners();
@@ -150,6 +159,10 @@ public class MiniJuegoSpanish : MonoBehaviour
     {
         resultadoTexto.text = "";
         botonAceptar.gameObject.SetActive(false);
+
+        // 🔊 Asegurar que la música se siga reproduciendo
+        AudioManager.instancia.CambiarMusica("Minijuego");
+
         ActivarMiniJuego(); // Reinicia el minijuego sin resetear la vida
     }
 
