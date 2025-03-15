@@ -18,13 +18,29 @@ public class MiniJuegoSpanish : MonoBehaviour
     public string[] respuestasCorrectas = { "pantera", "gato", "leopardo", "iguana", "raton" };
     public ActivarMinijuegoSpanish triggerSpanish; // Nueva referencia pública
     public Button botonAceptar;
-
+    private bool juegoPausado = false;
 
     void Start()
     {
         botonAceptar.gameObject.SetActive(false); // Oculta el botón al inicio
         botonAceptar.onClick.AddListener(CerrarMiniJuego); // Asigna la función al botón
     }
+    private void Update()
+    {
+        if (minijuegoActivo && !juegoPausado) // 👈 Solo descuenta tiempo si NO está pausado
+        {
+            tiempoRestante -= Time.unscaledDeltaTime;
+
+            if (tiempoRestante < 0)
+            {
+                tiempoRestante = 0;
+                TiempoTerminado();
+            }
+
+            textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s";
+        }
+    }
+
 
     public void ComprobarRespuestas()
     {
@@ -87,8 +103,6 @@ public class MiniJuegoSpanish : MonoBehaviour
         AudioManager.instancia.CambiarMusica("Pasillos");
     }
 
-
-
     public void ActivarMiniJuego()
     {
         Debug.Log("ActivarMiniJuego() ha sido llamado.");
@@ -105,23 +119,7 @@ public class MiniJuegoSpanish : MonoBehaviour
         AudioManager.instancia.CambiarMusica("Minijuego");
     }
 
-    private void Update()
-    {
-        if (minijuegoActivo)
-        {
-            tiempoRestante -= Time.unscaledDeltaTime;
-
-            // Asegurar que el tiempo nunca sea menor a 0
-            if (tiempoRestante < 0)
-            {
-                tiempoRestante = 0;
-                TiempoTerminado(); // Llamar a la función de pérdida
-            }
-
-            // Actualizar el texto del temporizador
-            textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s";
-        }
-    }
+   
     private void TiempoTerminado()
     {
         if (!minijuegoActivo) return; // 🚀 Evita que se ejecute si el jugador ya ganó
@@ -154,7 +152,6 @@ public class MiniJuegoSpanish : MonoBehaviour
         }
     }
 
-
     private void ReintentarMinijuego()
     {
         resultadoTexto.text = "";
@@ -171,4 +168,16 @@ public class MiniJuegoSpanish : MonoBehaviour
         Debug.Log("GAME OVER. El jugador ha perdido toda su vida.");
         UIManager.Instance.MostrarPantallaGameOver();
     }
+    public void PausarMinijuego()
+    {
+        Debug.Log("⏸ Minijuego pausado.");
+        juegoPausado = true;
+    }
+
+    public void ReanudarMinijuego()
+    {
+        Debug.Log("▶ Minijuego reanudado.");
+        juegoPausado = false;
+    }
+
 }
