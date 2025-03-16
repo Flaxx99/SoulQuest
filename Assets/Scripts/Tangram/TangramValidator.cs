@@ -1,151 +1,103 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI; // Necesario para usar el bot√≥n
 
+/// <summary>
+/// Asocia cada "PosicionObjetivo" a una pieza concreta,
+/// y cada "PosicionObjetivo" puede tener varias "referencias" (RectTransform).
+/// </summary>
 [System.Serializable]
 public class PosicionObjetivo
 {
-    public Transform referencia; // Objeto que representa la posiciÛn correcta
-    public List<TangramPiece> piezasValidas; // Lista de piezas que pueden ocupar esta posiciÛn
+    public TangramPiece piezaAsignada; // La pieza que debe encajar
+    public List<RectTransform> referencias;   // Las posiciones/rotaciones v√°lidas para esa pieza
 }
 
+/// <summary>
+/// Valida si cada pieza est√° en alguna de sus posiciones correctas.
+/// </summary>
 public class TangramValidator : MonoBehaviour
 {
-    [SerializeField] private List<PosicionObjetivo> posicionesObjetivo = new List<PosicionObjetivo>(); // Evita que se sobrescriba
-    public float toleranciaPosicion = 0.7f; // Margen de error en posiciÛn (ajustado para mayor precisiÛn)
-    public float toleranciaRotacion = 15f;  // Margen de error en rotaciÛn (grados)
-    public TextMeshProUGUI mensajeTexto; // Texto de UI para mensajes
+    [Header("Lista de Objetivos")]
+    [SerializeField] public List<PosicionObjetivo> posicionesObjetivo = new List<PosicionObjetivo>(); // Cambiado a p√∫blico para acceso
 
-    public static TangramValidator Instance;
+    [Header("UI")]
+    public TextMeshProUGUI mensajeTexto; // Texto para mostrar mensajes
+    public Button botonComprobar; // El bot√≥n para comprobar las respuestas
 
-    void Awake()
+    public int piezasCorrectas = 0; // Para contar las piezas correctamente posicionadas
+
+    private void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.LogWarning("Se encontrÛ un segundo Validator y fue destruido.");
-            Destroy(gameObject);
-            return;
-        }
-
-        if (posicionesObjetivo == null || posicionesObjetivo.Count == 0)
-        {
-            Debug.LogError("ERROR en Awake(): La lista de posiciones objetivo est· vacÌa.");
-        }
-        else
-        {
-            Debug.Log($"En Awake(): Posiciones objetivo correctamente asignadas. Total: {posicionesObjetivo.Count}");
-        }
+        AsignarPiezas();
+        botonComprobar.onClick.AddListener(CheckSolution);
     }
 
-
-    void Start()
+    /// Asigna las referencias de `posicionesObjetivo` a cada `TangramPiece`.
+    private void AsignarPiezas()
     {
-        if (posicionesObjetivo == null || posicionesObjetivo.Count == 0)
+        foreach (var posicion in posicionesObjetivo)
         {
-            Debug.LogError("ERROR en Start(): La lista de posiciones objetivo est· vacÌa. Verifica que los elementos est·n asignados en el Inspector.");
-        }
-        else
-        {
-            Debug.Log($"En Start(): Posiciones objetivo correctamente asignadas. Total: {posicionesObjetivo.Count}");
-        }
-        Debug.Log($"En Start(): Lista actual de posiciones objetivo: {posicionesObjetivo.Count}");
-    }
-
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Return)) // Si se presiona "Enter"
-        {
-            Debug.Log("Enter presionado: Ejecutando CheckSolution()");
-            CheckSolution();
-        }
-    }
-
-
-    public void CheckSolution()
-    {
-        Debug.Log("Iniciando validaciÛn del Tangram...");
-
-        Debug.Log($"PosicionesObjetivo tiene {posicionesObjetivo.Count} elementos.");
-
-        if (posicionesObjetivo == null || posicionesObjetivo.Count == 0)
-        {
-            Debug.LogError("ERROR: No hay posiciones objetivo asignadas en el Validator. Aseg˙rate de asignarlas en el Inspector.");
-            return;
-        }
-
-        if (posicionesObjetivo.Count == 0)
-        {
-            Debug.LogError("ERROR: No hay posiciones objetivo asignadas en el Validator. Aseg˙rate de asignarlas en el Inspector.");
-            return;
-        }
-
-        int piezasCorrectas = 0; // Contador de piezas bien colocadas
-
-        foreach (PosicionObjetivo posicion in posicionesObjetivo)
-        {
-            bool posicionCorrecta = false; // Cada posiciÛn debe validarse correctamente
-
-            foreach (TangramPiece pieza in posicion.piezasValidas)
+            if (posicion.piezaAsignada == null)
             {
-                float distancia = Vector2.Distance(pieza.transform.position, posicion.referencia.position);
-                float diferenciaRotacion = Mathf.Abs(pieza.transform.eulerAngles.z - posicion.referencia.eulerAngles.z);
+                Debug.LogWarning("‚ùå Falta asignar una pieza en un PosicionObjetivo.");
+                continue;
+            }
 
-                Debug.Log($"Verificando {pieza.name}");
-                Debug.Log($"Objetivo: PosiciÛn {posicion.referencia.position}, RotaciÛn {posicion.referencia.eulerAngles.z}");
-                Debug.Log($"Actual: PosiciÛn {pieza.transform.position}, RotaciÛn {pieza.transform.eulerAngles.z}");
-                Debug.Log($"Distancia: {distancia}, Diferencia RotaciÛn: {diferenciaRotacion}");
+            // Limpiar la lista previa
+            posicion.piezaAsignada.targetPositions.Clear();
 
-                // Verificar si la pieza est· dentro del margen de error
-                if (distancia <= toleranciaPosicion && diferenciaRotacion <= toleranciaRotacion)
+            // A√±adir referencias
+            foreach (RectTransform refT in posicion.referencias)
+            {
+                if (refT != null)
                 {
-                    Debug.Log($"{pieza.name} est· correctamente posicionada.");
-                    posicionCorrecta = true;
-                    piezasCorrectas++; // Aumenta el contador de piezas correctas
-                    break; // No es necesario revisar m·s piezas para esta posiciÛn
+                    posicion.piezaAsignada.targetPositions.Add(refT);
                 }
             }
 
-            if (!posicionCorrecta)
-            {
-                Debug.LogWarning($"{posicion.referencia.name} no tiene ninguna pieza bien colocada.");
-                MostrarMensajeEnPantalla("Algunas piezas no est·n bien colocadas", Color.red);
-                return; // Si una pieza est· mal, se detiene la validaciÛn
-            }
-        }
-
-        // Ahora mostramos cu·ntas piezas fueron correctas antes de completar el tangram
-        Debug.Log($"°Tangram completado correctamente! Piezas correctas: {piezasCorrectas}/{posicionesObjetivo.Count}");
-
-        if (piezasCorrectas == posicionesObjetivo.Count) // Asegurar que TODAS las piezas estÈn bien antes de completar
-        {
-            MostrarMensajeEnPantalla("°Tangram completado!", Color.green);
-            Invoke("CargarEscenaVictoria", 2f);
-        }
-        else
-        {
-            Debug.LogWarning("TodavÌa hay piezas mal colocadas.");
-            MostrarMensajeEnPantalla("Algunas piezas a˙n no est·n bien colocadas.", Color.red);
+            Debug.Log($"‚úÖ Asignadas {posicion.referencias.Count} referencias a {posicion.piezaAsignada.name}.");
         }
     }
 
+    /// Comprueba si cada pieza est√° bien posicionada llamando a `EstaCorrecta()`.
+    public void CheckSolution()
+    {
+        piezasCorrectas = 0; // Reseteamos el contador
 
+        int total = posicionesObjetivo.Count;
 
+        foreach (var posicion in posicionesObjetivo)
+        {
+            var pieza = posicion.piezaAsignada;
+            if (pieza == null)
+            {
+                Debug.LogWarning("‚ùå Hay un PosicionObjetivo sin pieza asignada.");
+                continue;
+            }
 
-    public void MostrarMensajeEnPantalla(string mensaje, Color color)
+            if (pieza.EstaCorrecta()) // Si la pieza est√° bien posicionada
+            {
+                piezasCorrectas++;
+            }
+            else
+            {
+                Debug.LogWarning($"‚ùå {pieza.name} no est√° bien posicionada.");
+            }
+        }
+    }
+
+    /// Muestra un mensaje en la UI (si est√° asignada).
+    public void MostrarMensaje(string mensaje, Color color)
     {
         if (mensajeTexto != null)
         {
             mensajeTexto.text = mensaje;
             mensajeTexto.color = color;
-            mensajeTexto.alpha = 1;
-            CancelInvoke("OcultarMensaje");
-            Invoke("OcultarMensaje", 2f);
+            mensajeTexto.alpha = 1f;
+            CancelInvoke(nameof(OcultarMensaje));
+            Invoke(nameof(OcultarMensaje), 2f);
         }
     }
 
@@ -153,13 +105,7 @@ public class TangramValidator : MonoBehaviour
     {
         if (mensajeTexto != null)
         {
-            mensajeTexto.alpha = 0;
+            mensajeTexto.alpha = 0f;
         }
-    }
-
-    private void CargarEscenaVictoria()
-    {
-        Debug.Log("Cargando escena de victoria...");
-        SceneManager.LoadScene("VictoryScene");
     }
 }
