@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: cc04acc44576b4145bb4408f02895f46
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - musicaPasillos: {instanceID: 0}
+  - musicaMinijuegos: {instanceID: 0}
+  - musicaMainMenu: {fileID: 8300000, guid: d09d09e6e3fa74f4ca843fe2fcf7defc, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

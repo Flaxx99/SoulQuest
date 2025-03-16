@@ -3,6 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
+    private void Start()
+    {
+        if (AudioManager.instancia != null)
+        {
+            Debug.Log("Cambiando música a MainMenu...");
+            AudioManager.instancia.CambiarMusica("MainMenu");
+        }
+        else
+        {
+            Debug.LogError("No se encontró el AudioManager.");
+        }
+    }
+
+
     public void PlayGame()
     {
         Debug.Log("🎮 Iniciando juego desde el Menú...");
