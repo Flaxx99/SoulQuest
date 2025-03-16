@@ -38,7 +38,7 @@ public class PieceController : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         // Seleccionamos esta pieza
         piezaSeleccionada = this;
-        isSelected = true;
+        isSelected = true;  // Marcar la pieza como seleccionada
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -83,10 +83,13 @@ public class PieceController : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     /// </summary>
     public void LockPiece()
     {
-        isDragging = false;
-        isSelected = false;
-        piezaSeleccionada = null; // No hay ninguna pieza seleccionada después de bloquearse
-        enabled = false; // Desactiva el script para evitar más movimientos
+        // Asegurarse de que se marca como deseleccionada antes de bloquear
+        if (isSelected)
+        {
+            isSelected = false;  // Ahora usamos esta variable al bloquear
+            piezaSeleccionada = null; // No hay ninguna pieza seleccionada después de bloquearse
+            enabled = false; // Desactiva el script para evitar más movimientos
+        }
     }
 
     /// <summary>

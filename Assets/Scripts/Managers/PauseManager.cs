@@ -46,7 +46,6 @@ public class PausaManager : MonoBehaviour
 
         // 🔥 Pausar todos los minijuegos si están activos
         if (miniJuegoSpanish != null) miniJuegoSpanish.PausarMinijuego();
-        if (miniJuegoTangram != null) miniJuegoTangram.PausarMinijuego();
         //if (miniJuegoQuemados != null) miniJuegoQuemados.PausarMinijuego();
     }
 
@@ -63,7 +62,6 @@ public class PausaManager : MonoBehaviour
 
         // 🔥 Reanudar todos los minijuegos si están activos
         if (miniJuegoSpanish != null) miniJuegoSpanish.ReanudarMinijuego();
-        if (miniJuegoTangram != null) miniJuegoTangram.ReanudarMinijuego();
         //if (miniJuegoQuemados != null) miniJuegoQuemados.ReanudarMinijuego();
     }
 

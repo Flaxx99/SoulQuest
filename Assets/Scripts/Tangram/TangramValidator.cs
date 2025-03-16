@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI; // Necesario para usar el botón
 
 /// <summary>
 /// Asocia cada "PosicionObjetivo" a una pieza concreta,
@@ -19,27 +20,21 @@ public class PosicionObjetivo
 public class TangramValidator : MonoBehaviour
 {
     [Header("Lista de Objetivos")]
-    [SerializeField] private List<PosicionObjetivo> posicionesObjetivo = new List<PosicionObjetivo>();
+    [SerializeField] public List<PosicionObjetivo> posicionesObjetivo = new List<PosicionObjetivo>(); // Cambiado a público para acceso
 
     [Header("UI")]
     public TextMeshProUGUI mensajeTexto; // Texto para mostrar mensajes
+    public Button botonComprobar; // El botón para comprobar las respuestas
+
+    public int piezasCorrectas = 0; // Para contar las piezas correctamente posicionadas
 
     private void Start()
     {
         AsignarPiezas();
+        botonComprobar.onClick.AddListener(CheckSolution);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            CheckSolution();
-        }
-    }
-
-    /// <summary>
     /// Asigna las referencias de `posicionesObjetivo` a cada `TangramPiece`.
-    /// </summary>
     private void AsignarPiezas()
     {
         foreach (var posicion in posicionesObjetivo)
@@ -66,12 +61,11 @@ public class TangramValidator : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// Comprueba si cada pieza está bien posicionada llamando a `EstaCorrecta()`.
-    /// </summary>
     public void CheckSolution()
     {
-        int piezasCorrectas = 0;
+        piezasCorrectas = 0; // Reseteamos el contador
+
         int total = posicionesObjetivo.Count;
 
         foreach (var posicion in posicionesObjetivo)
@@ -83,28 +77,19 @@ public class TangramValidator : MonoBehaviour
                 continue;
             }
 
-            if (pieza.EstaCorrecta())
+            if (pieza.EstaCorrecta()) // Si la pieza está bien posicionada
             {
-                Debug.Log($"✅ {pieza.name} está correctamente posicionada.");
                 piezasCorrectas++;
-
-                // Bloquear la pieza después de validarla
-                pieza.GetComponent<PieceController>().LockPiece();
             }
             else
             {
                 Debug.LogWarning($"❌ {pieza.name} no está bien posicionada.");
             }
         }
-
-        Debug.Log($"🔎 Resultado: {piezasCorrectas}/{total} piezas correctas.");
     }
 
-
-    /// <summary>
     /// Muestra un mensaje en la UI (si está asignada).
-    /// </summary>
-    private void MostrarMensaje(string mensaje, Color color)
+    public void MostrarMensaje(string mensaje, Color color)
     {
         if (mensajeTexto != null)
         {
