@@ -1,28 +1,36 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-/// <summary>
-/// Controla el movimiento y rotación de las piezas del Tangram.
-/// </summary>
 public class PieceController : MonoBehaviour
 {
-    //public float velocidadMovimiento = 1f;
-    public float anguloRotacion = 2f;
+    private Vector3 offset;
+    private Camera cam;
+    private bool isDragging = false;
 
-    void Update()
+    void Start()
     {
-        // Movimiento con flechas
-        //float moveX = Input.GetAxis("Horizontal") * velocidadMovimiento * Time.deltaTime;
-        //float moveY = Input.GetAxis("Vertical") * velocidadMovimiento * Time.deltaTime;
-        //transform.position += new Vector3(moveX, moveY, 0);
+        cam = Camera.main;
+    }
 
-        // Rotación con teclas J y L
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            transform.Rotate(Vector3.forward, anguloRotacion);
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            transform.Rotate(Vector3.forward, -anguloRotacion);
-        }
+    void OnMouseDown()
+    {
+        offset = transform.position - GetMouseWorldPosition();
+        isDragging = true;
+    }
+
+    void OnMouseDrag()
+    {
+        transform.position = GetMouseWorldPosition() + offset;
+    }
+
+    void OnMouseUp()
+    {
+        isDragging = false;
+    }
+
+    private Vector3 GetMouseWorldPosition()
+    {
+        Vector3 mousePoint = Input.mousePosition;
+        mousePoint.z = 10f;
+        return cam.ScreenToWorldPoint(mousePoint);
     }
 }
