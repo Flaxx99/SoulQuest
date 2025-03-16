@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -84,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -94,6 +94,19 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -125,10 +138,10 @@ TextureImporter:
       name: BarraUI_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 5
-        width: 22
-        height: 25
+        x: 7
+        y: 4
+        width: 24
+        height: 27
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,10 +160,10 @@ TextureImporter:
       name: BarraUI_1
       rect:
         serializedVersion: 2
-        x: 36
-        y: 5
-        width: 22
-        height: 25
+        x: 35
+        y: 4
+        width: 24
+        height: 27
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,10 +182,10 @@ TextureImporter:
       name: BarraUI_2
       rect:
         serializedVersion: 2
-        x: 64
-        y: 5
-        width: 27
-        height: 25
+        x: 63
+        y: 4
+        width: 29
+        height: 27
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -191,10 +204,10 @@ TextureImporter:
       name: BarraUI_3
       rect:
         serializedVersion: 2
-        x: 96
-        y: 4
-        width: 26
-        height: 26
+        x: 95
+        y: 3
+        width: 28
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -213,7 +226,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: ef7ee2b777f49f74180e2d59a41211cf
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -222,11 +235,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      BarraUI_0: 425845598855699027
-      BarraUI_1: 1478739925597350199
-      BarraUI_2: -1964540290777306295
-      BarraUI_3: 3991059510665042976
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
