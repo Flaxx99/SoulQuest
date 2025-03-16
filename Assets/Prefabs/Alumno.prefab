@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 1017795080545913725}
   - component: {fileID: 5392041617824312544}
   - component: {fileID: 8138324767459753171}
+  - component: {fileID: 7916543436337125593}
   m_Layer: 6
   m_Name: Alumno
   m_TagString: Player
@@ -494,6 +495,26 @@ MonoBehaviour:
   - {fileID: 342704973366516292}
   - {fileID: 4920155131360118473}
   - {fileID: 5994061265388679080}
+--- !u!114 &7916543436337125593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373264935392876220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 243b8f391afd90b4ba2678165026e3b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidad: 5
+  limiteIzquierdo: {fileID: 0}
+  limiteDerecho: {fileID: 0}
+  puntoDeLanzamiento: {fileID: 0}
+  pelotaPrefab: {fileID: 0}
+  fuerzaLanzamiento: 10
+  vidas: 3
+  tiempoEntreLanzamientos: 1.5
 --- !u!1 &4312745926915003686
 GameObject:
   m_ObjectHideFlags: 0
