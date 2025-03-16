@@ -13,6 +13,7 @@ public class MinijuegoTangram : MonoBehaviour
     public TMP_Text resultadoTexto;
     public ActivarMinijuegoTangram triggerTangram; // Nueva referencia pública
     public Button botonAceptar;
+    private bool juegoPausado = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -57,8 +58,10 @@ public class MinijuegoTangram : MonoBehaviour
         AudioManager.instancia.CambiarMusica("Minijuego");
     }
 
-    private void Update()
+   private void Update()
     {
+        if (juegoPausado) return; // 🚀 Bloquea la ejecución si el minijuego está pausado
+
         if (minijuegoActivo)
         {
             tiempoRestante -= Time.unscaledDeltaTime;
@@ -74,6 +77,7 @@ public class MinijuegoTangram : MonoBehaviour
             textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s";
         }
     }
+
     private void TiempoTerminado()
     {
         if (!minijuegoActivo) return; // Evita que se ejecute si el jugador ya ganó
@@ -123,4 +127,16 @@ public class MinijuegoTangram : MonoBehaviour
         Debug.Log("GAME OVER. El jugador ha perdido toda su vida.");
         UIManager.Instance.MostrarPantallaGameOver();
     }
+    public void PausarMinijuego()
+    {
+        Debug.Log("⏸ Minijuego pausado.");
+        juegoPausado = true;
+    }
+
+    public void ReanudarMinijuego()
+    {
+        Debug.Log("▶ Minijuego reanudado.");
+        juegoPausado = false;
+    }
+
 }

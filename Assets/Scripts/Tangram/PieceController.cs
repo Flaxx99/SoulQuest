@@ -1,28 +1,99 @@
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
-/// <summary>
-/// Controla el movimiento y rotaci�n de las piezas del Tangram.
-/// </summary>
-public class PieceController : MonoBehaviour
+public class PieceController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
 {
-    //public float velocidadMovimiento = 1f;
-    public float anguloRotacion = 2f;
+    private RectTransform rectTransform;
+    private Canvas canvas;
+    private bool isDragging = false;
+    private bool isSelected = false;
+
+    private static PieceController piezaSeleccionada = null; // Solo una pieza seleccionada a la vez
+
+    void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        canvas = GetComponentInParent<Canvas>();
+    }
 
     void Update()
     {
-        // Movimiento con flechas
-        //float moveX = Input.GetAxis("Horizontal") * velocidadMovimiento * Time.deltaTime;
-        //float moveY = Input.GetAxis("Vertical") * velocidadMovimiento * Time.deltaTime;
-        //transform.position += new Vector3(moveX, moveY, 0);
+        // Permitir girar si la pieza está seleccionada y el clic está presionado
+        if (piezaSeleccionada == this && Input.GetMouseButton(0))
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                RotatePiece(45f); // Gira cada vez que se presiona 'R'
+            }
+        }
+    }
 
-        // Rotaci�n con teclas J y L
-        if (Input.GetKeyDown(KeyCode.J))
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // Si hay otra pieza seleccionada, la deseleccionamos
+        if (piezaSeleccionada != null && piezaSeleccionada != this)
         {
-            transform.Rotate(Vector3.forward, anguloRotacion);
+            piezaSeleccionada.Deseleccionar();
         }
-        if (Input.GetKeyDown(KeyCode.L))
+
+        // Seleccionamos esta pieza
+        piezaSeleccionada = this;
+        isSelected = true;
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (!isDragging)
         {
-            transform.Rotate(Vector3.forward, -anguloRotacion);
+            isDragging = true;
         }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (isDragging && canvas != null)
+        {
+            Vector2 newPosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvas.transform as RectTransform,
+                eventData.position,
+                eventData.pressEventCamera,
+                out newPosition);
+
+            rectTransform.anchoredPosition = newPosition;
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        isDragging = false;
+    }
+
+    /// <summary>
+    /// Gira la pieza en ángulos de 45°
+    /// </summary>
+    private void RotatePiece(float angle)
+    {
+        float newRotation = Mathf.Round(rectTransform.eulerAngles.z / 45f) * 45f + angle;
+        rectTransform.rotation = Quaternion.Euler(0, 0, newRotation);
+    }
+
+    /// <summary>
+    /// Bloquea la pieza cuando se valida correctamente
+    /// </summary>
+    public void LockPiece()
+    {
+        isDragging = false;
+        isSelected = false;
+        piezaSeleccionada = null; // No hay ninguna pieza seleccionada después de bloquearse
+        enabled = false; // Desactiva el script para evitar más movimientos
+    }
+
+    /// <summary>
+    /// Deselecciona la pieza para evitar que siga girando al cambiar de pieza
+    /// </summary>
+    private void Deseleccionar()
+    {
+        isSelected = false;
     }
 }

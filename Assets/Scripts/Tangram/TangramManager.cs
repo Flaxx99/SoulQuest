@@ -1,26 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class TangramManager : MonoBehaviour
 {
-    private TangramPiece piezaSeleccionada = null; // Guardamos la pieza seleccionada
+    private TangramPiece piezaSeleccionada = null;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Detectar clic en una pieza
+        if (Input.GetMouseButtonDown(0))
         {
             DetectarPiezaSeleccionada();
         }
 
-        if (piezaSeleccionada != null) // Solo gira la pieza seleccionada
+        if (piezaSeleccionada != null && Input.GetKeyDown(KeyCode.R))
         {
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                piezaSeleccionada.RotarPieza(-5f); // Girar 15° a la izquierda
-            }
-            else if (Input.GetKeyDown(KeyCode.L))
-            {
-                piezaSeleccionada.RotarPieza(5f); // Girar 15° a la derecha
-            }
+            piezaSeleccionada.RotarPieza(-45f); // Rota en sentido horario
+            Debug.Log($"ðŸ”„ Rotando {piezaSeleccionada.name} en sentido horario");
         }
     }
 
@@ -35,14 +29,9 @@ public class TangramManager : MonoBehaviour
 
             if (nuevaPieza != null)
             {
-                piezaSeleccionada = nuevaPieza; // Guardamos la referencia de la pieza seleccionada
+                piezaSeleccionada = nuevaPieza;
                 Debug.Log("Pieza seleccionada: " + piezaSeleccionada.name);
             }
         }
-    }
-
-    public TangramPiece GetPiezaSeleccionada()
-    {
-        return piezaSeleccionada;
     }
 }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c284ded8388f9e64abc12b4fcc1915e8
+guid: 0857c4b5839e5ea458bc9e0b0288a57e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5212636038936313996
-    second: trianguloChico2 - copia_0
+      213: 6224006646502942874
+    second: trianguloChico2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: trianguloChico2 - copia_0
+      name: trianguloChico2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 67
-        height: 130
+        width: 605
+        height: 303
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c80c2341cd0075840800000000000000
-      internalID: 5212636038936313996
+      spriteID: a986a7c911d106650800000000000000
+      internalID: 6224006646502942874
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9b517c7957c861f4b9e7c29a935d34a6
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      trianguloChico2 - copia_0: 5212636038936313996
+      trianguloChico2_0: 6224006646502942874
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
