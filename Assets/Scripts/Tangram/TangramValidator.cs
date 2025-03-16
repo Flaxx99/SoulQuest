@@ -4,13 +4,13 @@ using UnityEngine;
 
 /// <summary>
 /// Asocia cada "PosicionObjetivo" a una pieza concreta,
-/// y cada "PosicionObjetivo" puede tener varias "referencias" (Transform).
+/// y cada "PosicionObjetivo" puede tener varias "referencias" (RectTransform).
 /// </summary>
 [System.Serializable]
 public class PosicionObjetivo
 {
-    public TangramPiece piezaAsignada;    // La pieza que debe encajar
-    public List<Transform> referencias;   // Las posiciones/rotaciones válidas para esa pieza
+    public TangramPiece piezaAsignada; // La pieza que debe encajar
+    public List<RectTransform> referencias;   // Las posiciones/rotaciones válidas para esa pieza
 }
 
 /// <summary>
@@ -26,14 +26,11 @@ public class TangramValidator : MonoBehaviour
 
     private void Start()
     {
-        // Como ejemplo, asignamos las referencias a cada pieza
-        // para que cada TangramPiece sepa dónde puede encajar.
         AsignarPiezas();
     }
 
     private void Update()
     {
-        // Presiona Enter para validar
         if (Input.GetKeyDown(KeyCode.Return))
         {
             CheckSolution();
@@ -41,8 +38,7 @@ public class TangramValidator : MonoBehaviour
     }
 
     /// <summary>
-    /// Pasa las referencias de 'posicionesObjetivo' a cada TangramPiece
-    /// para que sepa cuáles son sus "targetPositions".
+    /// Asigna las referencias de `posicionesObjetivo` a cada `TangramPiece`.
     /// </summary>
     private void AsignarPiezas()
     {
@@ -54,11 +50,11 @@ public class TangramValidator : MonoBehaviour
                 continue;
             }
 
-            // Limpiamos la lista por si tuviera algo previo
+            // Limpiar la lista previa
             posicion.piezaAsignada.targetPositions.Clear();
 
-            // Añadimos todas las referencias definidas en el inspector
-            foreach (Transform refT in posicion.referencias)
+            // Añadir referencias
+            foreach (RectTransform refT in posicion.referencias)
             {
                 if (refT != null)
                 {
@@ -71,7 +67,7 @@ public class TangramValidator : MonoBehaviour
     }
 
     /// <summary>
-    /// Comprueba si cada pieza está bien posicionada llamando a 'EstaCorrecta()'.
+    /// Comprueba si cada pieza está bien posicionada llamando a `EstaCorrecta()`.
     /// </summary>
     public void CheckSolution()
     {
@@ -91,6 +87,9 @@ public class TangramValidator : MonoBehaviour
             {
                 Debug.Log($"✅ {pieza.name} está correctamente posicionada.");
                 piezasCorrectas++;
+
+                // Bloquear la pieza después de validarla
+                pieza.GetComponent<PieceController>().LockPiece();
             }
             else
             {
@@ -99,16 +98,8 @@ public class TangramValidator : MonoBehaviour
         }
 
         Debug.Log($"🔎 Resultado: {piezasCorrectas}/{total} piezas correctas.");
-
-        if (piezasCorrectas == total)
-        {
-            MostrarMensaje("¡Tangram completado!", Color.green);
-        }
-        else
-        {
-            MostrarMensaje($"Piezas correctas: {piezasCorrectas}/{total}", Color.yellow);
-        }
     }
+
 
     /// <summary>
     /// Muestra un mensaje en la UI (si está asignada).

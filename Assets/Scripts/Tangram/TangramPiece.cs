@@ -1,92 +1,93 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-/// <summary>
-/// Controla el comportamiento de cada pieza del Tangram
-/// (movimiento con el mouse y validación de su posición).
-/// </summary>
-public class TangramPiece : MonoBehaviour
+public class TangramPiece : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    private Vector3 offset;
-    private Camera cam;
+    private RectTransform rectTransform;
+    private Canvas canvas;
+    private Vector2 offset;
 
     [Header("Validación")]
-    public float toleranciaPosicion = 20f; // Ajusta según tu escala
-    public float toleranciaRotacion = 10f; // Ajusta según lo que quieras permitir
-    public List<Transform> targetPositions = new List<Transform>(); // Referencias donde encaja
+    public float toleranciaPosicion = 20f; // Ajusta según el tamaño de las piezas
+    public float toleranciaRotacion = 10f; // Ajusta la tolerancia de rotación
+    public List<RectTransform> targetPositions = new List<RectTransform>(); // Posiciones válidas
 
-    void Start()
+    private void Awake()
     {
-        cam = Camera.main;
-    }
-
-    void Update()
-    {
-        // Asegurar que la pieza siempre esté en Z = 0 (2D)
-        Vector3 pos = transform.position;
-        pos.z = 0;
-        transform.position = pos;
+        rectTransform = GetComponent<RectTransform>();
+        canvas = GetComponentInParent<Canvas>(); // Obtiene el Canvas más cercano
     }
 
     /// <summary>
-    /// Se llama cuando haces click en la pieza con el mouse
+    /// Comienza el arrastre y guarda la posición inicial.
     /// </summary>
-    void OnMouseDown()
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        offset = transform.position - GetMouseWorldPosition();
+        offset = rectTransform.anchoredPosition - eventData.position;
     }
 
     /// <summary>
-    /// Se llama mientras mantienes el click y mueves el mouse
+    /// Mueve la pieza mientras se arrastra.
     /// </summary>
-    void OnMouseDrag()
+    public void OnDrag(PointerEventData eventData)
     {
-        transform.position = GetMouseWorldPosition() + offset;
-    }
-
-    private Vector3 GetMouseWorldPosition()
-    {
-        Vector3 mousePoint = Input.mousePosition;
-        // Ajusta el 'z' en función de la distancia de la cámara en tu escena
-        mousePoint.z = 10f;
-        return cam.ScreenToWorldPoint(mousePoint);
+        if (canvas != null)
+        {
+            rectTransform.anchoredPosition = eventData.position + offset;
+        }
     }
 
     /// <summary>
-    /// Rota la pieza en torno al eje Z
+    /// Se llama al soltar la pieza. Aquí podríamos validar la posición.
+    /// </summary>
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        // Opcional: Comprobar si la pieza está en su posición correcta al soltar
+    }
+
+    /// <summary>
+    /// Rota la pieza en torno al eje Z.
     /// </summary>
     public void RotarPieza(float angulo)
     {
-        transform.Rotate(Vector3.forward, angulo, Space.Self);
+        rectTransform.Rotate(Vector3.forward, angulo);
     }
 
     /// <summary>
-    /// Verifica si la pieza se encuentra en alguna de sus "targetPositions"
-    /// dentro de las tolerancias de posición y rotación definidas.
+    /// Comprueba si la pieza está correctamente posicionada.
     /// </summary>
     public bool EstaCorrecta()
     {
-        // Recorremos todas las referencias posibles de la pieza
-        foreach (Transform refPos in targetPositions)
+        foreach (RectTransform target in targetPositions)
         {
-            if (refPos == null) continue;
+            if (target == null) continue;
 
-            // Distancia 2D (ignoramos Z)
-            float distancia = Vector2.Distance(transform.position, refPos.position);
+            // Calculamos la distancia en UI (espacio local)
+            float distancia = Vector2.Distance(rectTransform.anchoredPosition, target.anchoredPosition);
 
-            // Diferencia de ángulos usando DeltaAngle para que 359 vs 0 sea 1 grado
-            float rotPieza = transform.eulerAngles.z;
-            float rotRef = refPos.eulerAngles.z;
+            // Diferencia de rotación (permitimos ángulos de 45° y 180°)
+            float rotPieza = rectTransform.eulerAngles.z;
+            float rotRef = target.eulerAngles.z;
             float diferenciaRot = Mathf.Abs(Mathf.DeltaAngle(rotPieza, rotRef));
 
-            // ¿Dentro de la tolerancia?
-            if (distancia <= toleranciaPosicion && diferenciaRot <= toleranciaRotacion)
+            // Ajustar tolerancias para aceptar posiciones espejadas
+            float toleranciaPos = 15f;
+            float toleranciaRot = 10f;
+
+            // Si la rotación es múltiplo de 45° o 180° (para inversiones), lo validamos
+            if (distancia <= toleranciaPos && (diferenciaRot % 45f <= toleranciaRot || diferenciaRot % 180f <= toleranciaRot))
             {
                 return true;
             }
         }
-
-        // Si ninguna referencia coincide, no está correcta
         return false;
     }
+
+    public void HacerAlgo()
+    {
+        Debug.Log($"{gameObject.name}: Método HacerAlgo() ejecutado.");
+    }
+
+
 }

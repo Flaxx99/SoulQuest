@@ -4,30 +4,27 @@ using System.Collections.Generic;
 public class TangramGameManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> piezasPosibles = new List<GameObject>();
+    public List<GameObject> piezas;
 
     void Start()
     {
-        GameObject tangramPiecesParent = GameObject.Find("TangramPieces"); // Buscamos el contenedor de piezas
-
-        if (piezasPosibles != null && piezasPosibles.Count > 0)
+        for (int i = 0; i < piezas.Count; i++)
         {
-            foreach (GameObject pieza in piezasPosibles)
+            if (piezas[i] == null)
             {
-                // Verificamos si ya existe una pieza con el mismo nombre dentro de TangramPieces
-                if (tangramPiecesParent.transform.Find(pieza.name) == null)
-                {
-                    GameObject nuevaPieza = Instantiate(pieza, new Vector3(Random.Range(-5, -3), Random.Range(-2, 2), 0), Quaternion.identity);
-                    nuevaPieza.transform.SetParent(tangramPiecesParent.transform, false);
-                }
-                else
-                {
-                    Debug.LogWarning($"La pieza {pieza.name} ya existe en TangramPieces y no será duplicada.");
-                }
+                Debug.LogError($"⚠️ Error: La pieza en el índice {i} es NULL en TangramGameManager.");
+                continue;
             }
-        }
-        else
-        {
-            Debug.LogError("No hay piezas disponibles en piezasPosibles.");
+
+            TangramPiece pieza = piezas[i].GetComponent<TangramPiece>();
+            if (pieza == null)
+            {
+                Debug.LogError($"⚠️ Error: La pieza {piezas[i].name} no tiene el componente TangramPiece.");
+                continue;
+            }
+
+            pieza.HacerAlgo(); // Solo se ejecuta si la pieza es válida
         }
     }
+
 }

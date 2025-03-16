@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      trianguloChico2_0: 6224006646502942874
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
