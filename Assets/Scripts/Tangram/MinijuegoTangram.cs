@@ -62,6 +62,16 @@ public class MinijuegoTangram : MonoBehaviour
             botonAceptar.gameObject.SetActive(true);
             botonAceptar.onClick.RemoveAllListeners();
             botonAceptar.onClick.AddListener(CerrarMiniJuego); // Salir del minijuego
+            PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
+
+            if (personajeExp != null)
+            {
+                personajeExp.AnadirExperiencia(50);
+            }
+            else
+            {
+                Debug.LogWarning("PersonajeExperiencia no encontrado. No se pudo otorgar experiencia.");
+            }
         }
         else
         {
