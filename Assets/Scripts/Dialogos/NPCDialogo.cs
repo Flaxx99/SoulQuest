@@ -1,6 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
 
 public enum InteraccionExtraNPC
 {
@@ -16,12 +17,13 @@ public class NPCDialogo : ScriptableObject
     public string Nombre;
     public Sprite Icono;
     public bool ContieneInteraccionExtra;
+    public InteraccionExtraNPC InteraccionExtra;
 
     [Header("Saludo")]
     [TextArea] public string Saludo;
 
     [Header("Chat")]
-    [TextArea] public string Conversacion;
+    public DialogoTexto[] Conversacion;
 
     [Header("Despedida")]
     [TextArea] public string Despedida;

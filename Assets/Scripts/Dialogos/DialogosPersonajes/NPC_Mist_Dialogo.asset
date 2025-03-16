@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4829fbb547442aa46b63861a16cf9c41, type: 3}
+  m_Name: NPC_Mist_Dialogo
+  m_EditorClassIdentifier: 
+  Nombre: Hombre Misterioso
+  Icono: {fileID: -7232779301871914677, guid: bb9342f8b8c35cb43afb84afbc83bf6e, type: 3}
+  ContieneInteraccionExtra: 0
+  InteraccionExtra: 0
+  Saludo: "Oh, hola. No te hab\xEDa visto por aqu\xED antes. \xBFEres nuevo en la
+    Academia?"
+  Conversacion:
+  - Oracion: "Se dice que la escuela guarda un misterio antiguo\u2026 En la biblioteca
+      suceden cosas extra\xF1as: libros que se mueven solos, susurros en la noche
+      y p\xE1ginas que desaparecen. Quiz\xE1 solo sean leyendas... o tal vez no."
+  Despedida: "En fin, ten cuidado si vas a la biblioteca. \xA1Nos vemos pronto! Y
+    recuerda... no todo es lo que parece."
