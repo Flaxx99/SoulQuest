@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class ActivarMinijuegoTangram : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class ActivarMinijuegoTangram : MonoBehaviour
 
         if (personajeExperiencia == null)
         {
-            Debug.LogError("No se encontró PersonajeExperiencia en la escena.");
+            Debug.LogError("No se encontrÃ³ PersonajeExperiencia en la escena.");
         }
     }
 
@@ -25,14 +25,14 @@ public class ActivarMinijuegoTangram : MonoBehaviour
 
             if (nivelJugador >= nivelRequerido)
             {
-                Debug.Log("Jugador activó el minijuego de Tangram.");
+                Debug.Log("Jugador activÃ³ el minijuego de Tangram.");
                 miniJuego.ActivarMiniJuego();
                 minijuegoActivo = true;
                 AudioManager.instancia.CambiarMusica("Minijuego");
             }
             else
             {
-                Debug.Log("¡No tienes el nivel suficiente para jugar este minijuego!");
+                Debug.Log("Â¡No tienes el nivel suficiente para jugar este minijuego!");
                 UIManager.Instance.MostrarMensaje($"Necesitas tener nivel {nivelRequerido} para jugar este minijuego.");
             }
         }

@@ -42,35 +42,36 @@ public class MinijuegoTangram : MonoBehaviour
         }
     }
 
-    public void CheckSolution()
+   public void CheckSolution()
     {
-        // Llamamos a la validación de las piezas en el TangramValidator
         tangramValidator.CheckSolution();
 
-        // Verifica si todas las piezas están correctas
         if (tangramValidator.piezasCorrectas == tangramValidator.posicionesObjetivo.Count)
         {
-            // Mostrar mensaje de "¡Felicidades!"
             resultadoTexto.text = "¡Felicidades! Todas las piezas están correctamente posicionadas.";
             resultadoTexto.color = Color.green;
 
-            // 🚀 **Detener el temporizador**
-            minijuegoActivo = false; // Desactivamos el minijuego, por lo que el temporizador dejará de actualizarse
+            minijuegoActivo = false;
 
-            // Cambiar el botón a "Salir" solo si se gana
             botonAceptar.GetComponentInChildren<TMP_Text>().text = "Salir";
             botonAceptar.gameObject.SetActive(true);
             botonAceptar.onClick.RemoveAllListeners();
-            botonAceptar.onClick.AddListener(CerrarMiniJuego); // Salir del minijuego
-            PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
+            botonAceptar.onClick.AddListener(CerrarMiniJuego);
 
-            if (personajeExp != null)
+            // ✅ Asegurar que solo se otorga experiencia UNA VEZ por victoria
+            if (!PlayerPrefs.HasKey("GanoMinijuegoTangram"))
             {
-                personajeExp.AnadirExperiencia(50);
-            }
-            else
-            {
-                Debug.LogWarning("PersonajeExperiencia no encontrado. No se pudo otorgar experiencia.");
+                PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
+
+                if (personajeExp != null)
+                {
+                    personajeExp.AnadirExperiencia(50);
+                    PlayerPrefs.SetInt("GanoMinijuegoTangram", 1); // Evitar que se repita
+                }
+                else
+                {
+                    Debug.LogWarning("PersonajeExperiencia no encontrado. No se pudo otorgar experiencia.");
+                }
             }
         }
         else
@@ -79,6 +80,8 @@ public class MinijuegoTangram : MonoBehaviour
             resultadoTexto.color = Color.red;
         }
     }
+
+
 
     // Método para detener el temporizador
     private void DetenerTemporizador()
@@ -90,13 +93,16 @@ public class MinijuegoTangram : MonoBehaviour
             textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualiza el texto del temporizador
         }
     }
-    private void TiempoTerminado()
+   private void TiempoTerminado()
     {
         if (!minijuegoActivo) return;
 
         minijuegoActivo = false;
         resultadoTexto.text = "¡Tiempo agotado! Has perdido.";
         resultadoTexto.color = Color.red;
+
+        // ✅ Ocultar el botón "Comprobar" cuando el tiempo se acaba
+        botonComprobar.gameObject.SetActive(false);
 
         // 🔄 Reiniciar las piezas del Tangram cuando el tiempo se agote
         tangramValidator.ReiniciarTangram();
@@ -129,15 +135,14 @@ public class MinijuegoTangram : MonoBehaviour
             botonAceptar.onClick.AddListener(ReintentarMinijuego);
         }
     }
-
-    private void ReintentarMinijuego()
+   private void ReintentarMinijuego()
     {
         resultadoTexto.text = "";
         botonAceptar.gameObject.SetActive(false);
+        botonComprobar.gameObject.SetActive(true);
 
-        tangramValidator.ReiniciarTangram(); // 🔄 Reiniciar la posición de las piezas
+        tangramValidator.ReiniciarTangram(); // Reiniciar la posición de las piezas
 
-        // ✅ Permitir que las piezas vuelvan a moverse
         foreach (var posicion in tangramValidator.posicionesObjetivo)
         {
             if (posicion.piezaAsignada != null)
@@ -146,8 +151,15 @@ public class MinijuegoTangram : MonoBehaviour
             }
         }
 
+        // ✅ Permitir ganar experiencia solo si el jugador gana después del reintento
+        PlayerPrefs.DeleteKey("GanoMinijuegoTangram");
+
+        AudioManager.instancia.CambiarMusica("Minijuego");
+
         ActivarMiniJuego();
     }
+
+
 
     private void GameOver()
     {

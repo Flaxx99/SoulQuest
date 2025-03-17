@@ -231,6 +231,4 @@ public class UIManager : Singleton<UIManager>
     {
         mensajePanel.SetActive(false);
     }
-
-
 }

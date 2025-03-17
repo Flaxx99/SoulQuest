@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PersonajeExperiencia : MonoBehaviour
 {
@@ -29,15 +29,17 @@ public class PersonajeExperiencia : MonoBehaviour
             AnadirExperiencia(2f);
         }
     }
-    public void AnadirExperiencia(float expObtenida)
+   public void AnadirExperiencia(float expObtenida)
     {
         if (expObtenida > 0f)
         {
             expActual += expObtenida;
             expActualTemp += expObtenida;
 
-            while (expActualTemp >= expRequeridaSiguienteNivel && stats.Nivel < nivelMax)
+            // ✅ Solo permitir subir un nivel por victoria
+            if (expActualTemp >= expRequeridaSiguienteNivel && stats.Nivel < nivelMax)
             {
+                expActualTemp -= expRequeridaSiguienteNivel;
                 ActualizarNivel();
             }
 
@@ -46,19 +48,22 @@ public class PersonajeExperiencia : MonoBehaviour
         }
     }
 
+
     private void ActualizarNivel()
     {
         if (stats.Nivel < nivelMax)
         {
             stats.Nivel++;
-            expActualTemp = 0f; // Reiniciar experiencia para el nuevo nivel
+
+            // ✅ Mantener la experiencia extra en lugar de resetearla
             expRequeridaSiguienteNivel *= valorIncremental;
             stats.ExpRequeridaSiguienteNivel = expRequeridaSiguienteNivel;
             stats.PuntosDisponibles += 3;
 
-            Debug.Log($"�Subiste al nivel {stats.Nivel}!");
+            Debug.Log($"¡Subiste al nivel {stats.Nivel}!");
         }
     }
+
 
     private void ActualizarBarraExp()
     {

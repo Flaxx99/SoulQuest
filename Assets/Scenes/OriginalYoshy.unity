@@ -3887,6 +3887,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4803781473497281644, guid: 2c5f908e79c1cc64c99237e8b685fd9d, type: 3}
   m_PrefabInstance: {fileID: 1762619777}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &611204015 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5525394136177751545, guid: d4d1bf26ac6350040b39886620d7ac5d, type: 3}
+  m_PrefabInstance: {fileID: 1905661439873157898}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &617826172
 GameObject:
   m_ObjectHideFlags: 0
@@ -12015,6 +12026,10 @@ PrefabInstance:
       propertyPath: tiempoLimite
       value: 120
       objectReference: {fileID: 0}
+    - target: {fileID: 3902274634802394078, guid: d4d1bf26ac6350040b39886620d7ac5d, type: 3}
+      propertyPath: botonComprobar
+      value: 
+      objectReference: {fileID: 611204015}
     - target: {fileID: 4150719813206275778, guid: d4d1bf26ac6350040b39886620d7ac5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.3382263
