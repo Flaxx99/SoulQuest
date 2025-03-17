@@ -29,7 +29,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        CambiarMusica("Pasillos"); // Iniciar con la música de los pasillos
+        CambiarMusica("MainMenu"); // Iniciar con la música de los pasillos
     }
 
     public void CambiarMusica(string tipo)
@@ -38,25 +38,21 @@ public class AudioManager : MonoBehaviour
 
         AudioClip nuevaMusica = null;
 
-        if (tipo == "Pasillos")
+        if (tipo == "Pasillos") nuevaMusica = musicaPasillos;
+        else if (tipo == "Minijuego") nuevaMusica = musicaMinijuegos;
+        else if (tipo == "MainMenu") nuevaMusica = musicaMainMenu;
+
+        if (nuevaMusica == null)
         {
-            nuevaMusica = musicaPasillos;
-        }
-        else if (tipo == "Minijuego")
-        {
-            nuevaMusica = musicaMinijuegos;
-        }
-        else if (tipo == "MainMenu") // 🎵 Agregamos la opción para el menú principal
-        {
-            nuevaMusica = musicaMainMenu;
+            Debug.LogError($"❌ No se encontró música para {tipo}");
+            return;
         }
 
-        // Si ya está sonando la música correcta, no hacer nada
-        if (audioSource.clip == nuevaMusica && audioSource.isPlaying) return;
+        Debug.Log($"🎵 Cambiando música a: {tipo}");
 
-        // Cambia la música y la reproduce
         audioSource.Stop();
         audioSource.clip = nuevaMusica;
         audioSource.Play();
     }
+
 }

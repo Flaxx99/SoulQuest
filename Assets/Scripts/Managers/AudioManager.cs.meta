@@ -4,8 +4,8 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - musicaPasillos: {instanceID: 0}
-  - musicaMinijuegos: {instanceID: 0}
+  - musicaPasillos: {fileID: 8300000, guid: 227a3ab6ef966f342a2a5cba98db7bef, type: 3}
+  - musicaMinijuegos: {fileID: 8300000, guid: 373cab058d323bf42a1fea0feba6cade, type: 3}
   - musicaMainMenu: {fileID: 8300000, guid: d09d09e6e3fa74f4ca843fe2fcf7defc, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
