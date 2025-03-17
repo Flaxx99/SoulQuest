@@ -3,10 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI; // Necesario para usar el botón
 
-/// <summary>
-/// Asocia cada "PosicionObjetivo" a una pieza concreta,
-/// y cada "PosicionObjetivo" puede tener varias "referencias" (RectTransform).
-/// </summary>
 [System.Serializable]
 public class PosicionObjetivo
 {
@@ -14,27 +10,52 @@ public class PosicionObjetivo
     public List<RectTransform> referencias;   // Las posiciones/rotaciones válidas para esa pieza
 }
 
-/// <summary>
-/// Valida si cada pieza está en alguna de sus posiciones correctas.
-/// </summary>
 public class TangramValidator : MonoBehaviour
 {
     [Header("Lista de Objetivos")]
-    [SerializeField] public List<PosicionObjetivo> posicionesObjetivo = new List<PosicionObjetivo>(); // Cambiado a público para acceso
+    [SerializeField] public List<PosicionObjetivo> posicionesObjetivo = new List<PosicionObjetivo>();
 
     [Header("UI")]
-    public TextMeshProUGUI mensajeTexto; // Texto para mostrar mensajes
-    public Button botonComprobar; // El botón para comprobar las respuestas
+    public TextMeshProUGUI mensajeTexto;
+    public Button botonComprobar;
 
-    public int piezasCorrectas = 0; // Para contar las piezas correctamente posicionadas
+    public int piezasCorrectas = 0;
+
+    // Diccionarios para almacenar las posiciones y rotaciones originales
+    private Dictionary<TangramPiece, Vector3> posicionesIniciales = new Dictionary<TangramPiece, Vector3>();
+    private Dictionary<TangramPiece, Quaternion> rotacionesIniciales = new Dictionary<TangramPiece, Quaternion>();
 
     private void Start()
     {
         AsignarPiezas();
+        GuardarPosicionesIniciales(); // Guardamos las posiciones iniciales de las piezas
         botonComprobar.onClick.AddListener(CheckSolution);
     }
 
-    /// Asigna las referencias de `posicionesObjetivo` a cada `TangramPiece`.
+    private void GuardarPosicionesIniciales()
+    {
+        foreach (var posicion in posicionesObjetivo)
+        {
+            if (posicion.piezaAsignada != null)
+            {
+                posicionesIniciales[posicion.piezaAsignada] = posicion.piezaAsignada.transform.position;
+                rotacionesIniciales[posicion.piezaAsignada] = posicion.piezaAsignada.transform.rotation;
+            }
+        }
+    }
+
+    public void ReiniciarTangram()
+    {
+        foreach (var posicion in posicionesObjetivo)
+        {
+            if (posicion.piezaAsignada != null)
+            {
+                posicion.piezaAsignada.transform.position = posicionesIniciales[posicion.piezaAsignada];
+                posicion.piezaAsignada.transform.rotation = rotacionesIniciales[posicion.piezaAsignada];
+            }
+        }
+    }
+
     private void AsignarPiezas()
     {
         foreach (var posicion in posicionesObjetivo)
@@ -45,10 +66,8 @@ public class TangramValidator : MonoBehaviour
                 continue;
             }
 
-            // Limpiar la lista previa
             posicion.piezaAsignada.targetPositions.Clear();
 
-            // Añadir referencias
             foreach (RectTransform refT in posicion.referencias)
             {
                 if (refT != null)
@@ -61,11 +80,9 @@ public class TangramValidator : MonoBehaviour
         }
     }
 
-    /// Comprueba si cada pieza está bien posicionada llamando a `EstaCorrecta()`.
     public void CheckSolution()
     {
-        piezasCorrectas = 0; // Reseteamos el contador
-
+        piezasCorrectas = 0;
         int total = posicionesObjetivo.Count;
 
         foreach (var posicion in posicionesObjetivo)
@@ -77,7 +94,7 @@ public class TangramValidator : MonoBehaviour
                 continue;
             }
 
-            if (pieza.EstaCorrecta()) // Si la pieza está bien posicionada
+            if (pieza.EstaCorrecta())
             {
                 piezasCorrectas++;
             }
@@ -88,7 +105,6 @@ public class TangramValidator : MonoBehaviour
         }
     }
 
-    /// Muestra un mensaje en la UI (si está asignada).
     public void MostrarMensaje(string mensaje, Color color)
     {
         if (mensajeTexto != null)

@@ -3,26 +3,44 @@ using UnityEngine;
 public class ActivarMinijuegoTangram : MonoBehaviour
 {
     public MinijuegoTangram miniJuego;
+    public int nivelRequerido = 2;
+    private bool minijuegoActivo = false;
+    private PersonajeExperiencia personajeExperiencia;
 
-    private bool minijuegoActivo = false; // Nueva variable para evitar doble activación
-
-    private void OnTriggerEnter2D(Collider2D other)
+    private void Start()
     {
-        if (other.CompareTag("Player") && !minijuegoActivo) // Solo activa si no está ya activo
-        {
-            Debug.Log("Jugador activó el minijuego.");
-            miniJuego.ActivarMiniJuego();
-            minijuegoActivo = true; // Evita que se vuelva a activar antes de cerrar
+        personajeExperiencia = Object.FindFirstObjectByType<PersonajeExperiencia>();
 
-            // Cambiar la música a la del minijuego
-            AudioManager.instancia.CambiarMusica("Minijuego");
+        if (personajeExperiencia == null)
+        {
+            Debug.LogError("No se encontró PersonajeExperiencia en la escena.");
         }
     }
 
-    public void ResetearMinijuego() // Llamar esta función cuando el minijuego se cierre
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player") && !minijuegoActivo)
+        {
+            int nivelJugador = personajeExperiencia.ObtenerNivel(); // Obtener el nivel actual del jugador
+
+            if (nivelJugador >= nivelRequerido)
+            {
+                Debug.Log("Jugador activó el minijuego de Tangram.");
+                miniJuego.ActivarMiniJuego();
+                minijuegoActivo = true;
+                AudioManager.instancia.CambiarMusica("Minijuego");
+            }
+            else
+            {
+                Debug.Log("¡No tienes el nivel suficiente para jugar este minijuego!");
+                UIManager.Instance.MostrarMensaje($"Necesitas tener nivel {nivelRequerido} para jugar este minijuego.");
+            }
+        }
+    }
+
+    public void ResetearMinijuego()
     {
         minijuegoActivo = false;
-        // Regresar la música de los pasillos
         AudioManager.instancia.CambiarMusica("Pasillos");
     }
 }
