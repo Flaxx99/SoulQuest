@@ -6,6 +6,19 @@ public class PausaManager : MonoBehaviour
     public static bool JuegoPausado = false;
     public GameObject menuPausaUI;
 
+    private MiniJuegoSpanish miniJuegoSpanish;
+    private MinijuegoTangram miniJuegoTangram;
+    //private MiniJuegoQuemados miniJuegoQuemados;
+
+
+    void Start()
+    {
+        miniJuegoSpanish = FindFirstObjectByType<MiniJuegoSpanish>();
+        miniJuegoTangram = FindFirstObjectByType<MinijuegoTangram>();
+        // miniJuegoQuemados = FindFirstObjectByType<MiniJuegoQuemados>();  // Si tienes este minijuego, descoméntalo
+    }
+
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -27,9 +40,15 @@ public class PausaManager : MonoBehaviour
         {
             menuPausaUI.SetActive(true);
         }
+
         Time.timeScale = 0f;
         JuegoPausado = true;
+
+        // 🔥 Pausar todos los minijuegos si están activos
+        if (miniJuegoSpanish != null) miniJuegoSpanish.PausarMinijuego();
+        //if (miniJuegoQuemados != null) miniJuegoQuemados.PausarMinijuego();
     }
+
 
     public void Reanudar()
     {
@@ -37,9 +56,16 @@ public class PausaManager : MonoBehaviour
         {
             menuPausaUI.SetActive(false);
         }
+
         Time.timeScale = 1f;
         JuegoPausado = false;
+
+        // 🔥 Reanudar todos los minijuegos si están activos
+        if (miniJuegoSpanish != null) miniJuegoSpanish.ReanudarMinijuego();
+        //if (miniJuegoQuemados != null) miniJuegoQuemados.ReanudarMinijuego();
     }
+
+
 
     // 🚀 **Nueva función para cargar el Menú Principal**
     public void IrAlMenuPrincipal()
