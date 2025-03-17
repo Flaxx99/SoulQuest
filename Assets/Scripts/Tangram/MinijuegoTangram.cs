@@ -90,36 +90,43 @@ public class MinijuegoTangram : MonoBehaviour
             textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualiza el texto del temporizador
         }
     }
-
     private void TiempoTerminado()
     {
-        if (!minijuegoActivo) return; // 🚀 Evita que se ejecute si el jugador ya ganó
+        if (!minijuegoActivo) return;
 
-        minijuegoActivo = false; // Detener el temporizador
-        resultadoTexto.text = "¡Tiempo agotado! Has perdido.";  // Muestra el mensaje de que se ha agotado el tiempo
+        minijuegoActivo = false;
+        resultadoTexto.text = "¡Tiempo agotado! Has perdido.";
         resultadoTexto.color = Color.red;
 
-        // Reducir la vida en 10 puntos solo si el jugador no ganó
-        float nuevaVida = UIManager.Instance.VidaActual - 10;
-        UIManager.Instance.ActualizarVidaPersonaje(nuevaVida, UIManager.Instance.VidaMax);  // Reducir vida
+        // 🔄 Reiniciar las piezas del Tangram cuando el tiempo se agote
+        tangramValidator.ReiniciarTangram();
 
-        // Reproducir la música nuevamente
+        // 🚫 Bloquear la interacción con las piezas
+        foreach (var posicion in tangramValidator.posicionesObjetivo)
+        {
+            if (posicion.piezaAsignada != null)
+            {
+                posicion.piezaAsignada.BloquearInteraccion();
+            }
+        }
+
+        float nuevaVida = UIManager.Instance.VidaActual - 10;
+        UIManager.Instance.ActualizarVidaPersonaje(nuevaVida, UIManager.Instance.VidaMax);
         AudioManager.instancia.CambiarMusica("Minijuego");
 
-        // Configurar el botón correctamente
-        botonAceptar.gameObject.SetActive(true); // Mostrar el botón
-        botonAceptar.onClick.RemoveAllListeners(); // Limpiar listeners previos
+        botonAceptar.gameObject.SetActive(true);
+        botonAceptar.onClick.RemoveAllListeners();
 
         if (nuevaVida <= 0)
         {
             resultadoTexto.text = "¡Has perdido toda tu vida! GAME OVER.";
             botonAceptar.GetComponentInChildren<TMP_Text>().text = "Salir";
-            botonAceptar.onClick.AddListener(GameOver); // Llamar a GameOver si la vida llega a 0
+            botonAceptar.onClick.AddListener(GameOver);
         }
         else
         {
             botonAceptar.GetComponentInChildren<TMP_Text>().text = "Reintentar";
-            botonAceptar.onClick.AddListener(ReintentarMinijuego); // Configura el botón para reintentar
+            botonAceptar.onClick.AddListener(ReintentarMinijuego);
         }
     }
 
@@ -128,8 +135,20 @@ public class MinijuegoTangram : MonoBehaviour
         resultadoTexto.text = "";
         botonAceptar.gameObject.SetActive(false);
 
-        ActivarMiniJuego(); // Reinicia el minijuego sin resetear la vida
+        tangramValidator.ReiniciarTangram(); // 🔄 Reiniciar la posición de las piezas
+
+        // ✅ Permitir que las piezas vuelvan a moverse
+        foreach (var posicion in tangramValidator.posicionesObjetivo)
+        {
+            if (posicion.piezaAsignada != null)
+            {
+                posicion.piezaAsignada.PermitirInteraccion();
+            }
+        }
+
+        ActivarMiniJuego();
     }
+
     private void GameOver()
     {
         Debug.Log("GAME OVER. El jugador ha perdido toda su vida.");

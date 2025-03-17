@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,56 +7,48 @@ public class TangramPiece : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
     private RectTransform rectTransform;
     private Canvas canvas;
     private Vector2 offset;
+    private bool interactuable = true; //
 
-    [Header("Validación")]
-    public float toleranciaPosicion = 20f; // Ajusta según el tamaño de las piezas
-    public float toleranciaRotacion = 10f; // Ajusta la tolerancia de rotación
-    public List<RectTransform> targetPositions = new List<RectTransform>(); // Posiciones válidas
+    [Header("ValidaciÃ³n")]
+    public float toleranciaPosicion = 20f; // Ajusta segÃºn el tamaÃ±o de las piezas
+    public float toleranciaRotacion = 10f; // Ajusta la tolerancia de rotaciÃ³n
+    public List<RectTransform> targetPositions = new List<RectTransform>(); // Posiciones vÃ¡lidas
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        canvas = GetComponentInParent<Canvas>(); // Obtiene el Canvas más cercano
+        canvas = GetComponentInParent<Canvas>(); // Obtiene el Canvas mÃ¡s cercano
     }
 
-    /// <summary>
-    /// Comienza el arrastre y guarda la posición inicial.
-    /// </summary>
+    // Comienza el arrastre y guarda la posiciÃ³n inicial.
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!interactuable) return; // ðŸš« No permitir arrastrar si el minijuego ha terminado
         offset = rectTransform.anchoredPosition - eventData.position;
     }
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        // Opcional: Puedes validar si estÃ¡ en la posiciÃ³n correcta
+    }
 
-    /// <summary>
-    /// Mueve la pieza mientras se arrastra.
-    /// </summary>
+    // Mueve la pieza mientras se arrastra.
     public void OnDrag(PointerEventData eventData)
     {
+        if (!interactuable) return; // ðŸš« No permitir mover la pieza si el tiempo se agotÃ³
         if (canvas != null)
         {
             rectTransform.anchoredPosition = eventData.position + offset;
         }
     }
 
-    /// <summary>
-    /// Se llama al soltar la pieza. Aquí podríamos validar la posición.
-    /// </summary>
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        // Opcional: Comprobar si la pieza está en su posición correcta al soltar
-    }
-
-    /// <summary>
     /// Rota la pieza en torno al eje Z.
-    /// </summary>
     public void RotarPieza(float angulo)
     {
+        if (!interactuable) return; // ðŸš« No permitir rotar si el tiempo se agotÃ³
         rectTransform.Rotate(Vector3.forward, angulo);
     }
 
-    /// <summary>
-    /// Comprueba si la pieza está correctamente posicionada.
-    /// </summary>
+    /// Comprueba si la pieza estÃ¡ correctamente posicionada.
     public bool EstaCorrecta()
     {
         foreach (RectTransform target in targetPositions)
@@ -66,7 +58,7 @@ public class TangramPiece : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
             // Calculamos la distancia en UI (espacio local)
             float distancia = Vector2.Distance(rectTransform.anchoredPosition, target.anchoredPosition);
 
-            // Diferencia de rotación (permitimos ángulos de 45° y 180°)
+            // Diferencia de rotaciÃ³n (permitimos Ã¡ngulos de 45Â° y 180Â°)
             float rotPieza = rectTransform.eulerAngles.z;
             float rotRef = target.eulerAngles.z;
             float diferenciaRot = Mathf.Abs(Mathf.DeltaAngle(rotPieza, rotRef));
@@ -75,7 +67,7 @@ public class TangramPiece : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
             float toleranciaPos = 15f;
             float toleranciaRot = 10f;
 
-            // Si la rotación es múltiplo de 45° o 180° (para inversiones), lo validamos
+            // Si la rotaciÃ³n es mÃºltiplo de 45Â° o 180Â° (para inversiones), lo validamos
             if (distancia <= toleranciaPos && (diferenciaRot % 45f <= toleranciaRot || diferenciaRot % 180f <= toleranciaRot))
             {
                 return true;
@@ -86,8 +78,16 @@ public class TangramPiece : MonoBehaviour, IDragHandler, IBeginDragHandler, IEnd
 
     public void HacerAlgo()
     {
-        Debug.Log($"{gameObject.name}: Método HacerAlgo() ejecutado.");
+        Debug.Log($"{gameObject.name}: MÃ©todo HacerAlgo() ejecutado.");
+    }
+    public void BloquearInteraccion()
+    {
+        interactuable = false;
     }
 
+    public void PermitirInteraccion()
+    {
+        interactuable = true;
+    }
 
 }

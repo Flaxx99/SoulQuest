@@ -154,6 +154,10 @@ public class MiniJuegoSpanish : MonoBehaviour
         resultadoTexto.text = "";
         botonAceptar.gameObject.SetActive(false);
 
+        foreach (TMP_InputField inputField in inputFields)
+        {
+            inputField.text = "";
+        }
         // 🔊 Asegurar que la música se siga reproduciendo
         AudioManager.instancia.CambiarMusica("Minijuego");
 

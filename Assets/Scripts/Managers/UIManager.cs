@@ -40,6 +40,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI atributoDestrezaTMP;
     [SerializeField] private TextMeshProUGUI atributosDisponiblesTMP;
 
+    [Header("Mensajes UI")]
+    [SerializeField] private GameObject mensajePanel;
+    [SerializeField] private TextMeshProUGUI mensajeTexto;
+
+
     private float vidaActual;
     private float vidaMax;
     private float manaActual;
@@ -205,6 +210,26 @@ public class UIManager : Singleton<UIManager>
         }
 
         SceneManager.LoadScene("MainMenu"); // Carga la escena del Menú Principal
+    }
+    public void MostrarMensaje(string mensaje)
+    {
+        if (mensajeTexto != null && mensajePanel != null)
+        {
+            mensajeTexto.text = mensaje;
+            mensajePanel.SetActive(true);
+
+            CancelInvoke("EsconderMensaje");
+            Invoke("EsconderMensaje", 2.5f); // El mensaje desaparece en 2.5 segundos
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: mensajeTexto o mensajePanel no están asignados en el Inspector.");
+        }
+    }
+
+    private void EsconderMensaje()
+    {
+        mensajePanel.SetActive(false);
     }
 
 
