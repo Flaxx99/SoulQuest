@@ -1,15 +1,7 @@
-using System;
+﻿using System;
 using UnityEngine;
 
-
-public enum InteraccionExtraNPC
-{
-    Quests,
-    Tienda,
-    Crafting
-}
-
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "NuevoNPCDialogo", menuName = "NPC/Dialogo")]
 public class NPCDialogo : ScriptableObject
 {
     [Header("Info")]
@@ -21,14 +13,8 @@ public class NPCDialogo : ScriptableObject
     [TextArea] public string Saludo;
 
     [Header("Chat")]
-    [TextArea] public string Conversacion;
+    [TextArea] public string[] Conversacion; // 🔥 Convertido a array para múltiples líneas de diálogo
 
     [Header("Despedida")]
     [TextArea] public string Despedida;
-}
-
-[Serializable]
-public class DialogoTexto
-{
-    [TextArea] public string Oracion;
 }
