@@ -29,7 +29,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        CambiarMusica("Pasillos"); // Iniciar con la música de los pasillos
+        CambiarMusica("MainMenu"); // Iniciar con la música de los pasillos
     }
 
     public void CambiarMusica(string tipo)
