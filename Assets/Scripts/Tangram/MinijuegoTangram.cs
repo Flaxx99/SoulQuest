@@ -18,6 +18,8 @@ public class MinijuegoTangram : MonoBehaviour
     public TangramValidator tangramValidator; // Referencia al script TangramValidator
     private bool juegoPausado = false;
 
+    public GameObject PanelBotones;
+    public GameObject PanelArmaEquipada;
     void Start()
     {
         botonAceptar.gameObject.SetActive(false); // Oculta el botón al inicio
@@ -174,7 +176,8 @@ public class MinijuegoTangram : MonoBehaviour
 
         tiempoRestante = tiempoLimite; // Reinicia el temporizador
         minijuegoActivo = true; // Permite que Update() comience a descontar tiempo
-
+        PanelBotones.SetActive(false);
+        PanelArmaEquipada.SetActive(false);
         textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualizar la UI al inicio
 
         Time.timeScale = 0; // Pausar el juego principal

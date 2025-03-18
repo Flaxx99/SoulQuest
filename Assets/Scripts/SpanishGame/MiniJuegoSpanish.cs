@@ -17,6 +17,9 @@ public class MiniJuegoSpanish : MonoBehaviour
     public Button botonComprobar; // Botón de comprobar respuestas
     private bool juegoPausado = false;
 
+    public GameObject PanelBotones;
+    public GameObject PanelArmaEquipada;
+
     private Dictionary<string, string> anagramasDeAnimales = new Dictionary<string, string>()
     {
         {"pantera", "trapean"},
@@ -88,6 +91,8 @@ public class MiniJuegoSpanish : MonoBehaviour
     {
         Debug.Log("ActivarMiniJuego() ha sido llamado.");
         miniJuegoCanvas.SetActive(true);
+        PanelBotones.SetActive(false);
+        PanelArmaEquipada.SetActive(false);
         resultadoTexto.text = "";
 
         tiempoRestante = tiempoLimite;
