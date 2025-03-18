@@ -302,8 +302,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Salir
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bd4e7a7d05026d34a8a08790319a115e, type: 2}
-  m_sharedMaterial: {fileID: 4869902225061959303, guid: bd4e7a7d05026d34a8a08790319a115e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ea8815725d228c0449194d2516fd2a94, type: 2}
+  m_sharedMaterial: {fileID: 7802034063813313203, guid: ea8815725d228c0449194d2516fd2a94, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1083,8 +1083,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jugar
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bd4e7a7d05026d34a8a08790319a115e, type: 2}
-  m_sharedMaterial: {fileID: 4869902225061959303, guid: bd4e7a7d05026d34a8a08790319a115e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ea8815725d228c0449194d2516fd2a94, type: 2}
+  m_sharedMaterial: {fileID: 7802034063813313203, guid: ea8815725d228c0449194d2516fd2a94, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
