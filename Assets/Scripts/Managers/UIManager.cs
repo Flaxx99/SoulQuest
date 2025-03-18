@@ -53,6 +53,10 @@ public class UIManager : Singleton<UIManager>
     private float expRequeridaNuevoNivel;
     private PersonajeVida personajeVida;
 
+    [Header("Paneles adicionales de UI")]
+    [SerializeField] private GameObject panelBotones;
+    [SerializeField] private GameObject panelArmaEquipada;
+
 
     // Propiedades para acceder a la vida del jugador
     public float VidaActual => vidaActual;
@@ -175,27 +179,46 @@ public class UIManager : Singleton<UIManager>
         // Ocultar UI del jugador SOLO si su salud es 0
         if (PlayerUI != null && personajeVida.Salud <= 0)
         {
+            Debug.Log("Ocultando PlayerUI");
             PlayerUI.SetActive(false);
         }
+
+        // 🔹 Ocultar panel de botones
+        if (panelBotones != null)
+        {
+            Debug.Log("Ocultando PanelBotones");
+            panelBotones.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("⚠ panelBotones no asignado en UIManager");
+        }
+
+        // 🔹 Ocultar panel de arma equipada
+        if (panelArmaEquipada != null)
+        {
+            Debug.Log("Ocultando PanelArmaEquipada");
+            panelArmaEquipada.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("⚠ panelArmaEquipada no asignado en UIManager");
+        }
     }
+
 
    public void ReiniciarJuego()
     {
         Debug.Log("🔄 Reiniciando el juego...");
 
-        // 🔥 Asegurar que la música de los pasillos suene al reiniciar la escena
+        // 🔥 Asegurar que la música de los pasillos suene después de un reinicio
         if (AudioManager.instancia != null)
         {
             AudioManager.instancia.CambiarMusica("Pasillos");
         }
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recargar la escena
-
-        // Reactivar la UI del jugador después del reinicio
-        if (UIManager.Instance != null && UIManager.Instance.PlayerUI != null)
-        {
-            UIManager.Instance.PlayerUI.SetActive(true);
-        }
+        // 🚀 Solo recargamos la escena, sin cambiar el estado del `GameManager`
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 

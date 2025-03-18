@@ -1,27 +1,37 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class IntroManager : MonoBehaviour
 {
-    // CanvasGroup del Canvas de introducci�n para controlar el fade out.
     public CanvasGroup introCanvasGroup;
-    // Referencia al GameObject de la HUD.
     public GameObject hudCanvas;
 
     void Start()
     {
-        // Oculta la HUD al inicio.
-        hudCanvas.SetActive(false);
-    }
-
-    void Update()
-    {
-        // Al presionar cualquier tecla, se inicia la transici�n.
-        if (Input.anyKeyDown)
+        if (GameManager.Instance != null && GameManager.Instance.vieneDelMainMenu)
         {
-            StartCoroutine(FadeOut());
+            Debug.Log("🟢 Mostrando Intro porque el jugador viene del Main Menu");
+
+            introCanvasGroup.gameObject.SetActive(true);
+            hudCanvas.SetActive(false);
+
+            // 🚀 Marcar que la intro ya se mostró, para evitar que vuelva a aparecer en reinicios
+            GameManager.Instance.vieneDelMainMenu = false;
+        }
+        else
+        {
+            Debug.Log("⚠ No se muestra la intro porque es un reinicio");
+            introCanvasGroup.gameObject.SetActive(false);
+            hudCanvas.SetActive(true);
         }
     }
+
+   public void CerrarIntro()
+    {
+        Debug.Log("🟢 Botón Aceptar presionado, cerrando intro...");
+        StartCoroutine(FadeOut());
+    }
+
 
     IEnumerator FadeOut()
     {
@@ -31,7 +41,7 @@ public class IntroManager : MonoBehaviour
             introCanvasGroup.alpha = 1 - (t / fadeDuration);
             yield return null;
         }
-        // Una vez finalizado el fade out, desactiva el Canvas de introducci�n y activa la HUD.
+
         introCanvasGroup.gameObject.SetActive(false);
         hudCanvas.SetActive(true);
     }
