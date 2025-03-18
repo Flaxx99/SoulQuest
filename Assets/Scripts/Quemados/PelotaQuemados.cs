@@ -2,55 +2,69 @@
 
 public class PelotaQuemados : MonoBehaviour
 {
-    private bool puedeColisionar = false;
     private Rigidbody2D rb;
+    private Transform objetivo;
+    private bool enMovimiento = false;
+    public float velocidadSeguimiento = 5f;
+    private MinijuegoManager minijuegoManager;
 
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        rb.gravityScale = 0f; // Asegurar que no tenga gravedad
-        rb.linearVelocity = new Vector2(0, 5f); // Velocidad controlada
-
-        // 🔹 Esperar antes de activar colisiones
-        Invoke("ActivarColisiones", 0.2f);
-
-        Debug.Log("🎾 Pelota creada en posición: " + transform.position);
-        Debug.Log("⚡ Velocidad aplicada: " + rb.linearVelocity);
+        minijuegoManager = FindFirstObjectByType<MinijuegoManager>();
     }
 
-    private void ActivarColisiones()
+    void Update()
     {
-        puedeColisionar = true;
-        Debug.Log("✅ Colisiones activadas para la pelota.");
+        if (enMovimiento && rb != null)
+        {
+            Vector2 direccion = (objetivo.position - transform.position).normalized;
+            rb.linearVelocity = direccion * velocidadSeguimiento;
+        }
+    }
+
+    public void Lanzar(Transform nuevoObjetivo, Vector2 direccion, float fuerza)
+    {
+        objetivo = nuevoObjetivo;
+        enMovimiento = true;
+
+        if (rb != null)
+        {
+            rb.linearVelocity = direccion * fuerza;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!puedeColisionar) return; // Evita colisión prematura
+        // Si el objeto ya está inactivo, no hacemos nada
+        if (!other.gameObject.activeInHierarchy)
+        {
+            Debug.Log("⚠️ Colisión ignorada porque el objeto está inactivo.");
+            return;
+        }
 
-        Debug.Log("🎯 Pelota tocó: " + other.gameObject.name);
+        Debug.Log($"⚡ La pelota colisionó con {other.gameObject.name}");
 
         if (other.CompareTag("Player"))
         {
-            Debug.Log("💥 Pelota impactó al jugador");
+            Debug.Log("💥 La pelota golpeó al jugador.");
             other.GetComponent<JugadorQuemados>().RecibirGolpe();
+            // Desactivar collider para evitar dobles colisiones
+            GetComponent<Collider2D>().enabled = false;
             Destroy(gameObject);
         }
-        else if (other.CompareTag("Enemigo"))
+        else if (other.CompareTag("EnemigoQuemados"))
         {
-            Debug.Log("💥 Pelota impactó al enemigo");
+            Debug.Log("💥 La pelota golpeó al enemigo.");
             other.GetComponent<EnemigoQuemados>().RecibirGolpe();
+            // Desactivar collider para evitar dobles colisiones
+            GetComponent<Collider2D>().enabled = false;
             Destroy(gameObject);
         }
-        else if (other.CompareTag("Limite"))
+
+        if (other.CompareTag("Limite"))
         {
-            Debug.Log("🚫 Pelota eliminada por salir del campo");
             Destroy(gameObject);
-        }
-        else
-        {
-            Debug.Log("🟡 Pelota colisionó con: " + other.gameObject.name);
         }
     }
 }

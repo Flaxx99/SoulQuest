@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class EnemigoQuemados : MonoBehaviour
 {
@@ -8,38 +9,44 @@ public class EnemigoQuemados : MonoBehaviour
     public GameObject pelotaPrefab;
     public Transform puntoDeLanzamiento;
     public float fuerzaLanzamiento = -10f;
-    public float tiempoEntreLanzamientos = 2f;
+    public float tiempoEntreLanzamientos = 1.5f;
     public int vidas = 3;
+    public JugadorQuemados jugador; // Variable para almacenar al jugador
+    public bool yaLanzoPelota = false;
 
     public bool TienePelota { get; set; } = false;
 
-    private float tiempoSiguienteLanzamiento;
     private bool moviendoDerecha = true;
     private Animator anim;
     private MinijuegoManager minijuegoManager;
     private Rigidbody2D rb;
 
+    [Range(0f, 1f)] public float probabilidadEsquivar = 0.2f;
+
     void Start()
     {
-        tiempoSiguienteLanzamiento = Time.time + tiempoEntreLanzamientos;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        minijuegoManager = Object.FindFirstObjectByType<MinijuegoManager>();
+
+        // Asignar el MinijuegoManager
+        minijuegoManager = FindFirstObjectByType<MinijuegoManager>();
+        if (minijuegoManager == null)
+        {
+            Debug.LogError("❌ MinijuegoManager NO encontrado en la escena.");
+        }
 
         if (rb != null)
-        {
             rb.freezeRotation = true;
-        }
     }
 
     void Update()
     {
         MoverEnemigo();
 
-        if (TienePelota && Time.time >= tiempoSiguienteLanzamiento)
+        if (TienePelota)
         {
-            LanzarPelota();
-            tiempoSiguienteLanzamiento = Time.time + tiempoEntreLanzamientos;
+            StartCoroutine(LanzarPelotaConRetraso());
+            TienePelota = false;
         }
     }
 
@@ -57,64 +64,83 @@ public class EnemigoQuemados : MonoBehaviour
             if (transform.position.x <= limiteIzquierdo.position.x)
                 moviendoDerecha = true;
         }
+    }
 
-        if (anim != null)
+    private IEnumerator LanzarPelotaConRetraso()
+    {
+        yield return new WaitForSeconds(1.0f);
+        if (yaLanzoPelota)
         {
-            if (HasParameter(anim, "isMoving"))
-                anim.SetBool("isMoving", true);
-
-            if (HasParameter(anim, "MoveX"))
-                anim.SetFloat("MoveX", moviendoDerecha ? 1 : -1);
+            LanzarPelota();
         }
     }
 
-    void LanzarPelota()
+    public void LanzarPelota()
     {
         if (pelotaPrefab != null && puntoDeLanzamiento != null)
         {
             GameObject pelota = Instantiate(pelotaPrefab, puntoDeLanzamiento.position, Quaternion.identity);
-            Rigidbody2D rbPelota = pelota.GetComponent<Rigidbody2D>();
+            PelotaQuemados pelotaScript = pelota.GetComponent<PelotaQuemados>();
 
-            if (rbPelota != null)
+            if (pelotaScript != null)
             {
-                rbPelota.linearVelocity = new Vector2(0f, fuerzaLanzamiento);
+                Debug.Log("⚽ El enemigo lanza la pelota al jugador.");
+                pelotaScript.Lanzar(jugador.transform, new Vector2(0, -1), Mathf.Abs(fuerzaLanzamiento));
             }
-
-            TienePelota = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("PelotaJuego")) // Ahora solo detecta "PelotaJuego"
+        if (other.CompareTag("PelotaJuego"))
         {
             RecibirGolpe();
             Destroy(other.gameObject);
         }
     }
 
+    private bool golpeRecibido = false;
+
     public void RecibirGolpe()
     {
+        if (!gameObject.activeInHierarchy) return;
+        if (golpeRecibido) return;
+        golpeRecibido = true;
+
+        if (minijuegoManager == null)
+        {
+            Debug.LogError("⚠️ MinijuegoManager no está asignado en EnemigoQuemados.");
+            return;
+        }
+
         vidas--;
-        Debug.Log("�El enemigo fue golpeado! Vidas restantes: " + vidas);
-        minijuegoManager.ActualizarVidas(true, vidas);
+        Debug.Log("🔥 ¡El enemigo fue golpeado! Vidas restantes: " + vidas);
+        minijuegoManager.ActualizarVidas(false, vidas);
 
         if (vidas <= 0)
         {
-            Debug.Log("�El enemigo ha perdido!");
+            Debug.Log("💀 El enemigo ha perdido...");
+            StopAllCoroutines();
             minijuegoManager.VerificarFinDelJuego(true);
             gameObject.SetActive(false);
         }
+        else
+        {
+            LanzarPelota();
+            minijuegoManager.CambiarTurno();
+            StartCoroutine(ResetGolpe());
+        }
     }
 
-    // M�todo para verificar si el Animator tiene el par�metro antes de usarlo
-    private bool HasParameter(Animator animator, string paramName)
+    private IEnumerator ResetGolpe()
     {
-        foreach (AnimatorControllerParameter param in animator.parameters)
-        {
-            if (param.name == paramName)
-                return true;
-        }
-        return false;
+        yield return new WaitForSeconds(0.5f);
+        golpeRecibido = false;
+    }
+
+    public void TomarPelota()
+    {
+        Debug.Log("🔴 El enemigo atrapó la pelota");
+        TienePelota = true;
     }
 }

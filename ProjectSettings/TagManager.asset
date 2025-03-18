@@ -11,6 +11,8 @@ TagManager:
   - LimiteInferior
   - ZonaValidacion
   - PelotaInicial
+  - EnemigoQuemados
+  - Limite
   layers:
   - Default
   - TransparentFX

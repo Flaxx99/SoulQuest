@@ -5,25 +5,27 @@ public class InicioMinijuego : MonoBehaviour
     public Transform spawnJugadorMinijuego;
     public Transform spawnEnemigoMinijuego;
     public Transform spawnPelotaMinijuego;
-    public GameObject jugador;
-    public GameObject enemigo;
+    public GameObject jugador;       // El mismo "Alumno"
+    public GameObject enemigo;       // El enemigo
     public GameObject pelotaPrefab;
-    public GameObject salonGym;
-    public GameObject salones;
-    public GameObject canvasMinijuego;
+    public GameObject canvasMinijuego; // UI del minijuego
+    //public GameObject salonGym;     // Comentado: si no quieres usarlo
+
     public Camera mainCamera;
 
     private Vector3 posicionOriginalJugador;
     private Vector3 posicionOriginalEnemigo;
     private bool minijuegoActivo = false;
-    private bool[] estadoSalones;
 
     private void Start()
     {
+        // Guardamos posiciones originales
         posicionOriginalJugador = jugador.transform.position;
         posicionOriginalEnemigo = enemigo.transform.position;
-        salonGym.SetActive(false);
-        canvasMinijuego.SetActive(false);
+
+        // Dejar inactiva la UI del minijuego al principio
+        if (canvasMinijuego != null) canvasMinijuego.SetActive(false);
+        // if (salonGym != null) salonGym.SetActive(false); // Comentado si no quieres ocultar nada
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -32,38 +34,58 @@ public class InicioMinijuego : MonoBehaviour
         {
             minijuegoActivo = true;
             IniciarMinijuego();
+
+            // Destruir este objeto si es la PelotaInicial
+            Destroy(gameObject);
         }
     }
 
     public void IniciarMinijuego()
     {
-        // Desactivar el script de movimiento normal y activar el de minijuego
-        jugador.GetComponent<PersonajeMovimiento>().enabled = false;
-        jugador.GetComponent<JugadorQuemados>().enabled = true;
+        minijuegoActivo = true;
 
-        // Guardar el estado de los salones
-        estadoSalones = new bool[salones.transform.childCount];
-        for (int i = 0; i < salones.transform.childCount; i++)
+        // Inicializar vidas
+        jugador.GetComponent<JugadorQuemados>().vidas = 3;
+        enemigo.GetComponent<EnemigoQuemados>().vidas = 3;
+
+        // Evitar que se duplique el canvas
+        if (canvasMinijuego != null && canvasMinijuego.activeSelf) return;
+
+        // Apagar PersonajeMovimiento y encender JugadorQuemados
+        if (jugador != null)
         {
-            estadoSalones[i] = salones.transform.GetChild(i).gameObject.activeSelf;
-            salones.transform.GetChild(i).gameObject.SetActive(false);
+            PersonajeMovimiento pm = jugador.GetComponent<PersonajeMovimiento>();
+            if (pm != null) pm.enabled = false;
+
+            JugadorQuemados jq = jugador.GetComponent<JugadorQuemados>();
+            if (jq != null) jq.enabled = true;
         }
 
-        salonGym.SetActive(true);
-        canvasMinijuego.SetActive(true);
+        // Activar la UI del minijuego
+        if (canvasMinijuego != null) canvasMinijuego.SetActive(true);
 
-        jugador.transform.position = spawnJugadorMinijuego.position;
-        enemigo.transform.position = spawnEnemigoMinijuego.position;
+        // if (salonGym != null) salonGym.SetActive(true); // Comentado para no ocultar nada del mapa
 
-        GameObject pelotaInicial = GameObject.FindWithTag("PelotaInicial");
-        if (pelotaInicial != null)
+        // Reposicionar jugador y enemigo
+        if (spawnJugadorMinijuego != null)
+            jugador.transform.position = spawnJugadorMinijuego.position;
+        if (spawnEnemigoMinijuego != null)
+            enemigo.transform.position = spawnEnemigoMinijuego.position;
+
+        // Destruir pelotas anteriores
+        foreach (GameObject pelotaExistente in GameObject.FindGameObjectsWithTag("PelotaJuego"))
         {
-            Destroy(pelotaInicial);
+            Destroy(pelotaExistente);
         }
 
-        GameObject pelota = Instantiate(pelotaPrefab, spawnPelotaMinijuego.position, Quaternion.identity);
-        pelota.tag = "PelotaJuego";
+        // Crear la nueva pelota
+        if (pelotaPrefab != null && spawnPelotaMinijuego != null)
+        {
+            GameObject nuevaPelota = Instantiate(pelotaPrefab, spawnPelotaMinijuego.position, Quaternion.identity);
+            nuevaPelota.tag = "PelotaJuego";
+        }
 
+        // Asignar la pelota aleatoriamente
         if (Random.Range(0, 2) == 0)
         {
             jugador.GetComponent<JugadorQuemados>().TienePelota = true;
@@ -73,31 +95,76 @@ public class InicioMinijuego : MonoBehaviour
             enemigo.GetComponent<EnemigoQuemados>().TienePelota = true;
         }
 
-        mainCamera.transform.position = new Vector3(salonGym.transform.position.x, salonGym.transform.position.y, mainCamera.transform.position.z);
-        mainCamera.orthographicSize = 5;
+        // Ajustar la cámara al minijuego si quieres
+        if (mainCamera != null /* && salonGym != null */)
+        {
+            // Ejemplo: centrar en spawnJugadorMinijuego
+            // mainCamera.transform.position = new Vector3(spawnJugadorMinijuego.position.x, spawnJugadorMinijuego.position.y, mainCamera.transform.position.z);
+            // mainCamera.orthographicSize = 5;
+        }
+
+        // Llamar al MinijuegoManager
+        MinijuegoManager manager = FindFirstObjectByType<MinijuegoManager>();
+        if (manager != null)
+        {
+            manager.IniciarMinijuego();
+        }
+        else
+        {
+            Debug.LogError("No se encontró MinijuegoManager en la escena.");
+        }
     }
+
+    // Punto final si deseas que aparezca en cierto lugar
+    public Transform puntoFinMinijuego;
 
     public void FinalizarMinijuego()
     {
-        // Restaurar el script de movimiento normal y desactivar el de minijuego
-        jugador.GetComponent<PersonajeMovimiento>().enabled = true;
-        jugador.GetComponent<JugadorQuemados>().enabled = false;
+        Debug.Log("Finalizando minijuego...");
 
-        // Restaurar los salones
-        for (int i = 0; i < salones.transform.childCount; i++)
+        // Aseguramos que el jugador se vea y se posicione en su lugar final
+        if (jugador != null)
         {
-            salones.transform.GetChild(i).gameObject.SetActive(estadoSalones[i]);
+            jugador.gameObject.SetActive(true);
+
+            Vector3 nuevaPos;
+            if (puntoFinMinijuego != null)
+            {
+                nuevaPos = puntoFinMinijuego.position;
+                Debug.Log("Usando puntoFinMinijuego para la posición final.");
+            }
+            else
+            {
+                nuevaPos = posicionOriginalJugador;
+                Debug.Log("Usando posicionOriginalJugador para la posición final.");
+            }
+            nuevaPos.z = 0;
+            jugador.transform.position = nuevaPos;
+            Debug.Log("Jugador reposicionado en: " + nuevaPos);
         }
 
-        salonGym.SetActive(false);
-        canvasMinijuego.SetActive(false);
+        // if (salonGym != null) salonGym.SetActive(false); // Comentado para no ocultar nada
 
-        jugador.transform.position = posicionOriginalJugador;
-        enemigo.transform.position = posicionOriginalEnemigo;
+        if (canvasMinijuego != null) canvasMinijuego.SetActive(false);
 
-        mainCamera.transform.position = new Vector3(posicionOriginalJugador.x, posicionOriginalJugador.y, mainCamera.transform.position.z);
-        mainCamera.orthographicSize = 7;
+        // Ajustar la cámara si quieres
+        if (mainCamera != null && jugador != null)
+        {
+            Vector3 posCam = new Vector3(jugador.transform.position.x, jugador.transform.position.y, mainCamera.transform.position.z);
+            mainCamera.transform.position = posCam;
+            mainCamera.orthographicSize = 7;
+        }
 
+        Time.timeScale = 1;
         minijuegoActivo = false;
+
+        // Apagar JugadorQuemados, encender PersonajeMovimiento
+        JugadorQuemados jq2 = jugador.GetComponent<JugadorQuemados>();
+        if (jq2 != null) jq2.enabled = false;
+
+        PersonajeMovimiento pm2 = jugador.GetComponent<PersonajeMovimiento>();
+        if (pm2 != null) pm2.enabled = true;
+
+        Debug.Log("¡Minijuego finalizado sin desactivar el mapa!");
     }
 }

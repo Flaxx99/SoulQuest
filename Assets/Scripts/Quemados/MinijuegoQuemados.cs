@@ -27,7 +27,7 @@ public class MinijuegoQuemados : MonoBehaviour
             // Activa las barreras invisibles
             barreras.SetActive(true);
 
-            // Opcional: Eliminar la pelota inicial
+            // Eliminar la "PelotaInicial" (este mismo objeto)
             Destroy(gameObject);
         }
     }
