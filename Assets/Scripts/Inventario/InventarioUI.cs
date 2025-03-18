@@ -73,18 +73,62 @@ public class InventarioUI : Singleton<InventarioUI>
 
     private void ActualizarInventarioDescripcion(int index)
     {
-        if (Inventario.Instance.ItemsInventario[index] != null)
+        // Validar que el índice sea válido antes de continuar
+        if (index < 0 || index >= Inventario.Instance.ItemsInventario.Length)
         {
-            itemIcono.sprite = Inventario.Instance.ItemsInventario[index].Icono;
-            itemNombre.text = Inventario.Instance.ItemsInventario[index].Nombre;
-            itemDescripcion.text = Inventario.Instance.ItemsInventario[index].Descripcion;
-            panelInventarioDescripcion.SetActive(true);
+            Debug.LogWarning($"Intento de actualizar inventario con índice inválido: {index}");
+            panelInventarioDescripcion.SetActive(false);
+            return;
+        }
+
+        InventarioItem item = Inventario.Instance.ItemsInventario[index];
+
+        // Si el slot está vacío, ocultar la descripción
+        if (item == null)
+        {
+            panelInventarioDescripcion.SetActive(false);
+            return;
+        }
+
+        // Actualizar la UI con los datos del item
+        itemIcono.sprite = item.Icono;
+        itemNombre.text = item.Nombre;
+        itemDescripcion.text = item.Descripcion;
+        panelInventarioDescripcion.SetActive(true);
+
+        // Buscar el botón "Usar" en la UI
+        GameObject botonUsarGO = GameObject.Find("Usar - Button");
+        if (botonUsarGO == null)
+        {
+            Debug.LogError("No se encontró el botón 'BotonUsar' en la escena.");
+            return;
+        }
+
+        Button botonUsar = botonUsarGO.GetComponent<Button>();
+        TextMeshProUGUI textoBotonUsar = botonUsarGO.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (textoBotonUsar == null)
+        {
+            Debug.LogError("No se encontró el componente TextMeshProUGUI en el botón 'BotonUsar'.");
+            return;
+        }
+
+        // Cambiar el texto del botón según el tipo de objeto
+        if (item.Tipo == TiposDeItem.Armas)
+        {
+            textoBotonUsar.text = "EQUIPAR";
+        }
+        else if (item.EsConsumible)
+        {
+            textoBotonUsar.text = "USAR";
         }
         else
         {
-            panelInventarioDescripcion.SetActive(false);
+            textoBotonUsar.text = "ACCIÓN";
         }
     }
+
+
 
     public void UsarItem()
     {
@@ -132,7 +176,4 @@ public class InventarioUI : Singleton<InventarioUI>
         InventarioSlot.EventoSlotInteraccion -= SlotInteraccionRespuesta;
     }
     #endregion
-
-    
-
 }
