@@ -1,30 +1,60 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI; // Necesario para usar el botón
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class MiniJuegoSpanish : MonoBehaviour
 {
-    [SerializeField] private float tiempoLimite = 20f; // Tiempo en segundos
-    [SerializeField] private TMP_Text textoTemporizador; // Para mostrar el tiempo restante
+    [SerializeField] private float tiempoLimite = 20f;
+    [SerializeField] private TMP_Text textoTemporizador;
     private float tiempoRestante;
     private bool minijuegoActivo = false;
 
     public GameObject miniJuegoCanvas;
     public TMP_InputField[] inputFields;
     public TMP_Text resultadoTexto;
-    public string[] respuestasCorrectas = { "pantera", "gato", "leopardo", "iguana", "raton" };
-    public ActivarMinijuegoSpanish triggerSpanish; // Nueva referencia pública
     public Button botonAceptar;
+    public Button botonComprobar; // Botón de comprobar respuestas
     private bool juegoPausado = false;
+
+    public GameObject PanelBotones;
+    public GameObject PanelArmaEquipada;
+
+    private Dictionary<string, string> anagramasDeAnimales = new Dictionary<string, string>()
+    {
+        {"pantera", "trapean"},
+        {"gato", "toga"},
+        {"leopardo", "peor lado"},
+        {"iguana", "guaina"},
+        {"raton", "notar"},
+        {"ballena", "llenaba"},
+        {"burro", "rubor"},
+        {"cerdo", "cedro"},
+        {"cobra", "barco"},
+        {"gacela", "acelga"},
+        {"gorila", "gloria"},
+        {"jirafa", "fijara"},
+        {"morsa", "ramos"},
+        {"orca", "caro"},
+        {"paloma", "aploma"},
+        {"serpiente", "presiente"},
+        {"tigre", "grite"}
+    };
+
+    private string[] palabrasSeleccionadas;
+    private string[] respuestasCorrectas;
 
     void Start()
     {
-        botonAceptar.gameObject.SetActive(false); // Oculta el botón al inicio
-        botonAceptar.onClick.AddListener(CerrarMiniJuego); // Asigna la función al botón
+        botonAceptar.gameObject.SetActive(false);
+        botonComprobar.gameObject.SetActive(true);
+        botonAceptar.onClick.AddListener(CerrarMiniJuego);
+        botonComprobar.onClick.AddListener(ComprobarRespuestas);
     }
+
     private void Update()
     {
-        if (minijuegoActivo && !juegoPausado) // 👈 Solo descuenta tiempo si NO está pausado
+        if (minijuegoActivo && !juegoPausado)
         {
             tiempoRestante -= Time.unscaledDeltaTime;
 
@@ -36,6 +66,59 @@ public class MiniJuegoSpanish : MonoBehaviour
 
             textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s";
         }
+    }
+
+    private void SeleccionarPalabrasAleatorias()
+    {
+        List<string> claves = new List<string>(anagramasDeAnimales.Keys);
+        palabrasSeleccionadas = new string[inputFields.Length];
+        respuestasCorrectas = new string[inputFields.Length];
+
+        for (int i = 0; i < inputFields.Length; i++)
+        {
+            int randomIndex = Random.Range(0, claves.Count);
+            string respuestaCorrecta = claves[randomIndex]; // La palabra correcta
+            string anagrama = anagramasDeAnimales[respuestaCorrecta]; // El anagrama a mostrar
+
+            palabrasSeleccionadas[i] = anagrama; // El anagrama es lo que se muestra
+            respuestasCorrectas[i] = respuestaCorrecta; // Guardamos la respuesta correcta
+
+            claves.RemoveAt(randomIndex);
+        }
+    }
+
+   public void ActivarMiniJuego()
+    {
+        Debug.Log("ActivarMiniJuego() ha sido llamado.");
+        miniJuegoCanvas.SetActive(true);
+        PanelBotones.SetActive(false);
+        PanelArmaEquipada.SetActive(false);
+        resultadoTexto.text = "";
+
+        tiempoRestante = tiempoLimite;
+        minijuegoActivo = true;
+
+        SeleccionarPalabrasAleatorias();
+
+        // Asegurar que cada anagrama se muestre en la UI y los InputField estén vacíos
+        for (int i = 0; i < inputFields.Length; i++)
+        {
+            // Buscar el TextMeshPro que está junto a cada InputField
+            TMP_Text textoAnagrama = inputFields[i].transform.parent.GetComponentInChildren<TMP_Text>();
+            if (textoAnagrama != null)
+            {
+                textoAnagrama.text = palabrasSeleccionadas[i]; // Mostrar el anagrama en la UI
+            }
+
+            inputFields[i].text = ""; // Dejar el campo de entrada vacío
+        }
+
+        botonComprobar.gameObject.SetActive(true);
+        botonAceptar.gameObject.SetActive(false);
+
+        textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s";
+        Time.timeScale = 0;
+        AudioManager.instancia.CambiarMusica("Minijuego");
     }
 
 
@@ -58,26 +141,30 @@ public class MiniJuegoSpanish : MonoBehaviour
             resultadoTexto.text = "¡Felicidades! Todas las respuestas son correctas.";
             resultadoTexto.color = Color.green;
 
-            // 🚀 *Detener el temporizador*
             minijuegoActivo = false;
             tiempoRestante = 0f;
             textoTemporizador.text = "";
 
-            // Convertir el botón en "Salir" solo si se gana
+            botonComprobar.gameObject.SetActive(false);
             botonAceptar.GetComponentInChildren<TMP_Text>().text = "Salir";
             botonAceptar.onClick.RemoveAllListeners();
             botonAceptar.onClick.AddListener(CerrarMiniJuego);
             botonAceptar.gameObject.SetActive(true);
 
-            PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
+            // ✅ Asegurar que solo se otorga experiencia UNA VEZ por victoria
+            if (!PlayerPrefs.HasKey("GanoMinijuego"))
+            {
+                PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
 
-            if (personajeExp != null)
-            {
-                personajeExp.AnadirExperiencia(50);
-            }
-            else
-            {
-                Debug.LogWarning("PersonajeExperiencia no encontrado. No se pudo otorgar experiencia.");
+                if (personajeExp != null)
+                {
+                    personajeExp.AnadirExperiencia(50);
+                    PlayerPrefs.SetInt("GanoMinijuego", 1); // Evitar que se repita
+                }
+                else
+                {
+                    Debug.LogWarning("PersonajeExperiencia no encontrado. No se pudo otorgar experiencia.");
+                }
             }
         }
         else
@@ -89,51 +176,22 @@ public class MiniJuegoSpanish : MonoBehaviour
     }
 
 
-    public void CerrarMiniJuego()
-    {
-        Debug.Log("CerrarMiniJuego() se ha ejecutado correctamente.");
-        miniJuegoCanvas.SetActive(false);
-        minijuegoActivo = false;
-        Time.timeScale = 1; // Reanuda el juego principal
-
-        // 🔊 Volver a la música de pasillos
-        AudioManager.instancia.CambiarMusica("Pasillos");
-    }
-
-    public void ActivarMiniJuego()
-    {
-        Debug.Log("ActivarMiniJuego() ha sido llamado.");
-        miniJuegoCanvas.SetActive(true);
-        resultadoTexto.text = "";
-
-        tiempoRestante = tiempoLimite; // Reiniciar temporizador cada vez que se abre el minijuego
-        minijuegoActivo = true; // Permite que Update() comience a descontar tiempo
-
-        textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualizar UI al inicio
-
-        Time.timeScale = 0; // Pausar el juego principal mientras el minijuego está activo
-        // 🔊 Asegurar que la música del minijuego se reproduzca
-        AudioManager.instancia.CambiarMusica("Minijuego");
-    }
-
-
     private void TiempoTerminado()
     {
-        if (!minijuegoActivo) return; // 🚀 Evita que se ejecute si el jugador ya ganó
+        if (!minijuegoActivo) return;
 
-        minijuegoActivo = false; // Detiene el temporizador
+        minijuegoActivo = false;
         resultadoTexto.text = "¡Tiempo agotado! Has perdido.";
         resultadoTexto.color = Color.red;
 
-        // Reducir la vida en 10 puntos solo si el jugador no ganó
+        botonComprobar.gameObject.SetActive(false); // ✅ Ocultar botón Comprobar cuando se acaba el tiempo
+        botonAceptar.gameObject.SetActive(true);
+
         float nuevaVida = UIManager.Instance.VidaActual - 10;
         UIManager.Instance.ActualizarVidaPersonaje(nuevaVida, UIManager.Instance.VidaMax);
 
-        // Reproducir la música nuevamente
         AudioManager.instancia.CambiarMusica("Minijuego");
 
-        // Configurar el botón correctamente
-        botonAceptar.gameObject.SetActive(true);
         botonAceptar.onClick.RemoveAllListeners();
 
         if (nuevaVida <= 0)
@@ -149,26 +207,41 @@ public class MiniJuegoSpanish : MonoBehaviour
         }
     }
 
-    private void ReintentarMinijuego()
+   private void ReintentarMinijuego()
     {
         resultadoTexto.text = "";
         botonAceptar.gameObject.SetActive(false);
+        botonComprobar.gameObject.SetActive(true);
 
         foreach (TMP_InputField inputField in inputFields)
         {
             inputField.text = "";
         }
-        // 🔊 Asegurar que la música se siga reproduciendo
+
+        // ✅ Permitir ganar experiencia solo si el jugador gana después del reintento
+        PlayerPrefs.DeleteKey("GanoMinijuego");
+
         AudioManager.instancia.CambiarMusica("Minijuego");
 
-        ActivarMiniJuego(); // Reinicia el minijuego sin resetear la vida
+        ActivarMiniJuego();
     }
+
 
     private void GameOver()
     {
         Debug.Log("GAME OVER. El jugador ha perdido toda su vida.");
         UIManager.Instance.MostrarPantallaGameOver();
     }
+
+    public void CerrarMiniJuego()
+    {
+        Debug.Log("CerrarMiniJuego() se ha ejecutado correctamente.");
+        miniJuegoCanvas.SetActive(false);
+        minijuegoActivo = false;
+        Time.timeScale = 1;
+        AudioManager.instancia.CambiarMusica("Pasillos");
+    }
+
     public void PausarMinijuego()
     {
         Debug.Log("⏸ Minijuego pausado.");
@@ -180,5 +253,4 @@ public class MiniJuegoSpanish : MonoBehaviour
         Debug.Log("▶ Minijuego reanudado.");
         juegoPausado = false;
     }
-
 }

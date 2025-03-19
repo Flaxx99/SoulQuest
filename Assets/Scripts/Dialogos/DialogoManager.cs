@@ -12,6 +12,13 @@ public class DialogoManager : Singleton<DialogoManager>
     [SerializeField] private TextMeshProUGUI npcNombreTMP;
     [SerializeField] private TextMeshProUGUI npcConversacionTMP;
 
+    // Agregar referencias a los paneles de armas y botones
+    [SerializeField] private GameObject panelArmas;
+    [SerializeField] private GameObject panelBotones;
+
+    // Referencia al script de movimiento del jugador
+    [SerializeField] private PersonajeMovimiento personajeMovimiento;
+
     public NPCInteraccion NPCDisponible { get; set; }
 
     private Queue<string> dialogosSecuencia;
@@ -35,7 +42,7 @@ public class DialogoManager : Singleton<DialogoManager>
             ConfigurarPanel(NPCDisponible.Dialogo);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (despedidaMostrada)
             {
@@ -54,6 +61,15 @@ public class DialogoManager : Singleton<DialogoManager>
     public void AbrirCerrarPanelDialogo(bool estado)
     {
         panelDialogo.SetActive(estado);
+
+        // Ocultar los paneles de armas y botones mientras el diálogo esté activo
+        if (panelArmas != null) panelArmas.SetActive(!estado);
+        if (panelBotones != null) panelBotones.SetActive(!estado);
+        // Deshabilitar movimiento cuando el diálogo está activo
+        if (personajeMovimiento != null)
+        {
+            personajeMovimiento.enabled = !estado;
+        }
     }
 
     private void ConfigurarPanel(NPCDialogo npcDialogo)
@@ -75,9 +91,8 @@ public class DialogoManager : Singleton<DialogoManager>
 
         for (int i = 0; i < npcDialogo.Conversacion.Length; i++)
         {
-            dialogosSecuencia.Enqueue(npcDialogo.Conversacion[i]); // 🔥 Accede directamente al string
+            dialogosSecuencia.Enqueue(npcDialogo.Conversacion[i]);
         }
-
     }
 
     private void ContinuarDialogo()

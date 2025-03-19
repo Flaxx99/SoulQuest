@@ -13,6 +13,7 @@ public class Inventario : Singleton<Inventario>
     public Personaje Personaje => personaje;
     public int NumeroDeSlots => numeroDeSlots;
     public InventarioItem[] ItemsInventario => itemsInventario;
+    private InventarioItem armaEquipada = null; // Para rastrear el arma equipada
 
     private void Start()
     {
@@ -81,25 +82,75 @@ public class Inventario : Singleton<Inventario>
                     indexesDeItem.Add(i);
                 }
             }
-            
+
         }
 
         return indexesDeItem;
     }
-
     private void AgregarItemEnSlotDisponible(InventarioItem item, int cantidad)
     {
-        for (int i = 0; i < itemsInventario.Length; i++)
+        int inicioSlot = (item.Tipo == TiposDeItem.Armas) ? 0 : 6; // Armas en 0-5, otros en 6+
+
+        for (int i = inicioSlot; i < itemsInventario.Length; i++)
         {
             if (itemsInventario[i] == null)
             {
                 itemsInventario[i] = item.CopiarItem();
                 itemsInventario[i].Cantidad = cantidad;
                 InventarioUI.Instance.DibujarItemEnInventario(item, cantidad, i);
+                Debug.Log($"Item {item.Nombre} agregado en el slot {i}");
                 return;
             }
         }
+
+        Debug.LogWarning($"No hay espacio disponible para {item.Nombre}");
     }
+
+    private void Update()
+    {
+        for (int i = 0; i < Mathf.Min(numeroDeSlots, 9); i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                EquiparItemRapido(i);
+            }
+        }
+    }
+
+    private void EquiparItemRapido(int index)
+    {
+        if (index >= itemsInventario.Length)
+        {
+            Debug.Log($"El índice {index} está fuera del rango del inventario.");
+            return;
+        }
+
+        if (itemsInventario[index] == null)
+        {
+            Debug.Log($"El slot {index + 1} está vacío. No hay arma para equipar.");
+            return;
+        }
+
+        if (itemsInventario[index].Tipo != TiposDeItem.Armas)
+        {
+            Debug.Log($"El slot {index + 1} no contiene un arma, sino un {itemsInventario[index].Tipo}.");
+            return;
+        }
+
+        // Si ya hay un arma equipada, la removemos antes de equipar la nueva
+        if (armaEquipada != null)
+        {
+            Debug.Log($"Removiendo arma equipada: {armaEquipada.Nombre}");
+            armaEquipada.RemoverItem();
+        }
+
+        // Equipamos la nueva arma y la almacenamos como el arma equipada
+        itemsInventario[index].EquiparItem();
+        armaEquipada = itemsInventario[index];
+
+        Debug.Log($"Nueva arma equipada: {itemsInventario[index].Nombre}");
+    }
+
 
     private void EliminarItem(int index)
     {

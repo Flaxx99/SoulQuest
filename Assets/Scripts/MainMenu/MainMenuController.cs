@@ -16,7 +16,19 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
+   public void Jugar()
+    {
+        Debug.Log("🟣 Iniciando juego desde el Menú...");
 
+        // 🚀 Marcar que el jugador viene del menú principal
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.vieneDelMainMenu = true;
+        }
+
+        // Cargar la escena principal del juego
+        SceneManager.LoadScene("NombreDeTuEscena"); // Cambia esto por el nombre correcto
+    }
     public void PlayGame()
     {
         Debug.Log("🎮 Iniciando juego desde el Menú...");

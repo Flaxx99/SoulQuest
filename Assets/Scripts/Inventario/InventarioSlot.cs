@@ -47,11 +47,29 @@ public class InventarioSlot : MonoBehaviour
 
     public void SlotUsarItem()
     {
-        if (Inventario.Instance.ItemsInventario[Index] != null)
+        if (Inventario.Instance.ItemsInventario[Index] == null)
         {
+            return;
+        }
+
+        InventarioItem item = Inventario.Instance.ItemsInventario[Index];
+
+        // Si el item es un arma, en lugar de usarla, la equipa
+        if (item.Tipo == TiposDeItem.Armas)
+        {
+            Debug.Log($"Equipando arma: {item.Nombre}");
+            EventoSlotInteraccion?.Invoke(TipoDeInteraccion.Equipar, Index);
+            return;
+        }
+
+        // Si el item es consumible, se usa normalmente
+        if (item.EsConsumible)
+        {
+            Debug.Log($"Usando consumible: {item.Nombre}");
             EventoSlotInteraccion?.Invoke(TipoDeInteraccion.Usar, Index);
         }
     }
+
 
     public void SlotEquiparItem()
     {

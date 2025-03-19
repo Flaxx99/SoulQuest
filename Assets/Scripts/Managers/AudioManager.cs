@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -23,13 +24,48 @@ public class AudioManager : MonoBehaviour
         }
 
         audioSource = GetComponent<AudioSource>();
-        audioSource.loop = true; // Asegura que la música no se detenga
-        audioSource.playOnAwake = false; // Evita que suene sin control
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
     }
 
     void Start()
     {
-        CambiarMusica("MainMenu"); // Iniciar con la música de los pasillos
+        CambiarMusicaSegunEscena();
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // 🔹 Método que detecta cambios de escena y cambia la música correctamente
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        CambiarMusicaSegunEscena();
+    }
+
+    public void CambiarMusicaSegunEscena()
+    {
+        string escenaActual = SceneManager.GetActiveScene().name;
+        Debug.Log($"🎵 Detectando escena: {escenaActual}");
+
+        if (escenaActual == "MainMenu")
+        {
+            CambiarMusica("MainMenu");
+        }
+        else if (escenaActual == "Pasillos" || escenaActual == "EscenaPrincipal")
+        {
+            CambiarMusica("Pasillos");
+        }
+        else if (escenaActual.Contains("Minijuego"))
+        {
+            CambiarMusica("Minijuego");
+        }
     }
 
     public void CambiarMusica(string tipo)
@@ -48,11 +84,12 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
+        if (audioSource.clip == nuevaMusica) return; // Evitar repetir la misma música
+
         Debug.Log($"🎵 Cambiando música a: {tipo}");
 
         audioSource.Stop();
         audioSource.clip = nuevaMusica;
         audioSource.Play();
     }
-
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: ArmaEspada
   Nombre: Espada
-  Icono: {fileID: 21300000, guid: 356e020e81206294e97a711db3109e0a, type: 3}
+  Icono: {fileID: 21300450, guid: c2957f4d831870a48af4ec016652548d, type: 3}
   Descripcion: Espada dorada con un ataque fuerte.
   Tipo: 0
   EsConsumible: 0
