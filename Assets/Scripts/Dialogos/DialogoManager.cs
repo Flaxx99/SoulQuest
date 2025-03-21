@@ -30,19 +30,20 @@ public class DialogoManager : Singleton<DialogoManager>
         dialogosSecuencia = new Queue<string>();
     }
 
-    private void Update()
+   private void Update()
     {
         if (NPCDisponible == null)
         {
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        // Evitar que "E" se pueda presionar si el diálogo ya está activo
+        if (Input.GetKeyDown(KeyCode.E) && !panelDialogo.activeSelf)
         {
             ConfigurarPanel(NPCDisponible.Dialogo);
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (despedidaMostrada)
             {
@@ -57,6 +58,7 @@ public class DialogoManager : Singleton<DialogoManager>
             }
         }
     }
+
 
     public void AbrirCerrarPanelDialogo(bool estado)
     {
