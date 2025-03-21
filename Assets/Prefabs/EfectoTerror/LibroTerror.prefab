@@ -224,8 +224,6 @@ GameObject:
   - component: {fileID: 8374414339487737375}
   - component: {fileID: 4843021743411168915}
   - component: {fileID: 8418116378507035365}
-  - component: {fileID: 3414763257583146742}
-  - component: {fileID: 6751980071123378976}
   m_Layer: 0
   m_Name: CanvasTransicion
   m_TagString: Untagged
@@ -317,36 +315,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!225 &3414763257583146742
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4350654262041532294}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
---- !u!114 &6751980071123378976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4350654262041532294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d7bb23e1b2526149b2f36000e713453, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 7543329997394851151}
-  efectoTerror: {fileID: 0}
-  panelTexto: {fileID: 3435348855255000490}
-  textoTransicion: {fileID: 7263022664686567752}
-  duracionTransicion: 0.5
-  tiempoPantallaNegra: 0.5
 --- !u!1 &6298954334357272229
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +327,7 @@ GameObject:
   - component: {fileID: 4229907520445832983}
   - component: {fileID: 8815903109215204679}
   - component: {fileID: 7543329997394851151}
+  - component: {fileID: 9163829293057595552}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -435,6 +404,24 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &9163829293057595552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6298954334357272229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6583bcaf039d434987cfaee7bbfdd5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 7543329997394851151}
+  efectoTerror: {fileID: 0}
+  panelTexto: {fileID: 3435348855255000490}
+  textoTransicion: {fileID: 7263022664686567752}
+  duracionTransicion: 1
+  tiempoPantallaNegra: 1
 --- !u!1 &7073781421395511028
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,7 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a040e627dd6a9b47b2c180484d24633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transicion: {fileID: 0}
+  transicion: {fileID: 9163829293057595552}
 --- !u!1 &7467525741080484441
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,8 +499,8 @@ GameObject:
   m_Component:
   - component: {fileID: 530395641962053434}
   - component: {fileID: 6701756102984290432}
-  - component: {fileID: 8419100016174120596}
   - component: {fileID: 1621657733990260765}
+  - component: {fileID: 4609446240708164811}
   m_Layer: 0
   m_Name: sp_588
   m_TagString: Untagged
@@ -591,19 +578,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8419100016174120596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7467525741080484441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a040e627dd6a9b47b2c180484d24633, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transicion: {fileID: 6751980071123378976}
 --- !u!61 &1621657733990260765
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -650,3 +624,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 6.1705656, y: 7.4118166}
   m_EdgeRadius: 0
+--- !u!114 &4609446240708164811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7467525741080484441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a040e627dd6a9b47b2c180484d24633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transicion: {fileID: 9163829293057595552}

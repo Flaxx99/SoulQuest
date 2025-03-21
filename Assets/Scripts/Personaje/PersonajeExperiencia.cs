@@ -74,5 +74,9 @@ public class PersonajeExperiencia : MonoBehaviour
         return Mathf.FloorToInt(stats.Nivel); // Convierte el nivel a entero
     }
 
+    public bool HaAlcanzadoNivel4()
+    {
+        return stats.Nivel >= 4;  // Retorna verdadero si el personaje está en nivel 4 o más
+    }
 
 }

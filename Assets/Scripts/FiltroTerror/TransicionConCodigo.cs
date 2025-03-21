@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using TMPro;
 
 public class TransicionConCodigo : MonoBehaviour
 {
@@ -8,22 +7,28 @@ public class TransicionConCodigo : MonoBehaviour
     public CanvasGroup canvasGroup;  // Referencia al CanvasGroup
     public GameObject efectoTerror;   // Filtro de terror (Canvas de filtro de miedo)
     public GameObject panelTexto;    // Panel de texto durante la transición
-    public TextMeshProUGUI textoTransicion; // Texto del panel de transición
+    public TMPro.TextMeshProUGUI textoTransicion; // Texto del panel de transición
 
-    public float duracionTransicion = 0.5f;  // Duración de la transición (en segundos)
-    public float tiempoPantallaNegra = 0.5f; // Tiempo de espera con pantalla negra
+    public float duracionTransicion = 1f;  // Duración de la transición (en segundos)
+    public float tiempoPantallaNegra = 1f; // Tiempo de espera con pantalla negra
+
+    private bool transicionRealizada = false;  // Validación para activar la transición solo una vez
 
     private void Start()
     {
-        // Al inicio, el filtro de terror está desactivado
-        efectoTerror.SetActive(false);
-        panelTexto.SetActive(false); // Asegúrate de que el panel de texto esté oculto al principio
+        // Asegúrate de que el filtro de terror y el panel de texto estén desactivados al inicio
+        efectoTerror.SetActive(false);  // El filtro de terror está desactivado al inicio
+        panelTexto.SetActive(false);   // El panel de texto está oculto al principio
     }
 
     // Método para activar la transición
     public void ActivarTransicion()
     {
-        StartCoroutine(RealizarTransicion());
+        if (!transicionRealizada)  // Solo ejecuta la transición si no ha sido realizada previamente
+        {
+            transicionRealizada = true;  // Marca que la transición ya ha ocurrido
+            StartCoroutine(RealizarTransicion());
+        }
     }
 
     private IEnumerator RealizarTransicion()
@@ -38,20 +43,21 @@ public class TransicionConCodigo : MonoBehaviour
         // 3️⃣ Espera con pantalla negra y texto
         yield return new WaitForSeconds(tiempoPantallaNegra);
 
-        // 4️⃣ Activa el efecto de terror
-        efectoTerror.SetActive(true);
+        // 4️⃣ Aparece el efecto de terror inmediatamente
+        Debug.Log("Activando filtro de terror...");  // Log para verificar activación
+        efectoTerror.SetActive(true);  // Activa el filtro de terror
 
-        // 5️⃣ Duración del efecto de terror (si quieres que dure un tiempo específico)
-        yield return new WaitForSeconds(3f);  // Ajusta el tiempo que desees
-
-        // Si deseas desactivarlo después del tiempo
-        // efectoTerror.SetActive(false);
+        // 5️⃣ Duración del efecto de terror
+        yield return new WaitForSeconds(1f);  // Puedes ajustar el tiempo que se mantiene el filtro
 
         // 6️⃣ Vuelve a la normalidad (Fade out)
         yield return StartCoroutine(FadeCanvas(1f, 0f, duracionTransicion));
 
-        // Desactiva el panel de texto
+        // 7️⃣ Desactiva el panel de texto después de la transición
         panelTexto.SetActive(false);
+
+        // Opcional: Desactivar el filtro de terror si ya no se necesita
+        // efectoTerror.SetActive(false);
     }
 
     // Función para hacer el fade (desaparecer o aparecer la pantalla negra)
