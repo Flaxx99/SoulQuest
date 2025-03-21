@@ -6,6 +6,8 @@ public class TransicionConCodigo : MonoBehaviour
     [Header("Referencias")]
     public CanvasGroup canvasGroup;  // Referencia al CanvasGroup
     public GameObject efectoTerror;   // Filtro de terror (Canvas de filtro de miedo)
+    public AudioSource audioSource;   // AudioSource para reproducir la música
+    public AudioClip musicaTransicion; // El clip de audio para la transición
     public GameObject panelTexto;    // Panel de texto durante la transición
     public TMPro.TextMeshProUGUI textoTransicion; // Texto del panel de transición
 
@@ -19,6 +21,7 @@ public class TransicionConCodigo : MonoBehaviour
         // Asegúrate de que el filtro de terror y el panel de texto estén desactivados al inicio
         efectoTerror.SetActive(false);  // El filtro de terror está desactivado al inicio
         panelTexto.SetActive(false);   // El panel de texto está oculto al principio
+        audioSource.Stop();  // Detener cualquier música si ya hay una reproduciéndose
     }
 
     // Método para activar la transición
@@ -27,6 +30,7 @@ public class TransicionConCodigo : MonoBehaviour
         if (!transicionRealizada)  // Solo ejecuta la transición si no ha sido realizada previamente
         {
             transicionRealizada = true;  // Marca que la transición ya ha ocurrido
+            audioSource.PlayOneShot(musicaTransicion);  // Reproduce el audio de transición al comenzar
             StartCoroutine(RealizarTransicion());
         }
     }
@@ -48,7 +52,7 @@ public class TransicionConCodigo : MonoBehaviour
         efectoTerror.SetActive(true);  // Activa el filtro de terror
 
         // 5️⃣ Duración del efecto de terror
-        yield return new WaitForSeconds(1f);  // Puedes ajustar el tiempo que se mantiene el filtro
+        yield return new WaitForSeconds(3f);  // Puedes ajustar el tiempo que se mantiene el filtro
 
         // 6️⃣ Vuelve a la normalidad (Fade out)
         yield return StartCoroutine(FadeCanvas(1f, 0f, duracionTransicion));
@@ -56,8 +60,8 @@ public class TransicionConCodigo : MonoBehaviour
         // 7️⃣ Desactiva el panel de texto después de la transición
         panelTexto.SetActive(false);
 
-        // Opcional: Desactivar el filtro de terror si ya no se necesita
-        // efectoTerror.SetActive(false);
+        // 8️⃣ Detener la música de transición si es necesario
+        audioSource.Stop();  // Detiene el audio si ya no es necesario
     }
 
     // Función para hacer el fade (desaparecer o aparecer la pantalla negra)
