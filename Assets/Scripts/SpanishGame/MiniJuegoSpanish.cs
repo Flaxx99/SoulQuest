@@ -17,6 +17,7 @@ public class MiniJuegoSpanish : MonoBehaviour
     public Button botonComprobar; // Botón de comprobar respuestas
     private bool juegoPausado = false;
 
+
     public GameObject PanelBotones;
     public GameObject PanelArmaEquipada;
 
@@ -87,23 +88,22 @@ public class MiniJuegoSpanish : MonoBehaviour
         }
     }
 
-   public void ActivarMiniJuego()
+    public void ActivarMiniJuego()
     {
         Debug.Log("ActivarMiniJuego() ha sido llamado.");
         miniJuegoCanvas.SetActive(true);
-        PanelBotones.SetActive(false);
-        PanelArmaEquipada.SetActive(false);
         resultadoTexto.text = "";
 
         tiempoRestante = tiempoLimite;
         minijuegoActivo = true;
+        PanelBotones.SetActive(false);
+        PanelArmaEquipada.SetActive(false);
 
         SeleccionarPalabrasAleatorias();
 
         // Asegurar que cada anagrama se muestre en la UI y los InputField estén vacíos
         for (int i = 0; i < inputFields.Length; i++)
         {
-            // Buscar el TextMeshPro que está junto a cada InputField
             TMP_Text textoAnagrama = inputFields[i].transform.parent.GetComponentInChildren<TMP_Text>();
             if (textoAnagrama != null)
             {
@@ -121,6 +121,7 @@ public class MiniJuegoSpanish : MonoBehaviour
         AudioManager.instancia.CambiarMusica("Minijuego");
     }
 
+    private bool experienciaOtorgada = false; // Variable local en lugar de PlayerPrefs
 
     public void ComprobarRespuestas()
     {
@@ -151,15 +152,15 @@ public class MiniJuegoSpanish : MonoBehaviour
             botonAceptar.onClick.AddListener(CerrarMiniJuego);
             botonAceptar.gameObject.SetActive(true);
 
-            // ✅ Asegurar que solo se otorga experiencia UNA VEZ por victoria
-            if (!PlayerPrefs.HasKey("GanoMinijuego"))
+            // ✅ Solo otorgar experiencia UNA VEZ por victoria
+            if (!experienciaOtorgada)
             {
                 PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
 
                 if (personajeExp != null)
                 {
                     personajeExp.AnadirExperiencia(50);
-                    PlayerPrefs.SetInt("GanoMinijuego", 1); // Evitar que se repita
+                    experienciaOtorgada = true; // Bloquea la experiencia hasta un nuevo intento
                 }
                 else
                 {
@@ -174,7 +175,6 @@ public class MiniJuegoSpanish : MonoBehaviour
             resultadoTexto.color = Color.red;
         }
     }
-
 
     private void TiempoTerminado()
     {
@@ -219,13 +219,12 @@ public class MiniJuegoSpanish : MonoBehaviour
         }
 
         // ✅ Permitir ganar experiencia solo si el jugador gana después del reintento
-        PlayerPrefs.DeleteKey("GanoMinijuego");
+        experienciaOtorgada = false;
 
         AudioManager.instancia.CambiarMusica("Minijuego");
 
         ActivarMiniJuego();
     }
-
 
     private void GameOver()
     {
@@ -235,13 +234,13 @@ public class MiniJuegoSpanish : MonoBehaviour
 
     public void CerrarMiniJuego()
     {
-        Debug.Log("CerrarMiniJuego() se ha ejecutado correctamente.");
         miniJuegoCanvas.SetActive(false);
         minijuegoActivo = false;
         Time.timeScale = 1;
+        PanelBotones.SetActive(true);
+        PanelArmaEquipada.SetActive(true);
         AudioManager.instancia.CambiarMusica("Pasillos");
     }
-
     public void PausarMinijuego()
     {
         Debug.Log("⏸ Minijuego pausado.");
