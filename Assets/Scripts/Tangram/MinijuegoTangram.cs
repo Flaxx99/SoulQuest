@@ -120,7 +120,7 @@ public class MinijuegoTangram : MonoBehaviour
             }
         }
 
-        float nuevaVida = UIManager.Instance.VidaActual - 10;
+        float nuevaVida = Mathf.Max(UIManager.Instance.VidaActual - 10, 0); // Asegura que la vida no baje de 0
         UIManager.Instance.ActualizarVidaPersonaje(nuevaVida, UIManager.Instance.VidaMax);
         AudioManager.instancia.CambiarMusica("Minijuego");
 
@@ -171,7 +171,7 @@ public class MinijuegoTangram : MonoBehaviour
         UIManager.Instance.MostrarPantallaGameOver();
     }
 
-    public void ActivarMiniJuego()
+   public void ActivarMiniJuego()
     {
         miniJuegoTangram.SetActive(true);
         resultadoTexto.text = "";
@@ -182,9 +182,11 @@ public class MinijuegoTangram : MonoBehaviour
         PanelArmaEquipada.SetActive(false);
         textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualizar la UI al inicio
 
-        Time.timeScale = 0; // Pausar el juego principal
+        // Usar tiempo no escalado para que las interacciones de UI no se vean afectadas
+        Time.timeScale = 1; // Asegúrate de que el juego no esté pausado
         AudioManager.instancia.CambiarMusica("Minijuego"); // Reproducir música del minijuego
     }
+
 
     // Función para cerrar el minijuego
     public void CerrarMiniJuego()

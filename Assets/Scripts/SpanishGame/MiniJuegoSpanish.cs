@@ -187,7 +187,8 @@ public class MiniJuegoSpanish : MonoBehaviour
         botonComprobar.gameObject.SetActive(false); // ✅ Ocultar botón Comprobar cuando se acaba el tiempo
         botonAceptar.gameObject.SetActive(true);
 
-        float nuevaVida = UIManager.Instance.VidaActual - 10;
+        float nuevaVida = Mathf.Max(UIManager.Instance.VidaActual - 10, 0); // Asegura que la vida no baje de 0
+
         UIManager.Instance.ActualizarVidaPersonaje(nuevaVida, UIManager.Instance.VidaMax);
 
         AudioManager.instancia.CambiarMusica("Minijuego");
