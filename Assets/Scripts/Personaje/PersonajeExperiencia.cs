@@ -24,22 +24,22 @@ public class PersonajeExperiencia : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        /*if (Input.GetKeyDown(KeyCode.X))
         {
             AnadirExperiencia(2f);
-        }
+        }*/
     }
-   public void AnadirExperiencia(float expObtenida)
+    public void AnadirExperiencia(float expObtenida)
     {
         if (expObtenida > 0f)
         {
             expActual += expObtenida;
             expActualTemp += expObtenida;
 
-            // ✅ Solo permitir subir un nivel por victoria
+            // ✅ Asegurar que solo sube un nivel por victoria, no más de uno
             if (expActualTemp >= expRequeridaSiguienteNivel && stats.Nivel < nivelMax)
             {
-                expActualTemp -= expRequeridaSiguienteNivel;
+                expActualTemp = 0f; // Reseteamos solo la experiencia temporal para el nivel actual
                 ActualizarNivel();
             }
 
@@ -47,6 +47,7 @@ public class PersonajeExperiencia : MonoBehaviour
             ActualizarBarraExp();
         }
     }
+
 
 
     private void ActualizarNivel()
@@ -64,7 +65,6 @@ public class PersonajeExperiencia : MonoBehaviour
         }
     }
 
-
     private void ActualizarBarraExp()
     {
         UIManager.Instance.ActualizarExpPersonaje(expActualTemp, expRequeridaSiguienteNivel);
@@ -74,5 +74,5 @@ public class PersonajeExperiencia : MonoBehaviour
         return Mathf.FloorToInt(stats.Nivel); // Convierte el nivel a entero
     }
 
-
 }
+
