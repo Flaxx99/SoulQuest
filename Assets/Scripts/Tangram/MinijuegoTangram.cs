@@ -18,6 +18,8 @@ public class MinijuegoTangram : MonoBehaviour
     public TangramValidator tangramValidator; // Referencia al script TangramValidator
     private bool juegoPausado = false;
 
+    public GameObject PanelBotones;
+    public GameObject PanelArmaEquipada;
     void Start()
     {
         botonAceptar.gameObject.SetActive(false); // Oculta el botón al inicio
@@ -42,7 +44,9 @@ public class MinijuegoTangram : MonoBehaviour
         }
     }
 
-   public void CheckSolution()
+    private bool experienciaOtorgada = false; // Nueva variable para controlar la experiencia
+
+    public void CheckSolution()
     {
         tangramValidator.CheckSolution();
 
@@ -59,14 +63,14 @@ public class MinijuegoTangram : MonoBehaviour
             botonAceptar.onClick.AddListener(CerrarMiniJuego);
 
             // ✅ Asegurar que solo se otorga experiencia UNA VEZ por victoria
-            if (!PlayerPrefs.HasKey("GanoMinijuegoTangram"))
+            if (!experienciaOtorgada)
             {
                 PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
 
                 if (personajeExp != null)
                 {
                     personajeExp.AnadirExperiencia(50);
-                    PlayerPrefs.SetInt("GanoMinijuegoTangram", 1); // Evitar que se repita
+                    experienciaOtorgada = true; // Bloquea la experiencia hasta un nuevo intento
                 }
                 else
                 {
@@ -93,7 +97,7 @@ public class MinijuegoTangram : MonoBehaviour
             textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualiza el texto del temporizador
         }
     }
-   private void TiempoTerminado()
+    private void TiempoTerminado()
     {
         if (!minijuegoActivo) return;
 
@@ -135,7 +139,7 @@ public class MinijuegoTangram : MonoBehaviour
             botonAceptar.onClick.AddListener(ReintentarMinijuego);
         }
     }
-   private void ReintentarMinijuego()
+    private void ReintentarMinijuego()
     {
         resultadoTexto.text = "";
         botonAceptar.gameObject.SetActive(false);
@@ -152,7 +156,7 @@ public class MinijuegoTangram : MonoBehaviour
         }
 
         // ✅ Permitir ganar experiencia solo si el jugador gana después del reintento
-        PlayerPrefs.DeleteKey("GanoMinijuegoTangram");
+        experienciaOtorgada = false;
 
         AudioManager.instancia.CambiarMusica("Minijuego");
 
@@ -174,7 +178,8 @@ public class MinijuegoTangram : MonoBehaviour
 
         tiempoRestante = tiempoLimite; // Reinicia el temporizador
         minijuegoActivo = true; // Permite que Update() comience a descontar tiempo
-
+        PanelBotones.SetActive(false);
+        PanelArmaEquipada.SetActive(false);
         textoTemporizador.text = $"Tiempo: {tiempoRestante:F1}s"; // Actualizar la UI al inicio
 
         Time.timeScale = 0; // Pausar el juego principal
@@ -188,6 +193,9 @@ public class MinijuegoTangram : MonoBehaviour
         minijuegoActivo = false; // Desactivar el minijuego
         Time.timeScale = 1; // Reanudar el tiempo del juego principal
         AudioManager.instancia.CambiarMusica("Pasillos"); // Volver a la música de fondo
+        PanelBotones.SetActive(true);
+        PanelArmaEquipada.SetActive(true);
+
     }
     public void PausarMinijuego()
     {
@@ -202,3 +210,7 @@ public class MinijuegoTangram : MonoBehaviour
     }
 
 }
+
+
+
+
