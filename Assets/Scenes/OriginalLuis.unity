@@ -143,6 +143,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 778800}
   efectoTerror: {fileID: 1468028697}
+  audioSource: {fileID: 0}
+  musicaTransicion: {fileID: 0}
+  panelTexto: {fileID: 0}
+  textoTransicion: {fileID: 0}
   duracionTransicion: 0.5
   tiempoPantallaNegra: 0.5
 --- !u!1 &33710300

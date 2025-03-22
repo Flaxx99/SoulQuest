@@ -12,10 +12,21 @@ public class IntroManager : MonoBehaviour
         {
             Debug.Log("🟢 Mostrando Intro porque el jugador viene del Main Menu");
 
+            // Aseguramos que la música de fondo de Pasillos esté sonando
+            if (AudioManager.instancia != null)
+            {
+                AudioManager.instancia.CambiarMusica("Pasillos");
+                Debug.Log("Música de fondo 'Pasillos' iniciada.");
+            }
+            else
+            {
+                Debug.LogWarning("AudioManager.instancia es null.");
+            }
+
             introCanvasGroup.gameObject.SetActive(true);
             hudCanvas.SetActive(false);
 
-            // 🚀 Marcar que la intro ya se mostró, para evitar que vuelva a aparecer en reinicios
+            // Marcar que la intro ya se mostró
             GameManager.Instance.vieneDelMainMenu = false;
         }
         else
@@ -26,12 +37,11 @@ public class IntroManager : MonoBehaviour
         }
     }
 
-   public void CerrarIntro()
+    public void CerrarIntro()
     {
         Debug.Log("🟢 Botón Aceptar presionado, cerrando intro...");
         StartCoroutine(FadeOut());
     }
-
 
     IEnumerator FadeOut()
     {
