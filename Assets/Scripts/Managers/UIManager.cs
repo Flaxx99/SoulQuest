@@ -56,7 +56,7 @@ public class UIManager : Singleton<UIManager>
     [Header("Paneles adicionales de UI")]
     [SerializeField] private GameObject panelBotones;
     [SerializeField] private GameObject panelArmaEquipada;
-
+    [SerializeField] private GameObject panelInstruccion;
 
     // Propiedades para acceder a la vida del jugador
     public float VidaActual => vidaActual;
@@ -164,6 +164,38 @@ public class UIManager : Singleton<UIManager>
     {
         panelInventario.SetActive(!panelInventario.activeSelf);
     }
+    private bool armaEquipadaWasActiveBefore;
+
+    public void AbrirCerrarPanelInstruccion()
+    {
+        Debug.Log("Botón pulsado: intentando abrir/cerrar panelInstruccion.");
+
+        bool estabaActivo = panelInstruccion.activeSelf;
+        panelInstruccion.SetActive(!estabaActivo);
+
+        // Si acabamos de activar el panel de instrucciones...
+        if (panelInstruccion.activeSelf)
+        {
+            // Guardamos el estado actual de panelArmaEquipada
+            armaEquipadaWasActiveBefore = panelArmaEquipada.activeSelf;
+
+            // Lo desactivamos
+            panelArmaEquipada.SetActive(false);
+
+            Debug.Log("Desactivando panelArmaEquipada.");
+        }
+        else
+        {
+            // Si acabamos de cerrar el panel de instrucciones,
+            // restauramos el estado previo de panelArmaEquipada
+            panelArmaEquipada.SetActive(armaEquipadaWasActiveBefore);
+            Debug.Log("Restaurando estado previo de panelArmaEquipada.");
+        }
+
+        Debug.Log($"panelInstruccion: {panelInstruccion.activeSelf}, " +
+                  $"panelArmaEquipada: {panelArmaEquipada.activeSelf}");
+    }
+
 
     #endregion
 

@@ -15,11 +15,12 @@ MonoBehaviour:
   Nombre: Profesor Misterioso
   Icono: {fileID: -3102994270238535240, guid: bb9342f8b8c35cb43afb84afbc83bf6e, type: 3}
   ContieneInteraccionExtra: 0
-  Saludo: "\xA1Hola! \xBFEres nuevo en la Academia del Conocimiento? Este lugar est\xE1
-    lleno de libros, retos y secretos."
+  Saludo: "\xA1Hola! \xBFEres nuevo en la escuela? Este lugar est\xE1 lleno de libros,
+    retos y secretos."
   Conversacion:
-  - "Se dice que la escuela guarda un misterio antiguo\u2026 En la biblioteca suceden
-    cosas extra\xF1as: libros que se mueven solos, susurros en la noche y p\xE1ginas
-    que desaparecen. Quiz\xE1 solo sean leyendas... o tal vez no."
-  Despedida: "En fin, ten cuidado si vas a la biblioteca. \xA1Nos vemos pronto! Y
-    recuerda... no todo es lo que parece."
+  - "Se dice que esta escuela esconde m\xE1s de lo que aparenta...\nHay rumores de
+    sucesos extra\xF1os por todo el campus."
+  - "Seres extra\xF1os en los pasillos, libros que parecen tener vida propia y retos
+    ocultos. Quiz\xE1 sean solo cuentos, pero hay algo extra\xF1o aqu\xED."
+  Despedida: En fin, ten mucho cuidado mientras explotas la escuela. Vistita la biblioteca
+    para que encuentres algunos objetos que te pueden ser de utillidad.
