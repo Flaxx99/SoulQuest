@@ -21,15 +21,6 @@ public class TransicionConCodigo : MonoBehaviour
         efectoTerror.SetActive(false);
         panelTexto.SetActive(false);
 
-        /* Detener cualquier audio previo del AudioManager
-        if (AudioManager.instancia != null)
-        {
-            AudioManager.instancia.GetAudioSource().Stop();
-        }
-        else
-        {
-            Debug.LogError("🎵 AudioManager no está asignado o no existe.");
-        }*/
     }
 
     // Método para activar la transición

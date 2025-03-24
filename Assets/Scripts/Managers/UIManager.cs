@@ -59,9 +59,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject panelArmaEquipada;
     [SerializeField] private GameObject panelInstruccion;
 
-    [Header("Referencias")]
-    [SerializeField] private CanvasGroup panelCanvasGroup;
-
+   /* [Header("Referencias")]
+    [SerializeField] private CanvasGroup panelCanvasGroup;*/
+    
     // Propiedades para acceder a la vida del jugador
     public float VidaActual => vidaActual;
     public float VidaMax => vidaMax;
@@ -77,7 +77,8 @@ public class UIManager : Singleton<UIManager>
 
     private void Start()
     {
-        personajeVida = Object.FindFirstObjectByType<PersonajeVida>(); // Nueva forma recomendada
+        personajeVida = Object.FindFirstObjectByType<PersonajeVida>(); 
+        //panelCanvasGroup.alpha = 0f;
     }
 
 
@@ -272,6 +273,7 @@ public class UIManager : Singleton<UIManager>
     }
     public void MostrarMensaje(string mensaje)
     {
+        //panel de algo extraño esta sucediendo
         if (mensajeTexto != null && mensajePanel != null)
         {
             mensajeTexto.text = mensaje;
@@ -285,63 +287,63 @@ public class UIManager : Singleton<UIManager>
             Debug.LogWarning("UIManager: mensajeTexto o mensajePanel no están asignados en el Inspector.");
         }
     }
-
     private void EsconderMensaje()
     {
         mensajePanel.SetActive(false);
     }
-
+    /*
     public float fadeDuration = 2f;  // Duración de la transición de fade
-
-    // Método para realizar el fade (desvanecimiento)
-    public void FadeOut()
-    {
-        StartCoroutine(FadeOutCoroutine());
-    }
-
-    // Coroutine para manejar el fade out
-    private IEnumerator FadeOutCoroutine()
-    {
-        float time = 0;
-
-        // Asegura que el CanvasGroup está visible al iniciar
-        panelCanvasGroup.alpha = 1f;
-
-        // Realiza el desvanecimiento a un alpha de 0
-        while (time < fadeDuration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, time / fadeDuration);
-            panelCanvasGroup.alpha = alpha;
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        panelCanvasGroup.alpha = 0f; // Asegura que al final sea completamente transparente
-    }
-
-    // Si necesitas un FadeIn
     public void FadeIn()
     {
+        Debug.Log("UIManager.FadeIn() invocado. Iniciando corrutina...");
         StartCoroutine(FadeInCoroutine());
     }
 
     private IEnumerator FadeInCoroutine()
     {
         float time = 0;
-
-        // Asegura que el CanvasGroup comienza invisible
         panelCanvasGroup.alpha = 0f;
 
-        // Realiza el desvanecimiento a un alpha de 1
+        Debug.Log("FadeInCoroutine - alpha inicial = " + panelCanvasGroup.alpha);
+
         while (time < fadeDuration)
         {
             float alpha = Mathf.Lerp(0f, 1f, time / fadeDuration);
             panelCanvasGroup.alpha = alpha;
+            Debug.Log($"FadeInCoroutine - time: {time:F2}, alpha: {alpha:F2}");
             time += Time.deltaTime;
             yield return null;
         }
 
-        panelCanvasGroup.alpha = 1f; // Asegura que al final sea completamente visible
+        panelCanvasGroup.alpha = 1f;
+        Debug.Log("FadeInCoroutine completado - alpha final = " + panelCanvasGroup.alpha);
     }
+
+    public void FadeOut()
+    {
+        Debug.Log("UIManager.FadeOut() invocado. Iniciando corrutina...");
+        StartCoroutine(FadeOutCoroutine());
+    }
+
+    private IEnumerator FadeOutCoroutine()
+    {
+        float time = 0;
+        panelCanvasGroup.alpha = 1f;
+
+        Debug.Log("FadeOutCoroutine - alpha inicial = " + panelCanvasGroup.alpha);
+
+        while (time < fadeDuration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, time / fadeDuration);
+            panelCanvasGroup.alpha = alpha;
+            Debug.Log($"FadeOutCoroutine - time: {time:F2}, alpha: {alpha:F2}");
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        panelCanvasGroup.alpha = 0f;
+        Debug.Log("FadeOutCoroutine completado - alpha final = " + panelCanvasGroup.alpha);
+    }*/
+
 
 }

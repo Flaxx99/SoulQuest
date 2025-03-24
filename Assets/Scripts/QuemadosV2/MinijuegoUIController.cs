@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;  // Usamos TextMeshProUGUI para los textos
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MinijuegoUIController : MonoBehaviour
 {
@@ -21,6 +23,11 @@ public class MinijuegoUIController : MonoBehaviour
     public Enemigo enemigo;
     public GameObject canvasMinijuego;
     public GameObject efectoTerror;
+    public FinalMessageController mensajeFinalController; // Asignar en el inspector
+
+
+    // public GameObject PanelFinal;
+    //public float delayAntesDeTransicion = 5f;
 
     void Start()
     {
@@ -119,10 +126,13 @@ public class MinijuegoUIController : MonoBehaviour
             MostrarPanelVictoria(true);  // Mostrar el panel de victoria
         }
     }
-
+    private bool minijuegoTerminado = false;
     // Finaliza el minijuego, desactiva el script del jugador y muestra el panel de victoria
-    public void FinalizarMinijuego(bool jugadorGano)
+    /*JONATHANpublic void FinalizarMinijuego(bool jugadorGano)
     {
+        if (minijuegoTerminado) return;  // Si ya se finalizó, no hagas nada más
+        minijuegoTerminado = true;
+
         Debug.Log("Finalizando minijuego de quemados...");
 
         // Desactivar el script del jugador, pero no el GameObject
@@ -153,6 +163,46 @@ public class MinijuegoUIController : MonoBehaviour
         // Restaurar los paneles de la UI
         MostrarPanelesUI();
     }
+    */
+    //PRUEBA CON PANEL Y SECUENCIA
+    public void FinalizarMinijuego(bool jugadorGano)
+    {
+        if (minijuegoTerminado) return;
+        minijuegoTerminado = true;
+
+        Debug.Log("Finalizando minijuego de quemados...");
+
+        // Desactivar script del jugador
+        if (jugador != null)
+        {
+            jugador.GetComponent<Jugador>().enabled = false;
+            Debug.Log("Script del jugador desactivado");
+        }
+
+        // Desactivar al enemigo
+        if (enemigo != null)
+            enemigo.gameObject.SetActive(false);
+
+        /* Mostrar el panel de victoria (o panel final) antes de apagar el efecto terror
+        if (PanelFinal != null)
+        {
+            Debug.Log("Activando panel final antes de apagar efecto terror");
+            PanelFinal.SetActive(true);
+            // Si tienes fade, aquí podrías llamar a UIManager.Instance.FadeIn();
+        }*/
+
+        // Luego, desactivar el canvas del minijuego, efecto terror, etc.
+        if (canvasMinijuego != null)
+            canvasMinijuego.SetActive(false);
+
+        /*if (efectoTerror != null)
+            efectoTerror.SetActive(false);*/
+
+        // Restaurar paneles de UI, etc.
+        MostrarPanelesUI();
+
+        Debug.Log("Fin de la secuencia de FinalizarMinijuego.");
+    }
 
     // Método para ocultar los paneles de UI (PlayerUI, PanelBotones, PanelArmaEquipada) durante el minijuego
     public void OcultarPanelesUI()
@@ -179,4 +229,44 @@ public class MinijuegoUIController : MonoBehaviour
         if (panelArmaEquipada != null)
             panelArmaEquipada.SetActive(true);  // Mostrar el PanelArmaEquipada
     }
+
+    // Método que se llama desde el botón "Continuar" en el juego Quemados
+    public void OnContinuarClicked()
+    {
+        Debug.Log("Botón 'Continuar' presionado → Mostrando mensaje final.");
+        if (mensajeFinalController != null)
+        {
+            mensajeFinalController.ShowFinalMessage();
+        }
+        else
+        {
+            Debug.LogWarning("No se asignó el FinalMessageController en el inspector.");
+        }
+    }
+
+    /*
+    // Coroutine para esperar, apagar el efecto y cargar los créditos
+    IEnumerator ContinuarSecuencia()
+    {
+        Debug.Log("ContinuarSecuencia() → Esperando " + delayAntesDeTransicion + " segundos. Tiempo inicial: " + Time.time);
+
+        yield return new WaitForSeconds(delayAntesDeTransicion);
+
+        Debug.Log("ContinuarSecuencia() → Tiempo tras la espera: " + Time.time);
+
+        // Apaga el efecto de terror
+        if (efectoTerror != null)
+        {
+            Debug.Log("Desactivando efectoTerror: " + efectoTerror.name);
+            efectoTerror.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("efectoTerror es null. No se desactiva nada.");
+        }
+
+        Debug.Log("Cargando escena de créditos...");
+        SceneManager.LoadScene("Creditos");
+    }*/
+
 }

@@ -26,8 +26,9 @@ public class MainMenuController : MonoBehaviour
             GameManager.Instance.vieneDelMainMenu = true;
         }
 
+        Time.timeScale = 1f;
         // Cargar la escena principal del juego
-        SceneManager.LoadScene("NombreDeTuEscena"); // Cambia esto por el nombre correcto
+        SceneManager.LoadScene("OriginalYoshy"); // Cambia esto por el nombre correcto
     }
     public void PlayGame()
     {
@@ -39,6 +40,7 @@ public class MainMenuController : MonoBehaviour
             AudioManager.instancia.CambiarMusica("Pasillos");
         }
 
+        Time.timeScale = 1f;
         SceneManager.LoadScene("OriginalYoshy"); // Reemplaza con el nombre real de tu escena de juego.
     }
 
