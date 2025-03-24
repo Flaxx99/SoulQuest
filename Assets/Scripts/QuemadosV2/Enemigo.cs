@@ -6,7 +6,7 @@ public class Enemigo : MonoBehaviour
     public GameObject pelotaPrefab;
     public Transform puntoDeLanzamiento;
     public float fuerzaLanzamiento = 10f;
-    public int vidas = 5;  // Vidas del enemigo
+    public int vidas = 10;  // Vidas del enemigo
 
     public Transform limiteIzquierdo;  // Referencia al límite izquierdo
     public Transform limiteDerecho;    // Referencia al límite derecho

@@ -20,13 +20,14 @@ public class MinijuegoUIController : MonoBehaviour
     public Jugador jugador;
     public Enemigo enemigo;
     public GameObject canvasMinijuego;
+    public GameObject efectoTerror;
 
     void Start()
     {
 
         // Asegurarnos de que las vidas iniciales sean positivas
-        jugador.vidas = 5;
-        enemigo.vidas = 5;
+        jugador.vidas = 3;
+        enemigo.vidas = 10;
 
         // Inicializamos todo
         panelVictoria.SetActive(false);
@@ -142,6 +143,11 @@ public class MinijuegoUIController : MonoBehaviour
         if (canvasMinijuego != null)
         {
             canvasMinijuego.SetActive(false);  // Desactivamos el Canvas del minijuego al finalizar
+        }
+
+        if (efectoTerror != null)
+        {
+            efectoTerror.SetActive(false);
         }
 
         // Restaurar los paneles de la UI

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Jugador : MonoBehaviour
 {
-    public int vidas = 5;  // Vidas del jugador
+    public int vidas = 3;  // Vidas del jugador
     public GameObject pelotaPrefab;
     public Transform puntoDeLanzamiento;
     public float fuerzaLanzamiento = 10f;

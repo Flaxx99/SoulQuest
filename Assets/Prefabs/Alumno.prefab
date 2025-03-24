@@ -188,6 +188,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 593704129484797980}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2830148079603785762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5652656010329676844}
+  m_Layer: 6
+  m_Name: PuntoLanzamiento
+  m_TagString: Untagged
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5652656010329676844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830148079603785762}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.03, y: 1.18, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 593704129484797980}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3373264935392876220
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,6 +239,7 @@ GameObject:
   - component: {fileID: 1017795080545913725}
   - component: {fileID: 5392041617824312544}
   - component: {fileID: 8138324767459753171}
+  - component: {fileID: 1327395932236893550}
   m_Layer: 6
   m_Name: Alumno
   m_TagString: Player
@@ -236,6 +268,7 @@ Transform:
   - {fileID: 4920155131360118473}
   - {fileID: 2987512064884220621}
   - {fileID: 342704973366516292}
+  - {fileID: 5652656010329676844}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3752626003728243519
@@ -369,7 +402,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3373264935392876220}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -494,6 +527,27 @@ MonoBehaviour:
   - {fileID: 342704973366516292}
   - {fileID: 4920155131360118473}
   - {fileID: 5994061265388679080}
+--- !u!114 &1327395932236893550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3373264935392876220}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607f702f3ee2b2242b840645eef79278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vidas: 3
+  pelotaPrefab: {fileID: 4706453586676523445, guid: d02abfca9d32bd44a887d4b8334ad62d, type: 3}
+  puntoDeLanzamiento: {fileID: 5652656010329676844}
+  fuerzaLanzamiento: 10
+  velocidadAumentada: 7
+  tiempoEscudo: 5
+  velocidad: 5
+  tiempoEscudoRestante: 5
+  tiempoPoderVelocidadRestante: 5
 --- !u!1 &4312745926915003686
 GameObject:
   m_ObjectHideFlags: 0

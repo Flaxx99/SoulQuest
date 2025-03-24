@@ -6,6 +6,12 @@ TagManager:
   tags:
   - TangramPiece
   - Enemigo
+  - Limite
+  - EnemigoQuemados
+  - PelotaInicial
+  - LimiteInferior
+  - LimiteSuperior
+  - PelotaJuego
   layers:
   - Default
   - TransparentFX

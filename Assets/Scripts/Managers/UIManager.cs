@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -57,6 +58,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject panelBotones;
     [SerializeField] private GameObject panelArmaEquipada;
     [SerializeField] private GameObject panelInstruccion;
+
+    [Header("Referencias")]
+    [SerializeField] private CanvasGroup panelCanvasGroup;
 
     // Propiedades para acceder a la vida del jugador
     public float VidaActual => vidaActual;
@@ -145,7 +149,7 @@ public class UIManager : Singleton<UIManager>
 
         expPlayer.fillAmount = expActual / expRequeridaNuevoNivel;
         expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
-       // nivelTMP.text = $"Nivel {Resources.Load<PersonajeStats>("Stats").Nivel}"; // Asegurar que se muestre correctamente
+        // nivelTMP.text = $"Nivel {Resources.Load<PersonajeStats>("Stats").Nivel}"; // Asegurar que se muestre correctamente
         PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
         if (personajeExp != null)
         {
@@ -239,7 +243,7 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-   public void ReiniciarJuego()
+    public void ReiniciarJuego()
     {
         Debug.Log("🔄 Reiniciando el juego...");
 
@@ -286,4 +290,58 @@ public class UIManager : Singleton<UIManager>
     {
         mensajePanel.SetActive(false);
     }
+
+    public float fadeDuration = 2f;  // Duración de la transición de fade
+
+    // Método para realizar el fade (desvanecimiento)
+    public void FadeOut()
+    {
+        StartCoroutine(FadeOutCoroutine());
+    }
+
+    // Coroutine para manejar el fade out
+    private IEnumerator FadeOutCoroutine()
+    {
+        float time = 0;
+
+        // Asegura que el CanvasGroup está visible al iniciar
+        panelCanvasGroup.alpha = 1f;
+
+        // Realiza el desvanecimiento a un alpha de 0
+        while (time < fadeDuration)
+        {
+            float alpha = Mathf.Lerp(1f, 0f, time / fadeDuration);
+            panelCanvasGroup.alpha = alpha;
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        panelCanvasGroup.alpha = 0f; // Asegura que al final sea completamente transparente
+    }
+
+    // Si necesitas un FadeIn
+    public void FadeIn()
+    {
+        StartCoroutine(FadeInCoroutine());
+    }
+
+    private IEnumerator FadeInCoroutine()
+    {
+        float time = 0;
+
+        // Asegura que el CanvasGroup comienza invisible
+        panelCanvasGroup.alpha = 0f;
+
+        // Realiza el desvanecimiento a un alpha de 1
+        while (time < fadeDuration)
+        {
+            float alpha = Mathf.Lerp(0f, 1f, time / fadeDuration);
+            panelCanvasGroup.alpha = alpha;
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        panelCanvasGroup.alpha = 1f; // Asegura que al final sea completamente visible
+    }
+
 }

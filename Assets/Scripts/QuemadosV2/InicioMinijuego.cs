@@ -13,10 +13,8 @@ public class InicioMinijuego : MonoBehaviour
 
     void Start()
     {
-        // Desactivar al jugador y enemigo antes de comenzar el minijuego
-        if (jugador != null)
-            jugador.SetActive(false);
-
+        // Desactivar al enemigo antes de comenzar el minijuego
+       
         if (enemigo != null)
             enemigo.SetActive(false);
 
@@ -30,11 +28,10 @@ public class InicioMinijuego : MonoBehaviour
         if (pelotaInicial != null)
             pelotaInicial.SetActive(true);
 
-        // Inicializar la UI del minijuego
         if (minijuegoUIController != null)
         {
-            minijuegoUIController.RecibirDanoJugador();  // Inicializar vida jugador
-            minijuegoUIController.RecibirDanoEnemigo();  // Inicializar vida enemigo
+            // Solo actualizar los textos sin modificar las vidas
+            minijuegoUIController.ActualizarTextosDeVida();
         }
     }
 
