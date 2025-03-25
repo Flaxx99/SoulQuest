@@ -21,14 +21,28 @@ public class FinalMessageController : MonoBehaviour
     [Header("UI que se debe ocultar")]
     public GameObject[] panelesOcultables;
 
+    [Header("Audio")]
+    public AudioClip musicaFinal;
+    private AudioSource audioSource;
+
+    public GameObject slideshowRestauracion;  // Referencia al objeto del slideshow
+    
+
+    private void Awake()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+    }
+
     public void ShowFinalMessage()
     {
         Debug.Log("✅ ShowFinalMessage() INVOCADO.");
         StartCoroutine(SecuenciaFinal());
     }
 
-    private IEnumerator SecuenciaFinal()
+    public IEnumerator SecuenciaFinal()
     {
+        // Ocultar los paneles
         foreach (GameObject panel in panelesOcultables)
         {
             if (panel != null)
@@ -42,12 +56,26 @@ public class FinalMessageController : MonoBehaviour
         Debug.Log("🎬 Iniciando fade IN...");
         yield return StartCoroutine(FadeCanvas(0f, 1f, fadeDuration));
 
-        // Mostrar mensaje letra por letra
+        if (AudioManager.instancia != null)
+        {
+            AudioManager.instancia.GetAudioSource().Pause();
+        }
+
+        // Música final
+        if (musicaFinal != null && audioSource != null)
+        {
+            Debug.Log("🎵 Reproduciendo música final...");
+            audioSource.clip = musicaFinal;
+            audioSource.loop = true;
+            StartCoroutine(FadeInAudio(audioSource, 0.8f, 2f)); // ← duración del fade y volumen final
+        }
+
+        // Mostrar el mensaje letra por letra
         panelTexto.SetActive(true);
-        string textoCompleto = messageText.text; // Tomamos lo que ya tiene asignado
+        string textoCompleto = messageText.text;
         yield return StartCoroutine(MostrarTextoMaquina(messageText, textoCompleto, velocidadEscritura));
 
-        // Espera final con texto completo visible
+        // Esperar después de mostrar todo el texto
         yield return new WaitForSeconds(esperaDespuesDeTexto);
 
         // Fade OUT
@@ -56,6 +84,53 @@ public class FinalMessageController : MonoBehaviour
 
         panelTexto.SetActive(false);
 
+        yield return new WaitForSeconds(esperaPostTerror);
+
+        // Activar el contenedor y sus hijos
+        GameObject canvaPantallaCambio = GameObject.Find("CanvaPantallaCambio");
+
+        if (canvaPantallaCambio != null)
+        {
+            // Activar el contenedor y todos sus hijos
+            canvaPantallaCambio.SetActive(true);
+            Debug.Log("CanvaPantallaCambio activado.");
+
+            // Activar PanelFondo
+            GameObject panelFondo = canvaPantallaCambio.transform.Find("PanelFondo").gameObject;
+            if (panelFondo != null)
+            {
+                panelFondo.SetActive(true);
+                Debug.Log("PanelFondo activado.");
+            }
+
+            // Activar ImagenPantalla
+            GameObject imagenPantalla = canvaPantallaCambio.transform.Find("ImagenPantalla").gameObject;
+            if (imagenPantalla != null)
+            {
+                imagenPantalla.SetActive(true);
+                Debug.Log("ImagenPantalla activada.");
+            }
+
+            // Activar SlideShowRestauracion
+            GameObject slideshow = canvaPantallaCambio.transform.Find("SlideShowRestauracion").gameObject;
+            if (slideshow != null)
+            {
+                slideshow.SetActive(true);  // Activar el slideshow
+                Debug.Log("SlideShowRestauracion activado.");
+
+                // Iniciar la secuencia del slideshow
+                SlideshowRestauracion slideshowScript = slideshow.GetComponent<SlideshowRestauracion>();
+                if (slideshowScript != null)
+                {
+                    StartCoroutine(slideshowScript.SecuenciaSlideshow());  // Iniciar la secuencia
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("No se encontró el objeto Canvas con nombre 'CanvaPantallaCambio'");
+        }
+
         // Apagar efecto de terror
         if (terrorEffect != null)
         {
@@ -63,10 +138,16 @@ public class FinalMessageController : MonoBehaviour
             terrorEffect.SetActive(false);
         }
 
-        yield return new WaitForSeconds(esperaPostTerror);
+        // Esperar el tiempo necesario antes de cargar los créditos
+        yield return new WaitForSeconds(10f);
 
-        // Cargar escena de créditos
-        Debug.Log("🎞 Cargando escena de créditos...");
+        // Fade-out final antes de cargar los créditos
+        yield return StartCoroutine(FadeCanvas(0f, 1f,1f));  // Realizamos un fade-out adicional para suavizar la transición
+
+        // Esperar un poco más antes de cargar los créditos
+        yield return new WaitForSeconds(1f);
+
+        // Cargar la escena de créditos
         SceneManager.LoadScene(nextSceneName);
     }
 
@@ -98,4 +179,21 @@ public class FinalMessageController : MonoBehaviour
         if (end == 0f)
             panelCanvasGroup.gameObject.SetActive(false);
     }
+    private IEnumerator FadeInAudio(AudioSource source, float targetVolume, float duration)
+    {
+        float startVolume = 0f;
+        source.volume = 0f;
+        source.Play();
+
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            source.volume = Mathf.Lerp(startVolume, targetVolume, t / duration);
+            yield return null;
+        }
+
+        source.volume = targetVolume;
+    }
+
 }
