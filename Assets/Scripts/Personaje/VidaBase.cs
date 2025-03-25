@@ -5,7 +5,8 @@ public class VidaBase : MonoBehaviour
 {
     [SerializeField] protected float saludInicial;
     [SerializeField] protected float saludMax;
-    public float Salud { get; protected set; }
+    public float Salud { get; set; }
+    public float SaludMax => saludMax;
 
     private SpriteRenderer spriteRenderer; // Para cambiar el color del personaje
 
@@ -16,16 +17,23 @@ public class VidaBase : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>(); // Obtiene el sprite del personaje
     }
 
-    public void RecibirDano(float cantidad)
+    public void RecibirDano(float cantidad, bool esPorcentaje = false)
     {
         if (cantidad <= 0 || Salud <= 0) return; // No recibir daño si ya está en 0
 
+        // Si el daño es en porcentaje, calculamos el daño relativo a la salud máxima
+        if (esPorcentaje)
+        {
+            cantidad = (cantidad / 100f) * SaludMax; // Calcular el daño en base al porcentaje
+        }
+
         Salud -= cantidad;
-        if (Salud < 0) Salud = 0; // Evita valores negativos
+
+        if (Salud < 0) Salud = 0; // Evita que la salud sea negativa
 
         ActualizarBarraVida(Salud, saludMax);
 
-        //Activa el efecto de parpadeo rojo
+        // Activar efecto de parpadeo rojo
         if (spriteRenderer != null)
         {
             StartCoroutine(FlashRed());

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Jugador : MonoBehaviour
 {
-    public int vidas = 3;  // Vidas del jugador
+    public int vidas = 5;  // Vidas del jugador
     public GameObject pelotaPrefab;
     public Transform puntoDeLanzamiento;
     public float fuerzaLanzamiento = 10f;
@@ -18,6 +18,7 @@ public class Jugador : MonoBehaviour
 
     // Variable para mantener la referencia al MinijuegoUIController
     private MinijuegoUIController minijuegoUIController;
+    private PersonajeVida personajeVida;
 
     void Start()
     {
@@ -25,6 +26,8 @@ public class Jugador : MonoBehaviour
 
         // Obtener la referencia del UIController desde la escena
         minijuegoUIController = FindAnyObjectByType<MinijuegoUIController>();  // Usamos FindObjectOfType para encontrarlo
+
+        personajeVida = GetComponent<PersonajeVida>();
     }
 
     void Update()
@@ -71,31 +74,18 @@ public class Jugador : MonoBehaviour
         }
     }
 
-    // Método para restar vida al jugador
-    public void RecibirGolpe()
+    public void RecibirGolpe(float cantidad, bool esPorcentaje = false)
     {
-        vidas--;  // Restamos una vida
-
-        if (vidas <= 0)
+        if (esPorcentaje)
         {
-            Debug.Log("El jugador ha perdido.");
-            // Llamamos al método para mostrar el panel de derrota
-            if (minijuegoUIController != null)
-            {
-                minijuegoUIController.MostrarPanelDerrota(true);  // Muestra el panel de derrota
-            }
-        }
-        else
-        {
-            Debug.Log("Vidas restantes del jugador: " + vidas);
+            // Si el daño es en porcentaje, calcula el daño basado en el porcentaje de salud máxima
+            cantidad = (cantidad / 100f) * personajeVida.SaludMax; // Asegúrate de que PersonajeVida sea una instancia válida
         }
 
-        // Actualizamos las vidas en la UI
-        if (minijuegoUIController != null)
-        {
-            minijuegoUIController.ActualizarVidasJugador(vidas);  // Actualizamos el texto en la UI
-        }
+        // Ahora llamamos al método de PersonajeVida para aplicar el daño
+        personajeVida.RecibirDano(cantidad); // Asegúrate de que PersonajeVida es accesible correctamente
     }
+
 
     // Método para activar la velocidad aumentada
     public void ActivarVelocidad()
@@ -131,7 +121,8 @@ public class Jugador : MonoBehaviour
     {
         if (col.gameObject.CompareTag("PelotaJuego"))
         {
-            RecibirGolpe();  // El jugador recibe daño de la pelota
-        }
+            float porcentajeDeDano = 10f;
+            RecibirGolpe(porcentajeDeDano, true);  // El jugador recibe daño de la pelota
+        }
     }
 }

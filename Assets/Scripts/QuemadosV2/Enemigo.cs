@@ -6,7 +6,7 @@ public class Enemigo : MonoBehaviour
     public GameObject pelotaPrefab;
     public Transform puntoDeLanzamiento;
     public float fuerzaLanzamiento = 10f;
-    public int vidas = 10;  // Vidas del enemigo
+    public int vidas = 5;  // Vidas del enemigo
 
     public Transform limiteIzquierdo;  // Referencia al límite izquierdo
     public Transform limiteDerecho;    // Referencia al límite derecho
@@ -19,6 +19,7 @@ public class Enemigo : MonoBehaviour
     private float velocidadObjetivo;
 
     private MinijuegoUIController minijuegoUIController;  // Referencia al MinijuegoUIController
+    private EnemigoVidaQuemados enemigoVida;
 
     void Start()
     {
@@ -34,6 +35,8 @@ public class Enemigo : MonoBehaviour
         {
             Debug.LogError("MinijuegoUIController no encontrado en la escena.");
         }
+
+        enemigoVida = GetComponent<EnemigoVidaQuemados>();
     }
 
     void Update()
@@ -78,33 +81,12 @@ public class Enemigo : MonoBehaviour
         }
     }
 
-    // Método para restar vida al enemigo
-    public void RecibirGolpe(float dano)
+    // Método para recibir daño
+    public void RecibirDano(float cantidad, bool esPorcentaje = false)
     {
-        vidas -= Mathf.CeilToInt(dano);  // Restar vida al enemigo (utilizamos Mathf.CeilToInt para asegurar que el daño se redondee correctamente)
-        vidas = Mathf.Max(vidas, 0);  // Asegurarnos de que las vidas no bajen de 0
-
-        // Actualizamos la UI y las vidas del enemigo
-        if (minijuegoUIController != null)
+        if (enemigoVida != null)
         {
-            minijuegoUIController.ActualizarVidasEnemigo(vidas);  // Actualizamos el texto en la UI
-        }
-
-        // Si el enemigo ha sido derrotado
-        if (vidas <= 0)
-        {
-            Debug.Log("El enemigo ha sido derrotado.");
-            // Mostrar el panel de victoria cuando el enemigo muere
-            if (minijuegoUIController != null)
-            {
-                minijuegoUIController.MostrarPanelVictoria(true);
-            }
-
-            DesactivarEnemigo();  // Desactivamos al enemigo cuando sus vidas lleguen a 0
-        }
-        else
-        {
-            Debug.Log("Vidas restantes del enemigo: " + vidas);
+            enemigoVida.RecibirDano(cantidad, esPorcentaje);  // Llama al método RecibirDano de EnemigoVida
         }
     }
 
@@ -113,13 +95,14 @@ public class Enemigo : MonoBehaviour
         gameObject.SetActive(false);  // Desactivamos el objeto enemigo cuando muere
     }
 
-    // Método para manejar la colisión con la pelota
+    // Método de ejemplo que puede ser llamado cuando el enemigo colisiona con algo
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("PelotaJuego"))
         {
-            // El enemigo recibe daño al colisionar con la pelota
-            RecibirGolpe(1f);  // El daño aplicado puede ser ajustado (aquí se le aplica 1 de daño por cada golpe)
-        }
+            // Aquí aplicamos daño en porcentaje (10% de la vida del enemigo)
+            float porcentajeDeDano = 10f;  // Porcentaje de daño
+            RecibirDano(porcentajeDeDano, true);  // Llamamos al método para aplicar el daño
+        }
     }
 }

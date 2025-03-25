@@ -65,8 +65,9 @@ public class Pelota : MonoBehaviour
             Enemigo enemigo = col.GetComponent<Enemigo>();
             if (enemigo != null)
             {
+                float porcentajeDano = 10f;
                 // Aplicamos el daño
-                enemigo.RecibirGolpe(dano);  // Llamamos al método que reduce la salud del enemigo
+                enemigo.RecibirDano(porcentajeDano, true);  // Llamamos al método que reduce la salud del enemigo
                 gameObject.SetActive(false);  // Desactivamos la pelota después de colisionar
             }
         }
@@ -74,13 +75,15 @@ public class Pelota : MonoBehaviour
         // Verificamos si la pelota colisiona con el jugador
         if (col.CompareTag("Player"))
         {
-            // Si colisiona con el jugador, aplicamos el daño
             Jugador jugador = col.GetComponent<Jugador>();
             if (jugador != null)
             {
-                // Aplicamos el daño al jugador
-                jugador.RecibirGolpe();  // Llamamos al método que reduce la vida del jugador
-                gameObject.SetActive(false);  // Desactivamos la pelota después de colisionar
+                // Aplica daño basado en porcentaje (por ejemplo, 10% de la vida del jugador)
+                float porcentajeDeDano = 10f; // El daño es un 10% de la vida del jugador
+                jugador.RecibirGolpe(porcentajeDeDano, true); // Se pasa "true" para indicar que es porcentaje
+
+                // Desactivamos la pelota después de colisionar
+                gameObject.SetActive(false);
             }
         }
     }
@@ -92,6 +95,6 @@ public class Pelota : MonoBehaviour
         if (col.gameObject.CompareTag("Limite"))  // Asumimos que los límites tienen el tag "Limite"
         {
             Destroy(gameObject);  // Destruye la pelota
-        }
+        }
     }
 }

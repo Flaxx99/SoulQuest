@@ -27,12 +27,6 @@ public class InicioMinijuego : MonoBehaviour
         // Activar la pelota inicial
         if (pelotaInicial != null)
             pelotaInicial.SetActive(true);
-
-        if (minijuegoUIController != null)
-        {
-            // Solo actualizar los textos sin modificar las vidas
-            minijuegoUIController.ActualizarTextosDeVida();
-        }
     }
 
     // Cuando el jugador entra en el área de inicio, comienza el minijuego
@@ -66,7 +60,6 @@ public class InicioMinijuego : MonoBehaviour
             // Iniciar la UI del minijuego (por si fuera necesario resetear o mostrar algún valor)
             if (minijuegoUIController != null)
             {
-                minijuegoUIController.ActivarTextos();  // Activar los textos de vida
                 minijuegoUIController.OcultarPanelesUI(); // Ocultar los paneles de la UI
             }
         }
