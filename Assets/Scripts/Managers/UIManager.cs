@@ -108,7 +108,7 @@ public class UIManager : Singleton<UIManager>
 
         vidaTMP.text = $"{vidaActual}/{vidaMax}";
         manaTMP.text = $"{manaActual}/{manaMax}";
-        expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
+       // expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
         nivelTMP.text = $"Nivel {stats.Nivel}";
     }
 
@@ -149,7 +149,7 @@ public class UIManager : Singleton<UIManager>
         expRequeridaNuevoNivel = pExpRequerida;
 
         expPlayer.fillAmount = expActual / expRequeridaNuevoNivel;
-        expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
+        //expTMP.text = $"{((expActual / expRequeridaNuevoNivel) * 100):F2}%";
         // nivelTMP.text = $"Nivel {Resources.Load<PersonajeStats>("Stats").Nivel}"; // Asegurar que se muestre correctamente
         PersonajeExperiencia personajeExp = Object.FindFirstObjectByType<PersonajeExperiencia>();
         if (personajeExp != null)
@@ -291,59 +291,5 @@ public class UIManager : Singleton<UIManager>
     {
         mensajePanel.SetActive(false);
     }
-    /*
-    public float fadeDuration = 2f;  // Duración de la transición de fade
-    public void FadeIn()
-    {
-        Debug.Log("UIManager.FadeIn() invocado. Iniciando corrutina...");
-        StartCoroutine(FadeInCoroutine());
-    }
-
-    private IEnumerator FadeInCoroutine()
-    {
-        float time = 0;
-        panelCanvasGroup.alpha = 0f;
-
-        Debug.Log("FadeInCoroutine - alpha inicial = " + panelCanvasGroup.alpha);
-
-        while (time < fadeDuration)
-        {
-            float alpha = Mathf.Lerp(0f, 1f, time / fadeDuration);
-            panelCanvasGroup.alpha = alpha;
-            Debug.Log($"FadeInCoroutine - time: {time:F2}, alpha: {alpha:F2}");
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        panelCanvasGroup.alpha = 1f;
-        Debug.Log("FadeInCoroutine completado - alpha final = " + panelCanvasGroup.alpha);
-    }
-
-    public void FadeOut()
-    {
-        Debug.Log("UIManager.FadeOut() invocado. Iniciando corrutina...");
-        StartCoroutine(FadeOutCoroutine());
-    }
-
-    private IEnumerator FadeOutCoroutine()
-    {
-        float time = 0;
-        panelCanvasGroup.alpha = 1f;
-
-        Debug.Log("FadeOutCoroutine - alpha inicial = " + panelCanvasGroup.alpha);
-
-        while (time < fadeDuration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, time / fadeDuration);
-            panelCanvasGroup.alpha = alpha;
-            Debug.Log($"FadeOutCoroutine - time: {time:F2}, alpha: {alpha:F2}");
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        panelCanvasGroup.alpha = 0f;
-        Debug.Log("FadeOutCoroutine completado - alpha final = " + panelCanvasGroup.alpha);
-    }*/
-
-
+    
 }

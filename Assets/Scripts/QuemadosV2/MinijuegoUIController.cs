@@ -83,6 +83,7 @@ public class MinijuegoUIController : MonoBehaviour
         if (minijuegoTerminado) return;
         minijuegoTerminado = true;
 
+        AudioManager.instancia.CambiarMusica("Pasillos");
         Debug.Log("Finalizando minijuego de quemados...");
 
         // Desactivar script del jugador

@@ -35,7 +35,7 @@ public class InicioMinijuego : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("¡Minijuego de Quemados iniciado!");
-
+            AudioManager.instancia.CambiarMusica("Quemados");
             // Activar al jugador y enemigo en el minijuego
             if (jugador != null)
             {

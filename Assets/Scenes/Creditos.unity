@@ -410,7 +410,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.89800006}
   m_AnchorMax: {x: 0.5, y: 0.89800006}
-  m_AnchoredPosition: {x: -8.500015, y: -2289.8406}
+  m_AnchoredPosition: {x: -8.500015, y: -2289.8403}
   m_SizeDelta: {x: 200, y: 2000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &560502525
@@ -446,7 +446,7 @@ MonoBehaviour:
     ESPECIALES:\nRa\xFAl P\xE9rez Prieto\nLuis Enrique Mascote Cano\nFamilias del
     equipo por su apoyo y paciencia.\n\nRECURSOS DE TERCEROS:\nItch.io\nFreesound.org\nUnity\nAnchor
     Point\nGit\n\n\xA1Gracias por acompa\xF1arnos en esta aventura en la Soul Quest:
-    Academy\_of\_Knowledge!"
+    Academy\_of\_Knowledge!\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea8815725d228c0449194d2516fd2a94, type: 2}
   m_sharedMaterial: {fileID: 7802034063813313203, guid: ea8815725d228c0449194d2516fd2a94, type: 2}
@@ -511,7 +511,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -281.64548, y: 433.24637, z: -284.5053, w: -43.13968}
+  m_margin: {x: -281.64548, y: 433.24637, z: -284.5053, w: -338.8234}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1178,7 +1178,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 153135037}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.22133952
+  m_Size: 0.22145721
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

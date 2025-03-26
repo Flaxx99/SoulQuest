@@ -9,6 +9,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip musicaPasillos;
     [SerializeField] private AudioClip musicaMinijuegos;
     [SerializeField] private AudioClip musicaMainMenu;
+    [SerializeField] private AudioClip musicaCreditos;
+    [SerializeField] private AudioClip musicaQuemados;
 
     void Awake()
     {
@@ -48,26 +50,27 @@ public class AudioManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Verifica si el AudioSource está disponible después de cargar la escena
         if (audioSource != null)
         {
             Debug.Log("OnSceneLoaded: " + scene.name);
 
-            // Cambia la música según la escena
             string nombreEscena = scene.name;
 
-            // Llama a CambiarMusica pasando el nombre de la escena
             if (nombreEscena == "MainMenu")
             {
                 AudioManager.instancia.CambiarMusica("MainMenu");
             }
-            else if (nombreEscena == "OriginalYoshy" ||nombreEscena == "Pasillos" || nombreEscena == "EscenaPrincipal")
+            else if (nombreEscena == "OriginalYoshy" || nombreEscena == "Pasillos" || nombreEscena == "EscenaPrincipal")
             {
                 AudioManager.instancia.CambiarMusica("Pasillos");
             }
             else if (nombreEscena.Contains("Minijuego") || nombreEscena.Contains("Salon"))
             {
                 AudioManager.instancia.CambiarMusica("Minijuego");
+            }
+            else if (nombreEscena == "Creditos")  // Nueva condición para la escena de Créditos
+            {
+                AudioManager.instancia.CambiarMusica("Creditos");
             }
             else
             {
@@ -81,6 +84,7 @@ public class AudioManager : MonoBehaviour
     }
 
 
+
     // Método para cambiar la música según la escena
     public void CambiarMusica(string tipo)
     {
@@ -88,10 +92,15 @@ public class AudioManager : MonoBehaviour
         {
             AudioClip nuevaMusica = null;
             Debug.Log("Entrando a CambiarMusica con tipo = " + tipo);
-            // Selecciona el nuevo clip de música basado en el tipo
-            if (tipo == "Pasillos") nuevaMusica = musicaPasillos;
-            else if (tipo == "Minijuego") nuevaMusica = musicaMinijuegos;
-            else if (tipo == "MainMenu") nuevaMusica = musicaMainMenu;
+
+            if (tipo == "Pasillos")
+                nuevaMusica = musicaPasillos;
+            else if (tipo == "Minijuego")
+                nuevaMusica = musicaMinijuegos;
+            else if (tipo == "MainMenu")
+                nuevaMusica = musicaMainMenu;
+            else if (tipo == "Creditos") // Nueva opción para los créditos
+                nuevaMusica = musicaCreditos;
 
             if (nuevaMusica != null)
             {
@@ -111,6 +120,7 @@ public class AudioManager : MonoBehaviour
             Debug.LogError("🎵 El AudioSource no está disponible.");
         }
     }
+
 
 
     // Cuando la transición de audio se termine, reanudar la música

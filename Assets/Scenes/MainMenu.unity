@@ -482,7 +482,7 @@ Transform:
   m_GameObject: {fileID: 899211231}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -41.3, y: -34.3, z: -10}
+  m_LocalPosition: {x: -40.4, y: -35.9, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -642,6 +642,8 @@ MonoBehaviour:
   musicaPasillos: {fileID: 8300000, guid: 227a3ab6ef966f342a2a5cba98db7bef, type: 3}
   musicaMinijuegos: {fileID: 8300000, guid: 373cab058d323bf42a1fea0feba6cade, type: 3}
   musicaMainMenu: {fileID: 8300000, guid: d09d09e6e3fa74f4ca843fe2fcf7defc, type: 3}
+  musicaCreditos: {fileID: 8300000, guid: 758949cb8b48a4542b10630524022090, type: 3}
+  musicaQuemados: {fileID: 8300000, guid: d7253842ebb8e0a4787fe67c63c60103, type: 3}
 --- !u!4 &960365252
 Transform:
   m_ObjectHideFlags: 0

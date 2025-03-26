@@ -22,5 +22,8 @@ MonoBehaviour:
     sucesos extra\xF1os por todo el campus."
   - "Seres extra\xF1os en los pasillos, libros que parecen tener vida propia y retos
     ocultos. Quiz\xE1 sean solo cuentos, pero hay algo extra\xF1o aqu\xED."
-  Despedida: En fin, ten mucho cuidado mientras exploras la escuela. Visita la biblioteca
-    para que encuentres algunos objetos que te pueden ser de utillidad.
+  - En fin, ten mucho cuidado mientras exploras la escuela. Visita la biblioteca
+    para que encuentres algunos objetos que te pueden ser de utilidad.
+  Despedida: "Si tienes alguna pregunta de c\xF3mo jugar no olvides consultar el
+    bot\xF3n de instrucciones que aparece en tu pantalla en la esquina inferior derecha,
+    detr\xE1s de la imagen de un pergamino. \xA1Mucha suerte!"
