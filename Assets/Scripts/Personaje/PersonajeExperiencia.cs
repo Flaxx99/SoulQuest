@@ -24,10 +24,10 @@ public class PersonajeExperiencia : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+       /* if (Input.GetKeyDown(KeyCode.X))
         {
             AnadirExperiencia(2f);
-        }
+        }*/
     }
     public void AnadirExperiencia(float expObtenida)
     {
