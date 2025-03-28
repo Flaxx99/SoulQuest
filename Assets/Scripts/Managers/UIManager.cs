@@ -181,6 +181,10 @@ public class UIManager : Singleton<UIManager>
         // Si acabamos de activar el panel de instrucciones...
         if (panelInstruccion.activeSelf)
         {
+            // Pausar el juego
+            Time.timeScale = 0; // Detener el tiempo del juego
+            Debug.Log("Juego pausado.");
+
             // Guardamos el estado actual de panelArmaEquipada
             armaEquipadaWasActiveBefore = panelArmaEquipada.activeSelf;
 
@@ -192,7 +196,11 @@ public class UIManager : Singleton<UIManager>
         else
         {
             // Si acabamos de cerrar el panel de instrucciones,
-            // restauramos el estado previo de panelArmaEquipada
+            // reanudamos el juego
+            Time.timeScale = 1; // Reanudar el tiempo del juego
+            Debug.Log("Juego reanudado.");
+
+            // Restauramos el estado previo de panelArmaEquipada
             panelArmaEquipada.SetActive(armaEquipadaWasActiveBefore);
             Debug.Log("Restaurando estado previo de panelArmaEquipada.");
         }
@@ -200,7 +208,6 @@ public class UIManager : Singleton<UIManager>
         Debug.Log($"panelInstruccion: {panelInstruccion.activeSelf}, " +
                   $"panelArmaEquipada: {panelArmaEquipada.activeSelf}");
     }
-
 
     #endregion
 
