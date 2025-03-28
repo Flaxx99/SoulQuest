@@ -2872,6 +2872,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Intro
       objectReference: {fileID: 0}
+    - target: {fileID: 1028492827603868421, guid: f7f56029852194540be83c6b7bfa58db, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1440443801793906691, guid: f7f56029852194540be83c6b7bfa58db, type: 3}
       propertyPath: hudCanvas
       value: 
