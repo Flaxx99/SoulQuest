@@ -381,8 +381,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38645a86f9d472e40b15e2e977e7a108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saludInicial: 50
-  saludMax: 50
+  saludInicial: 150
+  saludMax: 150
   barraVidaPrefab: {fileID: 7997121175989522546, guid: 28ff9b2a6fc1ae74086ea6df8260691e, type: 3}
   barraVidaPosicion: {fileID: 7656920689264271519}
 --- !u!1 &4087335585098322707

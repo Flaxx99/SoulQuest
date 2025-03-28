@@ -19005,10 +19005,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dedbfa5f71372a4b8b2ff74a74d99be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidad: 3
+  velocidad: 4
   pelotaPrefab: {fileID: 4706453586676523445, guid: d02abfca9d32bd44a887d4b8334ad62d, type: 3}
   puntoDeLanzamiento: {fileID: 4151554377321980899}
-  fuerzaLanzamiento: 10
+  fuerzaLanzamiento: 20
   vidas: 10
   limiteIzquierdo: {fileID: 8586191083345791313}
   limiteDerecho: {fileID: 6117415354770890710}
@@ -19024,8 +19024,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351829559e009864297cae1128f71c79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saludInicial: 50
-  saludMax: 50
+  saludInicial: 100
+  saludMax: 100
   barraVidaPrefab: {fileID: 7997121175989522546, guid: 28ff9b2a6fc1ae74086ea6df8260691e, type: 3}
   barraVidaPosicion: {fileID: 8002794325899547543}
   minijuegoUIController: {fileID: 359313427658935961}

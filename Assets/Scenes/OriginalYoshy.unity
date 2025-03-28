@@ -11041,22 +11041,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7246068034395869756, guid: 01caf0e14f9073b4986179bc8683e756, type: 3}
-      propertyPath: puntos.Array.data[2].x
-      value: 52.564156
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246068034395869756, guid: 01caf0e14f9073b4986179bc8683e756, type: 3}
-      propertyPath: puntos.Array.data[2].y
-      value: -20.96677
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246068034395869756, guid: 01caf0e14f9073b4986179bc8683e756, type: 3}
-      propertyPath: puntos.Array.data[3].x
-      value: -0.17250061
-      objectReference: {fileID: 0}
-    - target: {fileID: 7246068034395869756, guid: 01caf0e14f9073b4986179bc8683e756, type: 3}
-      propertyPath: puntos.Array.data[3].y
-      value: -20.966879
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12256,14 +12240,6 @@ PrefabInstance:
     - target: {fileID: 1976398294693945470, guid: f374711b177a3f74fb7a0fa3b7dd4968, type: 3}
       propertyPath: m_Name
       value: Slime
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265140600814101711, guid: f374711b177a3f74fb7a0fa3b7dd4968, type: 3}
-      propertyPath: puntos.Array.data[2].x
-      value: 53.94479
-      objectReference: {fileID: 0}
-    - target: {fileID: 4265140600814101711, guid: f374711b177a3f74fb7a0fa3b7dd4968, type: 3}
-      propertyPath: puntos.Array.data[2].y
-      value: -20.037058
       objectReference: {fileID: 0}
     - target: {fileID: 7701439266646371246, guid: f374711b177a3f74fb7a0fa3b7dd4968, type: 3}
       propertyPath: m_LocalPosition.x
@@ -44181,10 +44157,6 @@ PrefabInstance:
     - target: {fileID: 5733800111452089803, guid: 8b607c123be532c4099049e708da6493, type: 3}
       propertyPath: m_Name
       value: Avispa
-      objectReference: {fileID: 0}
-    - target: {fileID: 7977056426562826239, guid: 8b607c123be532c4099049e708da6493, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9090601668646788348, guid: 8b607c123be532c4099049e708da6493, type: 3}
       propertyPath: m_LocalPosition.x

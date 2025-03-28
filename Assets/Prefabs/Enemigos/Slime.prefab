@@ -295,7 +295,7 @@ MonoBehaviour:
   puntos:
   - {x: 1.4828529, y: 0.0000009536743, z: 0}
   - {x: 54.00054, y: 0.0000009536743, z: 0}
-  - {x: 54.059097, y: -20.26567, z: 0}
+  - {x: 53.94479, y: -20.037058, z: 0}
   - {x: 0.9882431, y: -20.26567, z: 0}
 --- !u!114 &6290979208692683569
 MonoBehaviour:
@@ -366,8 +366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38645a86f9d472e40b15e2e977e7a108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saludInicial: 50
-  saludMax: 50
+  saludInicial: 150
+  saludMax: 150
   barraVidaPrefab: {fileID: 7997121175989522546, guid: 28ff9b2a6fc1ae74086ea6df8260691e, type: 3}
   barraVidaPosicion: {fileID: 1798188196320384478}
 --- !u!1 &3294811222777929711

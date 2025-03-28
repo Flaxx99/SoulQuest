@@ -5,13 +5,13 @@ public class Enemigo : MonoBehaviour
     public float velocidad = 3f;
     public GameObject pelotaPrefab;
     public Transform puntoDeLanzamiento;
-    public float fuerzaLanzamiento = 10f;
+    public float fuerzaLanzamiento = 20f;
     public int vidas = 5;  // Vidas del enemigo
 
     public Transform limiteIzquierdo;  // Referencia al límite izquierdo
     public Transform limiteDerecho;    // Referencia al límite derecho
 
-    private float tiempoRestante = 2f;  // Tiempo entre lanzamientos
+    private float tiempoRestante = 0.5f;  // Tiempo entre lanzamientos
     private float tiempoDeMovimiento = 3f;  // Tiempo de cambio de dirección
     private float tiempoDeCambio;
     private Rigidbody2D rb;
